@@ -6,9 +6,21 @@
 //
 
 import SwiftUI
+import OpenlcbLibrary
+import os
 
 @main
 struct OlcbToolsApp: App {
+    static let openlcblib = OpenlcbLibrary()
+    let canphysical = CanPhysicalLayerSimulation()
+    
+    init () {
+        OlcbToolsApp.openlcblib.configureCanTelnet(canphysical)
+        OlcbToolsApp.openlcblib.createSampleData()
+
+        //let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
+     }
+    
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {

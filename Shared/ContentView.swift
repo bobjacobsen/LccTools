@@ -10,49 +10,29 @@ import os
 import OpenlcbLibrary
 
 struct ContentView: View {
-    let openlcblib = OpenlcbLibrary()
-    let canphysical = CanPhysicalLayerSimulation()
+
+    // iphone is one selector window
+    // macOS and iPad have two // TODO: Why can't we run on macOS?
     
-    init () {
-        openlcblib.configureCanTelnet(canphysical)
-        openlcblib.createSampleData()
-        
-        var tempnodes = openlcblib.remoteNodeStore.asArray()
-        // sort most recent node content
-        tempnodes.sort()
-        nodes = tempnodes
-        
-        let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "ContentView")
-        logger.error("\(tempnodes[0])")
-     }
-
-    @State private var nodes : [Node]
-
+    #if os(iOS) // check for iPhone
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
+    #endif
+    
     var body: some View {
-        NavigationView {
-            ScrollView { // of all the nodes
-                ForEach(nodes, id:\.id) { (node) in
-                    // how to display each one when selected
-                    NavigationLink(destination:
-                                    FullNodeView(displayNode: node)
-                    ){ // how to display each one in the list
-                        VStack {
-                            if node.name != "" {
-                                Text(node.name)
-                                Text(node.snip.userProvidedDescription).font(.footnote)
-                                Text(node.id.description).font(.footnote)
-                            } else {
-                                Text(node.id.description)
-                                Text(node.snip.userProvidedDescription).font(.footnote)
-                            }
-                            
-                        }
-                    }
+        HStack{
+            NodeListNavigationView()
+
+            #if os(iOS)
+                if horizontalSizeClass != .compact {
+                    NodeListNavigationView()
                 }
-            }.navigationTitle("Remote Nodes")
+
+            #else // macOS
+                NodeListNavigationView()
+            #endif
+
         }
     }
-
 }
 
 struct ContentView_Previews: PreviewProvider {

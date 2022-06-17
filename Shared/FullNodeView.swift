@@ -8,26 +8,6 @@
 import SwiftUI
 import OpenlcbLibrary
 
-struct EventView: View {  // TODO: Put in own file, add useful stuff from traffic
-    var body: some View {
-        HStack {
-            VStack {
-                Text("Produces").font(.title).frame(alignment: .leading)
-                Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
-                Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
-                Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
-                Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
-            }
-            Divider()
-            VStack {
-                Text("Consumes").font(.title).font(.title).frame(alignment: .leading)
-                Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
-                Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
-            }
-        }
-    }
-}
-
 struct MonitorView: View {  // TODO: Put in own file, add useful stuff from traffic
     var body: some View {
         Text("This is the Monitor detail view")
@@ -39,24 +19,6 @@ struct ThrottleView: View {  // TODO: Put in own file, add useful stuff from thr
         Text("This is the throttle detail view")
     }
 }
-
-struct CdCdiView: View {  // TODO: Put in own file, add useful stuff to configure
-    var body: some View {
-        Text("This is the configuration view")
-    }
-}
-
-struct PipView: View {  // TODO: Put in own file, add useful stuff from node
-    let displayNode : Node
-    var body: some View {
-        VStack {
-            ForEach(PIP.contentsNames(displayNode.pipSet), id: \.description) { (pip) in
-                Text(pip)  // contains pretty name of each member of the supported set // TODO: think about order
-            }
-        }.navigationTitle("Supported Protocols")
-    }
-}
-
 
 struct FullNodeView: View {
     let displayNode : Node
@@ -102,8 +64,9 @@ struct FullNodeView: View {
 }
 
 struct FullNodeView_Previews: PreviewProvider {
+    static let displayNode  = Node(NodeID(0))
     static var previews: some View {
-        FullNodeView(displayNode: Node(NodeID(0)))
-            .previewInterfaceOrientation(.portraitUpsideDown) // TODO: how do we fill this in?
+        FullNodeView(displayNode: displayNode)// TODO: how do we fill this in better
+            .previewInterfaceOrientation(.portraitUpsideDown)
     }
 }
