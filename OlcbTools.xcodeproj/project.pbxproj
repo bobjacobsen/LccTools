@@ -1,0 +1,731 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2300891D285C94A4000FB614 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300891C285C94A4000FB614 /* Tests_iOS.swift */; };
+		2300891F285C94A4000FB614 /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300891E285C94A4000FB614 /* Tests_iOSLaunchTests.swift */; };
+		23008929285C94A4000FB614 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008928285C94A4000FB614 /* Tests_macOS.swift */; };
+		2300892B285C94A4000FB614 /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300892A285C94A4000FB614 /* Tests_macOSLaunchTests.swift */; };
+		2300892C285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */; };
+		2300892D285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */; };
+		2300892E285C94A4000FB614 /* OlcbToolsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008903285C949E000FB614 /* OlcbToolsApp.swift */; };
+		2300892F285C94A4000FB614 /* OlcbToolsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008903285C949E000FB614 /* OlcbToolsApp.swift */; };
+		23008930285C94A4000FB614 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008904285C949E000FB614 /* ContentView.swift */; };
+		23008931285C94A4000FB614 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008904285C949E000FB614 /* ContentView.swift */; };
+		23008932285C94A4000FB614 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008905285C949E000FB614 /* Persistence.swift */; };
+		23008933285C94A4000FB614 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008905285C949E000FB614 /* Persistence.swift */; };
+		23008934285C94A4000FB614 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23008906285C94A4000FB614 /* Assets.xcassets */; };
+		23008935285C94A4000FB614 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23008906285C94A4000FB614 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		23008919285C94A4000FB614 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 230088FC285C949E000FB614 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2300890A285C94A4000FB614;
+			remoteInfo = "OlcbTools (iOS)";
+		};
+		23008925285C94A4000FB614 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 230088FC285C949E000FB614 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23008910285C94A4000FB614;
+			remoteInfo = "OlcbTools (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		23008902285C949E000FB614 /* Shared.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Shared.xcdatamodel; sourceTree = "<group>"; };
+		23008903285C949E000FB614 /* OlcbToolsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlcbToolsApp.swift; sourceTree = "<group>"; };
+		23008904285C949E000FB614 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		23008905285C949E000FB614 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		23008906285C94A4000FB614 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2300890B285C94A4000FB614 /* OlcbTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OlcbTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		23008911285C94A4000FB614 /* OlcbTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OlcbTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		23008913285C94A4000FB614 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		23008918285C94A4000FB614 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2300891C285C94A4000FB614 /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
+		2300891E285C94A4000FB614 /* Tests_iOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOSLaunchTests.swift; sourceTree = "<group>"; };
+		23008924285C94A4000FB614 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23008928285C94A4000FB614 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
+		2300892A285C94A4000FB614 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		23008908285C94A4000FB614 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2300890E285C94A4000FB614 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23008915285C94A4000FB614 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23008921285C94A4000FB614 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		230088FB285C949E000FB614 = {
+			isa = PBXGroup;
+			children = (
+				23008900285C949E000FB614 /* Shared */,
+				23008912285C94A4000FB614 /* macOS */,
+				2300891B285C94A4000FB614 /* Tests iOS */,
+				23008927285C94A4000FB614 /* Tests macOS */,
+				2300890C285C94A4000FB614 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		23008900285C949E000FB614 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				23008903285C949E000FB614 /* OlcbToolsApp.swift */,
+				23008904285C949E000FB614 /* ContentView.swift */,
+				23008905285C949E000FB614 /* Persistence.swift */,
+				23008906285C94A4000FB614 /* Assets.xcassets */,
+				23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		2300890C285C94A4000FB614 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2300890B285C94A4000FB614 /* OlcbTools.app */,
+				23008911285C94A4000FB614 /* OlcbTools.app */,
+				23008918285C94A4000FB614 /* Tests iOS.xctest */,
+				23008924285C94A4000FB614 /* Tests macOS.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		23008912285C94A4000FB614 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				23008913285C94A4000FB614 /* macOS.entitlements */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		2300891B285C94A4000FB614 /* Tests iOS */ = {
+			isa = PBXGroup;
+			children = (
+				2300891C285C94A4000FB614 /* Tests_iOS.swift */,
+				2300891E285C94A4000FB614 /* Tests_iOSLaunchTests.swift */,
+			);
+			path = "Tests iOS";
+			sourceTree = "<group>";
+		};
+		23008927285C94A4000FB614 /* Tests macOS */ = {
+			isa = PBXGroup;
+			children = (
+				23008928285C94A4000FB614 /* Tests_macOS.swift */,
+				2300892A285C94A4000FB614 /* Tests_macOSLaunchTests.swift */,
+			);
+			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2300890A285C94A4000FB614 /* OlcbTools (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23008938285C94A4000FB614 /* Build configuration list for PBXNativeTarget "OlcbTools (iOS)" */;
+			buildPhases = (
+				23008907285C94A4000FB614 /* Sources */,
+				23008908285C94A4000FB614 /* Frameworks */,
+				23008909285C94A4000FB614 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "OlcbTools (iOS)";
+			productName = "OlcbTools (iOS)";
+			productReference = 2300890B285C94A4000FB614 /* OlcbTools.app */;
+			productType = "com.apple.product-type.application";
+		};
+		23008910285C94A4000FB614 /* OlcbTools (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2300893B285C94A4000FB614 /* Build configuration list for PBXNativeTarget "OlcbTools (macOS)" */;
+			buildPhases = (
+				2300890D285C94A4000FB614 /* Sources */,
+				2300890E285C94A4000FB614 /* Frameworks */,
+				2300890F285C94A4000FB614 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "OlcbTools (macOS)";
+			productName = "OlcbTools (macOS)";
+			productReference = 23008911285C94A4000FB614 /* OlcbTools.app */;
+			productType = "com.apple.product-type.application";
+		};
+		23008917285C94A4000FB614 /* Tests iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2300893E285C94A4000FB614 /* Build configuration list for PBXNativeTarget "Tests iOS" */;
+			buildPhases = (
+				23008914285C94A4000FB614 /* Sources */,
+				23008915285C94A4000FB614 /* Frameworks */,
+				23008916285C94A4000FB614 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2300891A285C94A4000FB614 /* PBXTargetDependency */,
+			);
+			name = "Tests iOS";
+			productName = "Tests iOS";
+			productReference = 23008918285C94A4000FB614 /* Tests iOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		23008923285C94A4000FB614 /* Tests macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23008941285C94A4000FB614 /* Build configuration list for PBXNativeTarget "Tests macOS" */;
+			buildPhases = (
+				23008920285C94A4000FB614 /* Sources */,
+				23008921285C94A4000FB614 /* Frameworks */,
+				23008922285C94A4000FB614 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				23008926285C94A4000FB614 /* PBXTargetDependency */,
+			);
+			name = "Tests macOS";
+			productName = "Tests macOS";
+			productReference = 23008924285C94A4000FB614 /* Tests macOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		230088FC285C949E000FB614 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1340;
+				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					2300890A285C94A4000FB614 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+					23008910285C94A4000FB614 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+					23008917285C94A4000FB614 = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = 2300890A285C94A4000FB614;
+					};
+					23008923285C94A4000FB614 = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = 23008910285C94A4000FB614;
+					};
+				};
+			};
+			buildConfigurationList = 230088FF285C949E000FB614 /* Build configuration list for PBXProject "OlcbTools" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 230088FB285C949E000FB614;
+			productRefGroup = 2300890C285C94A4000FB614 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2300890A285C94A4000FB614 /* OlcbTools (iOS) */,
+				23008910285C94A4000FB614 /* OlcbTools (macOS) */,
+				23008917285C94A4000FB614 /* Tests iOS */,
+				23008923285C94A4000FB614 /* Tests macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		23008909285C94A4000FB614 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23008934285C94A4000FB614 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2300890F285C94A4000FB614 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23008935285C94A4000FB614 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23008916285C94A4000FB614 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23008922285C94A4000FB614 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		23008907285C94A4000FB614 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2300892C285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
+				23008932285C94A4000FB614 /* Persistence.swift in Sources */,
+				2300892E285C94A4000FB614 /* OlcbToolsApp.swift in Sources */,
+				23008930285C94A4000FB614 /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2300890D285C94A4000FB614 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2300892D285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
+				23008933285C94A4000FB614 /* Persistence.swift in Sources */,
+				2300892F285C94A4000FB614 /* OlcbToolsApp.swift in Sources */,
+				23008931285C94A4000FB614 /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23008914285C94A4000FB614 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2300891F285C94A4000FB614 /* Tests_iOSLaunchTests.swift in Sources */,
+				2300891D285C94A4000FB614 /* Tests_iOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23008920285C94A4000FB614 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2300892B285C94A4000FB614 /* Tests_macOSLaunchTests.swift in Sources */,
+				23008929285C94A4000FB614 /* Tests_macOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2300891A285C94A4000FB614 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2300890A285C94A4000FB614 /* OlcbTools (iOS) */;
+			targetProxy = 23008919285C94A4000FB614 /* PBXContainerItemProxy */;
+		};
+		23008926285C94A4000FB614 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23008910285C94A4000FB614 /* OlcbTools (macOS) */;
+			targetProxy = 23008925285C94A4000FB614 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		23008936285C94A4000FB614 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		23008937285C94A4000FB614 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		23008939285C94A4000FB614 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ardenwood.OlcbTools;
+				PRODUCT_NAME = OlcbTools;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2300893A285C94A4000FB614 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ardenwood.OlcbTools;
+				PRODUCT_NAME = OlcbTools;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2300893C285C94A4000FB614 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ardenwood.OlcbTools;
+				PRODUCT_NAME = OlcbTools;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2300893D285C94A4000FB614 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.ardenwood.OlcbTools;
+				PRODUCT_NAME = OlcbTools;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2300893F285C94A4000FB614 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ardenwood.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "OlcbTools (iOS)";
+			};
+			name = Debug;
+		};
+		23008940285C94A4000FB614 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ardenwood.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "OlcbTools (iOS)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		23008942285C94A4000FB614 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ardenwood.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "OlcbTools (macOS)";
+			};
+			name = Debug;
+		};
+		23008943285C94A4000FB614 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ardenwood.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "OlcbTools (macOS)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		230088FF285C949E000FB614 /* Build configuration list for PBXProject "OlcbTools" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23008936285C94A4000FB614 /* Debug */,
+				23008937285C94A4000FB614 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		23008938285C94A4000FB614 /* Build configuration list for PBXNativeTarget "OlcbTools (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23008939285C94A4000FB614 /* Debug */,
+				2300893A285C94A4000FB614 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2300893B285C94A4000FB614 /* Build configuration list for PBXNativeTarget "OlcbTools (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2300893C285C94A4000FB614 /* Debug */,
+				2300893D285C94A4000FB614 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2300893E285C94A4000FB614 /* Build configuration list for PBXNativeTarget "Tests iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2300893F285C94A4000FB614 /* Debug */,
+				23008940285C94A4000FB614 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		23008941285C94A4000FB614 /* Build configuration list for PBXNativeTarget "Tests macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23008942285C94A4000FB614 /* Debug */,
+				23008943285C94A4000FB614 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				23008902285C949E000FB614 /* Shared.xcdatamodel */,
+			);
+			currentVersion = 23008902285C949E000FB614 /* Shared.xcdatamodel */;
+			path = OlcbTools.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 230088FC285C949E000FB614 /* Project object */;
+}
