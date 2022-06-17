@@ -15,12 +15,17 @@
 		2300892D285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */; };
 		2300892E285C94A4000FB614 /* OlcbToolsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008903285C949E000FB614 /* OlcbToolsApp.swift */; };
 		2300892F285C94A4000FB614 /* OlcbToolsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008903285C949E000FB614 /* OlcbToolsApp.swift */; };
-		23008930285C94A4000FB614 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008904285C949E000FB614 /* ContentView.swift */; };
-		23008931285C94A4000FB614 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008904285C949E000FB614 /* ContentView.swift */; };
+		23008930285C94A4000FB614 /* SampleCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008904285C949E000FB614 /* SampleCoreData.swift */; };
+		23008931285C94A4000FB614 /* SampleCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008904285C949E000FB614 /* SampleCoreData.swift */; };
 		23008932285C94A4000FB614 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008905285C949E000FB614 /* Persistence.swift */; };
 		23008933285C94A4000FB614 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008905285C949E000FB614 /* Persistence.swift */; };
 		23008934285C94A4000FB614 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23008906285C94A4000FB614 /* Assets.xcassets */; };
 		23008935285C94A4000FB614 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23008906285C94A4000FB614 /* Assets.xcassets */; };
+		23008947285C9527000FB614 /* OpenlcbLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 23008946285C9527000FB614 /* OpenlcbLibrary */; };
+		23008949285C961D000FB614 /* FullNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008948285C961D000FB614 /* FullNodeView.swift */; };
+		2300894A285C961D000FB614 /* FullNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008948285C961D000FB614 /* FullNodeView.swift */; };
+		2300894C285C9630000FB614 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300894B285C9630000FB614 /* ContentView.swift */; };
+		2300894D285C9630000FB614 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300894B285C9630000FB614 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +48,7 @@
 /* Begin PBXFileReference section */
 		23008902285C949E000FB614 /* Shared.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Shared.xcdatamodel; sourceTree = "<group>"; };
 		23008903285C949E000FB614 /* OlcbToolsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlcbToolsApp.swift; sourceTree = "<group>"; };
-		23008904285C949E000FB614 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		23008904285C949E000FB614 /* SampleCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCoreData.swift; sourceTree = "<group>"; };
 		23008905285C949E000FB614 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		23008906285C94A4000FB614 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2300890B285C94A4000FB614 /* OlcbTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OlcbTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +60,9 @@
 		23008924285C94A4000FB614 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23008928285C94A4000FB614 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		2300892A285C94A4000FB614 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+		23008944285C94FD000FB614 /* OpenlcbLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = OpenlcbLibrary; path = ../OpenlcbLibrary; sourceTree = "<group>"; };
+		23008948285C961D000FB614 /* FullNodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullNodeView.swift; sourceTree = "<group>"; };
+		2300894B285C9630000FB614 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23008947285C9527000FB614 /* OpenlcbLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,11 +101,13 @@
 		230088FB285C949E000FB614 = {
 			isa = PBXGroup;
 			children = (
+				23008944285C94FD000FB614 /* OpenlcbLibrary */,
 				23008900285C949E000FB614 /* Shared */,
 				23008912285C94A4000FB614 /* macOS */,
 				2300891B285C94A4000FB614 /* Tests iOS */,
 				23008927285C94A4000FB614 /* Tests macOS */,
 				2300890C285C94A4000FB614 /* Products */,
+				23008945285C9527000FB614 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,7 +115,9 @@
 			isa = PBXGroup;
 			children = (
 				23008903285C949E000FB614 /* OlcbToolsApp.swift */,
-				23008904285C949E000FB614 /* ContentView.swift */,
+				23008948285C961D000FB614 /* FullNodeView.swift */,
+				23008904285C949E000FB614 /* SampleCoreData.swift */,
+				2300894B285C9630000FB614 /* ContentView.swift */,
 				23008905285C949E000FB614 /* Persistence.swift */,
 				23008906285C94A4000FB614 /* Assets.xcassets */,
 				23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */,
@@ -149,6 +162,13 @@
 			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
+		23008945285C9527000FB614 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -165,6 +185,9 @@
 			dependencies = (
 			);
 			name = "OlcbTools (iOS)";
+			packageProductDependencies = (
+				23008946285C9527000FB614 /* OpenlcbLibrary */,
+			);
 			productName = "OlcbTools (iOS)";
 			productReference = 2300890B285C94A4000FB614 /* OlcbTools.app */;
 			productType = "com.apple.product-type.application";
@@ -309,8 +332,10 @@
 			files = (
 				2300892C285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
 				23008932285C94A4000FB614 /* Persistence.swift in Sources */,
+				2300894C285C9630000FB614 /* ContentView.swift in Sources */,
 				2300892E285C94A4000FB614 /* OlcbToolsApp.swift in Sources */,
-				23008930285C94A4000FB614 /* ContentView.swift in Sources */,
+				23008949285C961D000FB614 /* FullNodeView.swift in Sources */,
+				23008930285C94A4000FB614 /* SampleCoreData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,8 +345,10 @@
 			files = (
 				2300892D285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
 				23008933285C94A4000FB614 /* Persistence.swift in Sources */,
+				2300894D285C9630000FB614 /* ContentView.swift in Sources */,
 				2300892F285C94A4000FB614 /* OlcbToolsApp.swift in Sources */,
-				23008931285C94A4000FB614 /* ContentView.swift in Sources */,
+				2300894A285C961D000FB614 /* FullNodeView.swift in Sources */,
+				23008931285C94A4000FB614 /* SampleCoreData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -713,6 +740,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		23008946285C9527000FB614 /* OpenlcbLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OpenlcbLibrary;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */ = {
