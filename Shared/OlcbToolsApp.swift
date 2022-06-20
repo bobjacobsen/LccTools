@@ -24,9 +24,29 @@ struct OlcbToolsApp: App {
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
+        #if os(iOS)
+        WindowGroup {
+            TabView {
+                ContentView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Configure", systemImage: "app.connected.to.app.below.fill")
+                    }
+
+                SettingsView()
+                    .tabItem {
+                        Label("Settings", systemImage: "gear")
+                    }
+            }
+        }
+        #elseif os(macOS)
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
+        Settings {  // creates a Preferences item in App menu
+            SettingsView()
+        }
+        #endif
     }
 }

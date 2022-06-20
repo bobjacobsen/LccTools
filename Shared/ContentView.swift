@@ -12,7 +12,7 @@ import OpenlcbLibrary
 struct ContentView: View {
 
     // iphone is one selector window
-    // macOS and iPad have two // TODO: Why can't we run on macOS?
+    // macOS and iPad have two
     
     #if os(iOS) // check for iPhone
     @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
@@ -24,7 +24,7 @@ struct ContentView: View {
 
             #if os(iOS)
                 if horizontalSizeClass != .compact {
-                    NodeListNavigationView()
+                    NodeListNavigationView() // two parallel ones on iPad
                 }
 
             #else // macOS

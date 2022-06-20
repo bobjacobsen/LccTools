@@ -26,6 +26,17 @@
 		2300894A285C961D000FB614 /* FullNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008948285C961D000FB614 /* FullNodeView.swift */; };
 		2300894C285C9630000FB614 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300894B285C9630000FB614 /* ContentView.swift */; };
 		2300894D285C9630000FB614 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300894B285C9630000FB614 /* ContentView.swift */; };
+		2300894F285CA41A000FB614 /* CdCdiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300894E285CA41A000FB614 /* CdCdiView.swift */; };
+		23008950285CA41A000FB614 /* CdCdiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2300894E285CA41A000FB614 /* CdCdiView.swift */; };
+		23008952285CA46D000FB614 /* PipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008951285CA46D000FB614 /* PipView.swift */; };
+		23008953285CA46D000FB614 /* PipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008951285CA46D000FB614 /* PipView.swift */; };
+		23008955285CC75C000FB614 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008954285CC75C000FB614 /* EventView.swift */; };
+		23008956285CC75C000FB614 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008954285CC75C000FB614 /* EventView.swift */; };
+		23008958285CEABF000FB614 /* NodeListNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008957285CEA4A000FB614 /* NodeListNavigationView.swift */; };
+		23008959285CEABF000FB614 /* NodeListNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23008957285CEA4A000FB614 /* NodeListNavigationView.swift */; };
+		230B6817285DF38600C99298 /* OpenlcbLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 230B6816285DF38600C99298 /* OpenlcbLibrary */; };
+		230B6819285E071500C99298 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B6818285E071500C99298 /* SettingsView.swift */; };
+		230B681A285E071500C99298 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B6818285E071500C99298 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +74,11 @@
 		23008944285C94FD000FB614 /* OpenlcbLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = OpenlcbLibrary; path = ../OpenlcbLibrary; sourceTree = "<group>"; };
 		23008948285C961D000FB614 /* FullNodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullNodeView.swift; sourceTree = "<group>"; };
 		2300894B285C9630000FB614 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2300894E285CA41A000FB614 /* CdCdiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdCdiView.swift; sourceTree = "<group>"; };
+		23008951285CA46D000FB614 /* PipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipView.swift; sourceTree = "<group>"; };
+		23008954285CC75C000FB614 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		23008957285CEA4A000FB614 /* NodeListNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeListNavigationView.swift; sourceTree = "<group>"; };
+		230B6818285E071500C99298 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				230B6817285DF38600C99298 /* OpenlcbLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,11 +131,16 @@
 		23008900285C949E000FB614 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				23008903285C949E000FB614 /* OlcbToolsApp.swift */,
-				23008948285C961D000FB614 /* FullNodeView.swift */,
-				23008904285C949E000FB614 /* SampleCoreData.swift */,
 				2300894B285C9630000FB614 /* ContentView.swift */,
+				2300894E285CA41A000FB614 /* CdCdiView.swift */,
+				23008954285CC75C000FB614 /* EventView.swift */,
+				23008948285C961D000FB614 /* FullNodeView.swift */,
+				23008957285CEA4A000FB614 /* NodeListNavigationView.swift */,
+				23008903285C949E000FB614 /* OlcbToolsApp.swift */,
 				23008905285C949E000FB614 /* Persistence.swift */,
+				23008951285CA46D000FB614 /* PipView.swift */,
+				23008904285C949E000FB614 /* SampleCoreData.swift */,
+				230B6818285E071500C99298 /* SettingsView.swift */,
 				23008906285C94A4000FB614 /* Assets.xcassets */,
 				23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */,
 			);
@@ -205,6 +227,9 @@
 			dependencies = (
 			);
 			name = "OlcbTools (macOS)";
+			packageProductDependencies = (
+				230B6816285DF38600C99298 /* OpenlcbLibrary */,
+			);
 			productName = "OlcbTools (macOS)";
 			productReference = 23008911285C94A4000FB614 /* OlcbTools.app */;
 			productType = "com.apple.product-type.application";
@@ -333,9 +358,14 @@
 				2300892C285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
 				23008932285C94A4000FB614 /* Persistence.swift in Sources */,
 				2300894C285C9630000FB614 /* ContentView.swift in Sources */,
+				23008955285CC75C000FB614 /* EventView.swift in Sources */,
 				2300892E285C94A4000FB614 /* OlcbToolsApp.swift in Sources */,
+				23008959285CEABF000FB614 /* NodeListNavigationView.swift in Sources */,
+				23008952285CA46D000FB614 /* PipView.swift in Sources */,
+				2300894F285CA41A000FB614 /* CdCdiView.swift in Sources */,
 				23008949285C961D000FB614 /* FullNodeView.swift in Sources */,
 				23008930285C94A4000FB614 /* SampleCoreData.swift in Sources */,
+				230B6819285E071500C99298 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,9 +376,14 @@
 				2300892D285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
 				23008933285C94A4000FB614 /* Persistence.swift in Sources */,
 				2300894D285C9630000FB614 /* ContentView.swift in Sources */,
+				23008956285CC75C000FB614 /* EventView.swift in Sources */,
 				2300892F285C94A4000FB614 /* OlcbToolsApp.swift in Sources */,
+				23008958285CEABF000FB614 /* NodeListNavigationView.swift in Sources */,
+				23008953285CA46D000FB614 /* PipView.swift in Sources */,
+				23008950285CA41A000FB614 /* CdCdiView.swift in Sources */,
 				2300894A285C961D000FB614 /* FullNodeView.swift in Sources */,
 				23008931285C94A4000FB614 /* SampleCoreData.swift in Sources */,
+				230B681A285E071500C99298 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,7 +536,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -515,7 +550,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ardenwood.OlcbTools;
 				PRODUCT_NAME = OlcbTools;
 				SDKROOT = iphoneos;
@@ -531,7 +566,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -545,7 +580,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ardenwood.OlcbTools;
 				PRODUCT_NAME = OlcbTools;
 				SDKROOT = iphoneos;
@@ -564,18 +599,18 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "@2022 Bob Jacobsen";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ardenwood.OlcbTools;
 				PRODUCT_NAME = OlcbTools;
 				SDKROOT = macosx;
@@ -592,18 +627,18 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "@2022 Bob Jacobsen";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ardenwood.OlcbTools;
 				PRODUCT_NAME = OlcbTools;
 				SDKROOT = macosx;
@@ -743,6 +778,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		23008946285C9527000FB614 /* OpenlcbLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OpenlcbLibrary;
+		};
+		230B6816285DF38600C99298 /* OpenlcbLibrary */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenlcbLibrary;
 		};
