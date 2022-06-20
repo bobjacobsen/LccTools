@@ -14,7 +14,7 @@ struct ContentView: View {
     // iphone is one selector window
     // macOS and iPad have two
     
-    #if os(iOS) // check for iPhone
+    #if os(iOS) // to check for iPhone
     @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
     #endif
     
@@ -24,11 +24,11 @@ struct ContentView: View {
 
             #if os(iOS)
                 if horizontalSizeClass != .compact {
-                    NodeListNavigationView() // two parallel ones on iPad
+                    // NodeListNavigationView() // two parallel ones on iPad
                 }
 
             #else // macOS
-                NodeListNavigationView()
+                // NodeListNavigationView()
             #endif
 
         }
