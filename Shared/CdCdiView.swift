@@ -11,11 +11,11 @@ import OpenlcbLibrary
 struct CdCdiView: View {
 
     #if DEBUG
-    let data = sampleCdiXmlData()
+    static let data = sampleCdiXmlData()
     #endif
     
     var body: some View {
-            List(data, children: \.children) { row in  // "children" makes the nested list
+            List(CdCdiView.data, children: \.children) { row in  // "children" makes the nested list
                 containedView(item: row)
             }.padding(10)
     }
@@ -106,9 +106,9 @@ struct CdiIntMapView : View {
                 ForEach(item.values, id: \.self) { valueName in
                     Text(valueName)
                 }
-            }
-            // .pickerStyle(WheelPickerStyle())
-            .pickerStyle(MenuPickerStyle())
+            } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
+            //.pickerStyle(WheelPickerStyle())
+            //.pickerStyle(MenuPickerStyle())  // TODO: This seems to be causing a hard crash
 
             Text(item.description).font(.footnote)
 
