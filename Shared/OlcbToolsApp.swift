@@ -24,7 +24,8 @@ struct OlcbToolsApp: App {
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
-        #if os(iOS)
+        // iOS has four windows available fom the navigation bar at the bottom
+        // macOS puts those in a tab bar at the top of the window
         WindowGroup {
             TabView {
                 ContentView()
@@ -33,17 +34,26 @@ struct OlcbToolsApp: App {
                         Label("Configure", systemImage: "app.connected.to.app.below.fill")
                     }
 
+                MonitorView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
+                    }
+
+                ThrottleView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Throttle", systemImage: "train.side.front.car")
+                    }
+
                 SettingsView()
                     .tabItem {
                         Label("Settings", systemImage: "gear")
                     }
             }
         }
-        #elseif os(macOS)
-        WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-        }
+        #if os(macOS)
+        // macOS halso as a separate "settings" window as Preferences
         Settings {  // creates a Preferences item in App menu
             SettingsView()
         }

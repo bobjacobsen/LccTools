@@ -24,7 +24,7 @@ struct ContentView: View {
 
             #if os(iOS)
                 if horizontalSizeClass != .compact {
-                    // NodeListNavigationView() // two parallel ones on iPad
+                    // NodeListNavigationView() // 2nd parallel on iPad
                 }
 
             #else // macOS

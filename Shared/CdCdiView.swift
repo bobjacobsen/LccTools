@@ -26,7 +26,7 @@ func containedView(item : CdiXmlMemo) -> AnyView {
     switch item.type {
     case .SEGMENT :
         if item.description != "" {
-             return AnyView(VStack {
+             return AnyView(VStack(alignment: .leading) {
                 Text(item.name).font(.title)
                 Text(item.description).font(.footnote)
             })
@@ -35,7 +35,7 @@ func containedView(item : CdiXmlMemo) -> AnyView {
         }
     case .GROUP :
         if item.description != "" {
-            return AnyView(VStack {
+            return AnyView(VStack(alignment: .leading) {
                 Text(item.name).font(.title2)
                 Text(item.description).font(.footnote)
             })
@@ -50,7 +50,7 @@ func containedView(item : CdiXmlMemo) -> AnyView {
         }
     default :
         if item.description != "" {
-            return AnyView(VStack {
+            return AnyView(VStack(alignment: .leading) {
                 Text(item.name)
                 Text(item.description).font(.footnote)
             })
@@ -63,16 +63,19 @@ func containedView(item : CdiXmlMemo) -> AnyView {
 // view for an int value entry
 struct CdiIntView : View {
     @State var intValue : Int = -1 // -1 so we can see what it does here
-    
+    var formatter = NumberFormatter()
     var item : CdiXmlMemo
     init(item : CdiXmlMemo) {
         self.item = item
+        formatter.minimum = NSNumber(integerLiteral: item.minValue)
+        formatter.maximum = NSNumber(integerLiteral: item.maxValue)
+        formatter.maximumFractionDigits = 0
         print ("Int init starts")
     }
     
     var body : some View {
-        VStack {
-            TextField("Enter \(item.name)", value: $intValue,  formatter: NumberFormatter())
+        VStack(alignment: .leading) {
+            TextField("Enter \(item.name)", value: $intValue,  formatter: formatter)
                 .onAppear {
                     print ("Int appears with \($intValue) current: self.item.currentValue")
                     intValue = item.currentValue // TODO: dropped in debugging
@@ -99,9 +102,7 @@ struct CdiIntMapView : View {
     }
     
     var body : some View {
-        VStack {
-            Text(item.name)
-
+        VStack(alignment: .leading) {
             Picker("\(item.name)", selection: $intValue) {
                 ForEach(item.values, id: \.self) { valueName in
                     Text(valueName)

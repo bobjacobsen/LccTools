@@ -8,18 +8,6 @@
 import SwiftUI
 import OpenlcbLibrary
 
-struct MonitorView: View {  // TODO: Put in own file, add useful stuff from traffic
-    var body: some View {
-        Text("This is the Monitor detail view")
-    }
-}
-
-struct ThrottleView: View {  // TODO: Put in own file, add useful stuff from throttle
-    var body: some View {
-        Text("This is the throttle detail view")
-    }
-}
-
 struct FullNodeView: View {
     let displayNode : Node
     
