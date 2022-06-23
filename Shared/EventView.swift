@@ -28,7 +28,7 @@ struct EventView: View {  // TODO: Put in own file, add useful stuff node's view
                 Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
                 Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
             }
-        }
+        }.navigationTitle("Events")
     }
 }
 

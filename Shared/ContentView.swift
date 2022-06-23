@@ -14,12 +14,11 @@ struct ContentView: View {
     // iphone is one selector window
     // macOS and iPad have two
     
-    #if os(iOS) // to check for iPhone
+    #if os(iOS) // to check for iPhone v iPad
     @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
     #endif
     
     var body: some View {
-        HStack{
             NodeListNavigationView()
 
             #if os(iOS)
@@ -31,7 +30,6 @@ struct ContentView: View {
                 // NodeListNavigationView()
             #endif
 
-        }
     }
 }
 

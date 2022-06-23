@@ -28,10 +28,16 @@ struct OlcbToolsApp: App {
         // macOS puts those in a tab bar at the top of the window
         WindowGroup {
             TabView {
-                ContentView()
+//                ContentView()
+//                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+//                    .tabItem {
+//                        Label("Nodes", systemImage: "app.connected.to.app.below.fill")
+//                    }
+
+                NodeListNavigationView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Configure", systemImage: "app.connected.to.app.below.fill")
+                        Label("Nodes", systemImage: "app.connected.to.app.below.fill")
                     }
 
                 MonitorView()
@@ -53,7 +59,7 @@ struct OlcbToolsApp: App {
             }
         }
         #if os(macOS)
-        // macOS halso as a separate "settings" window as Preferences
+        // macOS also has a separate "settings" window as Preferences
         Settings {  // creates a Preferences item in App menu
             SettingsView()
         }

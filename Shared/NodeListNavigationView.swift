@@ -24,11 +24,11 @@ struct NodeListNavigationView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView { // of all the nodes
+            List { // of all the nodes
                 ForEach(nodes, id:\.id) { (node) in
                     // how to display each one when selected
                     NavigationLink(destination:
-                                    FullNodeView(displayNode: node)
+                                    NodeSummaryView(displayNode: node)
                     ){ // how to display each one in the list
                         VStack {
                             if node.name != "" {
@@ -43,6 +43,9 @@ struct NodeListNavigationView: View {
                     }
                 }
             }.navigationTitle("Remote Nodes")
+             .listStyle(SidebarListStyle())
+            
+            Text("No Selection")
         }
     }
 }

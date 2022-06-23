@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-// TODO: Add useful stuff from traffic
-struct MonitorView: View {
+struct MonitorView: View {  // TODO: Add useful stuff from the monitor stream
     var body: some View {
-        Text("This is the Monitor detail view")
+        Text("This is the monitor detail view")
+        
+            .navigationTitle("Monitor View")
     }
 }
 

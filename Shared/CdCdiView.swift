@@ -15,9 +15,9 @@ struct CdCdiView: View {
     #endif
     
     var body: some View {
-            List(CdCdiView.data, children: \.children) { row in  // "children" makes the nested list
-                containedView(item: row)
-            }.padding(10)
+        List(CdCdiView.data, children: \.children) { row in  // "children" makes the nested list
+            containedView(item: row)
+        }.padding(10).navigationTitle("Node Configuration")
     }
 }
 
@@ -75,17 +75,24 @@ struct CdiIntView : View {
     
     var body : some View {
         VStack(alignment: .leading) {
-            TextField("Enter \(item.name)", value: $intValue,  formatter: formatter)
-                .onAppear {
-                    print ("Int appears with \($intValue) current: self.item.currentValue")
-                    intValue = item.currentValue // TODO: dropped in debugging
-                }
-                .onSubmit {
-                    print ("Int submits with \($intValue) current: self.item.currentValue")
-                    item.currentValue = intValue  // TODO: do we need @ObservedObject for this? // TODO: dropped in debugging
-                }
+            HStack {
+                Text("\(item.name) ") // display name next to value
+                
+                TextField("Enter \(item.name)", value: $intValue,  formatter: formatter)
+                    .onAppear {
+                        print ("Int appears with \(intValue) current: \(self.item.currentValue)")
+                        intValue = item.currentValue
+                    }
+                    .onSubmit {
+                        print ("Int submits with \(intValue) prior current: \(self.item.currentValue)")
+                        item.currentValue = intValue  // TODO: capture this to do a write
+                    }
+            }
             if item.description != "" {
                 Text(item.description).font(.footnote)
+
+                // Text("Debug: intValue is \(intValue)").font(.footnote)    // TODO: rm Debug output
+                // Text("Debug: currentValue is \(item.currentValue)").font(.footnote) // TODO: rm Debug output
             }
         }
     }
@@ -94,24 +101,60 @@ struct CdiIntView : View {
 // view for an int value map entry
 struct CdiIntMapView : View {
     @State var intValue : Int = -1 // -1 so we can see what it does here
-    
+    @State var stringValue : String = "<initial internal content>" // so we can see what it does here
+
     var item : CdiXmlMemo
+    var startUpIgnoreReceive = true // true while onReceive should be ignored untiul first onAppear
+    
     init(item : CdiXmlMemo) {
         self.item = item
-        print ("Int map init starts")
+        print ("Int map init starts \(self.item.defaultValue) \(self.item.currentValue)")
+        intValue = item.currentValue
+        stringValue = propertyToValue(property: intValue)
+        print (" Int map init done with stringValue is \(stringValue)")
     }
     
+    func valueToProperty(value : String ) -> Int {
+        // find index of matching value
+        let index = self.item.values.firstIndex(of: value) ?? 0  // really supposed to match
+        return Int(self.item.properties[index]) ?? 0 // 0 if process fails
+    }
+    func propertyToValue(property : Int ) -> String {
+        // find index of matching property
+        let index = self.item.properties.firstIndex(of: String(property)) ?? 0  // really supposed to match
+        return self.item.values[index]
+   }
+
     var body : some View {
         VStack(alignment: .leading) {
-            Picker("\(item.name)", selection: $intValue) {
+            Picker("\(item.name) \(stringValue)", selection: $stringValue) {
                 ForEach(item.values, id: \.self) { valueName in
                     Text(valueName)
                 }
             } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
             //.pickerStyle(WheelPickerStyle())
             //.pickerStyle(MenuPickerStyle())  // TODO: This seems to be causing a hard crash
-
+            .onAppear { // initialize from model value
+                print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentValue)")
+                print ("   int \(item.currentValue) maps to \(propertyToValue(property: item.currentValue))")
+                intValue = item.currentValue
+                stringValue = propertyToValue(property: intValue)
+            }
+            .onReceive([self.stringValue].publisher.first()) { (value) in  // store back to model
+                print ("onReceive with \(value)")
+                print ("    start with \(intValue) \(stringValue) current: \(self.item.currentValue)")
+                print ("    string maps to \(valueToProperty(value: stringValue))")
+                if (stringValue == "<initial internal content>") {
+                    print ("  and returning initially")
+                    return
+                }
+                intValue = valueToProperty(value: stringValue)
+                item.currentValue = intValue  // TODO: do we need @ObservedObject for this?
+           }
             Text(item.description).font(.footnote)
+            //Text("Debug: intValue is \(intValue)").font(.footnote)    // TODO: rm Debug output
+            //Text("Debug: stringValue is \(stringValue)").font(.footnote) // TODO: rm Debug output
+            //Text("Debug: currentValue is \(item.currentValue)").font(.footnote) // TODO: rm Debug output
 
 
         }
