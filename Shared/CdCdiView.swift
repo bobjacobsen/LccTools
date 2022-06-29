@@ -11,7 +11,7 @@ import OpenlcbLibrary
 struct CdCdiView: View {
 
     #if DEBUG
-    static let data = sampleCdiXmlData()
+    static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children! // start with Segment elements
     #endif
     
     var body: some View {
