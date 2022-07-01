@@ -20,7 +20,8 @@ struct OlcbToolsApp: App {
     
     let telnetclient : TelnetClient
     
-    let canphysical : CanPhysicalLayer
+    let canphysical : CanPhysicalLayerGridConnect
+    
     // TODO: figure out how to make this a real (not simulated) connection even while testing
     
     let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
@@ -41,10 +42,11 @@ struct OlcbToolsApp: App {
         let temp_hub_ip_address = self.ip_address   // avoid "capture of mutating self" compile error
         logger.info("at startup, default hub IP address is set to: \(temp_hub_ip_address)")
 
+        telnetclient.connection.receivedDataCallback = canphysical.receiveString // TODO: needs a better way to set this callback, too much visible here
         // start the connection
         telnetclient.start()
         
-        // start the OLCB layer
+        // start the OLCB layer // TODO: should wait for connectionStarted callback to do this.
         canphysical.physicalLayerUp()
      }
     
