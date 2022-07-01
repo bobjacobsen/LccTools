@@ -42,6 +42,12 @@ func containedView(item : CdiXmlMemo) -> AnyView {
         } else {
             return AnyView(Text(item.name).font(.title2))
         }
+    case .INPUT_EVENTID :
+        if (item.properties.count == 0 ) { // no map
+            return AnyView(CdiEventView(item: item))
+        } else {
+            return AnyView(CdiEventView(item: item)) // TODO: add CdiEventMapView here
+        }
     case .INPUT_INT :
         if (item.properties.count == 0 ) { // no map
             return AnyView(CdiIntView(item: item))
@@ -56,6 +62,40 @@ func containedView(item : CdiXmlMemo) -> AnyView {
             })
         } else {
             return AnyView(Text(item.name))
+        }
+    }
+}
+
+// view for an eventID value entry
+struct CdiEventView : View {
+    @State var eventValue : String = "00.00.00.00.00.00.00.00" // TODO:  initial value vs read?
+    var item : CdiXmlMemo
+    init(item : CdiXmlMemo) {
+        self.item = item
+        print ("Int init starts")
+    }
+    
+    var body : some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text("\(item.name) ") // display name next to value
+                
+                TextField("Enter \(item.name)", text: $eventValue) // TODO: needs custom formatter
+                    .onAppear {
+                        print ("EventID appears with \(eventValue) current: \(self.item.currentIntValue)")
+                        eventValue = item.currentStringValue
+                    }
+                    .onSubmit {
+                        print ("EventID submits with \(eventValue) prior current: \(self.item.currentIntValue)")
+                        item.currentStringValue = eventValue  // TODO: capture this to do a write
+                    }
+            }
+            if item.description != "" {
+                Text(item.description).font(.footnote)
+
+                // Text("Debug: eventValue is \(eventValue)").font(.footnote)    // TODO: rm Debug output
+                // Text("Debug: currentValue is \(item.currentValue)").font(.footnote) // TODO: rm Debug output
+            }
         }
     }
 }
@@ -80,12 +120,12 @@ struct CdiIntView : View {
                 
                 TextField("Enter \(item.name)", value: $intValue,  formatter: formatter)
                     .onAppear {
-                        print ("Int appears with \(intValue) current: \(self.item.currentValue)")
-                        intValue = item.currentValue
+                        print ("Int appears with \(intValue) current: \(self.item.currentIntValue)")
+                        intValue = item.currentIntValue
                     }
                     .onSubmit {
-                        print ("Int submits with \(intValue) prior current: \(self.item.currentValue)")
-                        item.currentValue = intValue  // TODO: capture this to do a write
+                        print ("Int submits with \(intValue) prior current: \(self.item.currentIntValue)")
+                        item.currentIntValue = intValue  // TODO: capture this to do a write
                     }
             }
             if item.description != "" {
@@ -108,8 +148,8 @@ struct CdiIntMapView : View {
     
     init(item : CdiXmlMemo) {
         self.item = item
-        print ("Int map init starts \(self.item.defaultValue) \(self.item.currentValue)")
-        intValue = item.currentValue
+        print ("Int map init starts \(self.item.defaultValue) \(self.item.currentIntValue)")
+        intValue = item.currentIntValue
         stringValue = propertyToValue(property: intValue)
         print (" Int map init done with stringValue is \(stringValue)")
     }
@@ -127,7 +167,7 @@ struct CdiIntMapView : View {
 
     var body : some View {
         VStack(alignment: .leading) {
-            Picker("\(item.name) \(stringValue)", selection: $stringValue) {
+            Picker("\(item.name)", selection: $stringValue) {
                 ForEach(item.values, id: \.self) { valueName in
                     Text(valueName)
                 }
@@ -135,21 +175,21 @@ struct CdiIntMapView : View {
             //.pickerStyle(WheelPickerStyle())
             //.pickerStyle(MenuPickerStyle())  // TODO: This seems to be causing a hard crash
             .onAppear { // initialize from model value
-                print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentValue)")
-                print ("   int \(item.currentValue) maps to \(propertyToValue(property: item.currentValue))")
-                intValue = item.currentValue
+                print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
+                print ("   int \(item.currentIntValue) maps to \(propertyToValue(property: item.currentIntValue))")
+                intValue = item.currentIntValue
                 stringValue = propertyToValue(property: intValue)
             }
             .onReceive([self.stringValue].publisher.first()) { (value) in  // store back to model
                 print ("onReceive with \(value)")
-                print ("    start with \(intValue) \(stringValue) current: \(self.item.currentValue)")
+                print ("    start with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
                 print ("    string maps to \(valueToProperty(value: stringValue))")
                 if (stringValue == "<initial internal content>") {
                     print ("  and returning initially")
                     return
                 }
                 intValue = valueToProperty(value: stringValue)
-                item.currentValue = intValue  // TODO: do we need @ObservedObject for this?
+                item.currentIntValue = intValue  // TODO: do we need @ObservedObject for this?
            }
             Text(item.description).font(.footnote)
             //Text("Debug: intValue is \(intValue)").font(.footnote)    // TODO: rm Debug output
