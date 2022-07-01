@@ -6,11 +6,17 @@
 //
 
 import SwiftUI
+import OpenlcbLibrary
 
 struct MonitorView: View {  // TODO: Add useful stuff from the monitor stream
+    @ObservedObject var monitorModel:MonitorModel = MonitorModel.sharedInstance
+    
     var body: some View {
-        Text("This is the monitor detail view")
-        
+        List {
+            ForEach(monitorModel.printingProcessorContentArray, id: \.id) { element in
+                Text(element.line)
+            }
+        }
             .navigationTitle("Monitor View")
     }
 }
