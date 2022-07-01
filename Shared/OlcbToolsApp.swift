@@ -11,12 +11,18 @@ import os
 
 @main
 struct OlcbToolsApp: App {
-    static let openlcblib = OpenlcbLibrary()
-    let canphysical = CanPhysicalLayerSimulation()
+    @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"
+    
+    let openlcblib : OpenlcbLibrary
+    let canphysical = CanPhysicalLayerSimulation() //  TODO: figure out how to make this a real (not simulated) connection even while testing
     
     init () {
-        OlcbToolsApp.openlcblib.configureCanTelnet(canphysical)
-        OlcbToolsApp.openlcblib.createSampleData()
+        
+        
+        openlcblib = OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")) // TODO: Using this_node_id causes "self used before all stored properties are initialized"
+        
+        openlcblib.configureCanTelnet(canphysical)
+        openlcblib.createSampleData()
 
         //let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
      }
