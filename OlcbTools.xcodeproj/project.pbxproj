@@ -37,6 +37,8 @@
 		230B6817285DF38600C99298 /* OpenlcbLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 230B6816285DF38600C99298 /* OpenlcbLibrary */; };
 		230B6819285E071500C99298 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B6818285E071500C99298 /* SettingsView.swift */; };
 		230B681A285E071500C99298 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B6818285E071500C99298 /* SettingsView.swift */; };
+		2334B5D8286F52E900C2A959 /* TelnetListenerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 2334B5D7286F52E900C2A959 /* TelnetListenerLib */; };
+		2334B5DA286F52F400C2A959 /* TelnetListenerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 2334B5D9286F52F400C2A959 /* TelnetListenerLib */; };
 		2392DE632861B26600BD9391 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE622861B26600BD9391 /* MonitorView.swift */; };
 		2392DE642861B26600BD9391 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE622861B26600BD9391 /* MonitorView.swift */; };
 		2392DE662861B2D200BD9391 /* ThrottleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE652861B2D200BD9391 /* ThrottleView.swift */; };
@@ -88,6 +90,7 @@
 		2392DE622861B26600BD9391 /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
 		2392DE652861B2D200BD9391 /* ThrottleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottleView.swift; sourceTree = "<group>"; };
 		2392DE6828622AC800BD9391 /* StackOverflowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowExample.swift; sourceTree = "<group>"; };
+		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2334B5DA286F52F400C2A959 /* TelnetListenerLib in Frameworks */,
 				23008947285C9527000FB614 /* OpenlcbLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2334B5D8286F52E900C2A959 /* TelnetListenerLib in Frameworks */,
 				230B6817285DF38600C99298 /* OpenlcbLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +132,7 @@
 		230088FB285C949E000FB614 = {
 			isa = PBXGroup;
 			children = (
+				23D66405286F5269001CDBDD /* TelnetListenerLib */,
 				23008944285C94FD000FB614 /* OpenlcbLibrary */,
 				23008900285C949E000FB614 /* Shared */,
 				23008912285C94A4000FB614 /* macOS */,
@@ -221,6 +227,7 @@
 			name = "OlcbTools (iOS)";
 			packageProductDependencies = (
 				23008946285C9527000FB614 /* OpenlcbLibrary */,
+				2334B5D9286F52F400C2A959 /* TelnetListenerLib */,
 			);
 			productName = "OlcbTools (iOS)";
 			productReference = 2300890B285C94A4000FB614 /* OlcbTools.app */;
@@ -241,6 +248,7 @@
 			name = "OlcbTools (macOS)";
 			packageProductDependencies = (
 				230B6816285DF38600C99298 /* OpenlcbLibrary */,
+				2334B5D7286F52E900C2A959 /* TelnetListenerLib */,
 			);
 			productName = "OlcbTools (macOS)";
 			productReference = 23008911285C94A4000FB614 /* OlcbTools.app */;
@@ -810,6 +818,14 @@
 		230B6816285DF38600C99298 /* OpenlcbLibrary */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenlcbLibrary;
+		};
+		2334B5D7286F52E900C2A959 /* TelnetListenerLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TelnetListenerLib;
+		};
+		2334B5D9286F52F400C2A959 /* TelnetListenerLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TelnetListenerLib;
 		};
 /* End XCSwiftPackageProductDependency section */
 
