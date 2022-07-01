@@ -13,7 +13,8 @@ struct NodeSummaryView: View {
     
     var body: some View {
 
-//NavigationView { // needed on macOS to activate buttons; creates three column view
+        // TODO: sort out iOS vs macOS here (and also matching bracket below)
+//NavigationView { // needed on macOS to activate buttons; creates three column view; but re-pressing buttons still fails
         
         VStack(alignment: .leading) {
             Text(displayNode.name).font(.headline)

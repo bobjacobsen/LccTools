@@ -18,7 +18,6 @@ struct OlcbToolsApp: App {
     
     init () {
         
-        
         openlcblib = OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")) // TODO: Using this_node_id causes "self used before all stored properties are initialized"
         
         openlcblib.configureCanTelnet(canphysical)
