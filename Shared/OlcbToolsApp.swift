@@ -13,15 +13,16 @@ import os
 struct OlcbToolsApp: App {
     @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"
     
-    let openlcblib : OpenlcbLibrary
-    let canphysical = CanPhysicalLayerSimulation() //  TODO: figure out how to make this a real (not simulated) connection even while testingx
+    static let openlcblib = OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")) // using this_node_ID results in "Cannot use instance member 'this_node_ID' within property initializer; property initializers run before 'self' is available"
+    
+    let canphysical = CanPhysicalLayerSimulation() //  TODO: figure out how to make this a real (not simulated) connection even while testing
     
     init () {
+
+        OlcbToolsApp.openlcblib.configureCanTelnet(canphysical)
+        OlcbToolsApp.openlcblib.createSampleData()
         
-        openlcblib = OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")) // TODO: Using this_node_id causes "self used before all stored properties are initialized"
-        
-        openlcblib.configureCanTelnet(canphysical)
-        openlcblib.createSampleData()
+        print ("at startup: \($this_node_ID) \(this_node_ID)")
 
         //let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
      }
