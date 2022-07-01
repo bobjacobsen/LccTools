@@ -7,13 +7,19 @@
 
 import SwiftUI
 
+// TODO: use @AppStorage to persist the IP_ADDRESS, see https://medium.com/swlh/introducing-appstorage-in-swiftui-470a56f5ba9e
 struct SettingsView: View {
+    @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"
+    @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"
+    
     var body: some View {
-        VStack {
-            Text("Settings World!")
-            Text("Another line")
-            Text("Last line")
-            // TextField("IP Address: Localhost")
+        VStack(alignment: .leading) {
+            Text("Enter your hub's IP address:")
+            TextField("", text: $ip_address)
+            Divider()
+            Text("Enter a node ID for this program:")
+            TextField("", text: $this_node_ID)
+            Divider()
         }.frame(width: 450, height: 250)
     }
 }
