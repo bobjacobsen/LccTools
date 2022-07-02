@@ -27,7 +27,7 @@ struct OlcbToolsApp: App {
     let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
     init () {
- 
+         
         // create, but not yet connect, the Telnet connection to the hub
         telnetclient = TelnetClient(host: "192.168.1.206", port: 12021) // TODO: connection to AppStorage ip_address
 
@@ -64,7 +64,7 @@ struct OlcbToolsApp: App {
 //                        Label("Nodes", systemImage: "app.connected.to.app.below.fill")
 //                    }
 
-                NodeListNavigationView()
+                NodeListNavigationView(openlcblib: OlcbToolsApp.openlcblib)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Nodes", systemImage: "app.connected.to.app.below.fill")

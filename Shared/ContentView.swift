@@ -19,7 +19,7 @@ struct ContentView: View {
     #endif
     
     var body: some View {
-            NodeListNavigationView()
+            //NodeListNavigationView()
 
             #if os(iOS)
                 if horizontalSizeClass != .compact {

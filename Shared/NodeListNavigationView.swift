@@ -10,8 +10,8 @@ import OpenlcbLibrary
 import os
 
 struct NodeListNavigationView: View {
-    init () {
-        var tempnodes = OlcbToolsApp.openlcblib.remoteNodeStore.asArray()
+    init (openlcblib : OpenlcbLibrary) {
+        var tempnodes = openlcblib.remoteNodeStore.asArray()
         // sort most recent node content
         tempnodes.sort()
         nodes = tempnodes
@@ -52,6 +52,6 @@ struct NodeListNavigationView: View {
 
 struct NodeListNavigation_Previews: PreviewProvider {
     static var previews: some View {
-        NodeListNavigationView()
+        NodeListNavigationView(openlcblib: OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")))
     }
 }
