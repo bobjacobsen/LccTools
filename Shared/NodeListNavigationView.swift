@@ -16,8 +16,12 @@ struct NodeListNavigationView: View {
         tempnodes.sort()
         nodes = tempnodes
         
-        let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "ContentView")
-        logger.error("\(tempnodes[0])")
+        let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
+        if (!tempnodes.isEmpty) {
+            logger.info("Node[0] in view startup: \(tempnodes[0], privacy: .public)")
+        } else {
+            logger.info("No nodes at startup")
+        }
      }
 
     @State private var nodes : [Node]
