@@ -56,6 +56,6 @@ struct NodeListNavigationView: View {
 
 struct NodeListNavigation_Previews: PreviewProvider {
     static var previews: some View {
-        NodeListNavigationView(openlcblib: OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")))
+        NodeListNavigationView(openlcblib: OpenlcbLibrary(sample: true))
     }
 }

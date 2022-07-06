@@ -8,7 +8,7 @@
 import SwiftUI
 import OpenlcbLibrary
 
-struct EventView: View {  // TODO: Put in own file, add useful stuff node's view of events
+struct EventView: View {  // TODO: Add specific node's view of events
     var body: some View {
         HStack {
             VStack {
