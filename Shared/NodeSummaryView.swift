@@ -1,5 +1,5 @@
 //
-//  FullNodeView.swift
+//  NodeSummaryView.swift
 //  OlcbLibDemo
 //
 //  Created by Bob Jacobsen on 6/15/22.
@@ -60,7 +60,14 @@ struct NodeSummaryView: View {
 }
 
 struct FullNodeView_Previews: PreviewProvider {
-    static let displayNode  = Node(NodeID(0))
+    static let displayNode  = Node(NodeID(0),
+                                   snip: SNIP(
+                                            "Manufacturer!",
+                                            "Model!",
+                                            "Hardware!",
+                                            "And Software!",
+                                            "My Node Name",
+                                            "And Description"))
     static var previews: some View {
         NodeSummaryView(displayNode: displayNode)// TODO: how do we fill this in better
             .previewInterfaceOrientation(.portraitUpsideDown)

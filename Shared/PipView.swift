@@ -21,6 +21,9 @@ struct PipView: View {  // TODO: Put in own file, add useful stuff from node
 
 struct PipView_Previews: PreviewProvider {
     static var previews: some View {
-        PipView(displayNode: Node(NodeID(0)))
+        PipView(displayNode: Node(NodeID(0),
+                                  pip: Set([PIP.DATAGRAM_PROTOCOL,
+                                            PIP.SIMPLE_NODE_IDENTIFICATION_PROTOCOL,
+                                            PIP.EVENT_EXCHANGE_PROTOCOL])))
     }
 }

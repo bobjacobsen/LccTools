@@ -34,7 +34,7 @@ struct OlcbToolsApp: App {
         // initialize the OLCB processor
         canphysical = CanPhysicalLayerGridConnect(callback: telnetclient.sendString)
         OlcbToolsApp.openlcblib.configureCanTelnet(canphysical)
-        OlcbToolsApp.openlcblib.createSampleData()
+        //OlcbToolsApp.openlcblib.createSampleData()
         
         // log some info
         let temp_this_node_ID = self.this_node_ID   // avoid "capture of mutating self" compile error
@@ -57,7 +57,7 @@ struct OlcbToolsApp: App {
         // macOS puts those in a tab bar at the top of the window
         WindowGroup {
             TabView {
-//                // We're no longer using the default ContentView name for the base view
+//                // TODO: We're no longer using the default ContentView name for the base view
 //                ContentView()
 //                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
 //                    .tabItem {
