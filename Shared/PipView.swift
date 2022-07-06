@@ -8,7 +8,7 @@
 import SwiftUI
 import OpenlcbLibrary
 
-struct PipView: View {  // TODO: Put in own file, add useful stuff from node
+struct PipView: View {
     let displayNode : Node
     var body: some View {
         VStack {

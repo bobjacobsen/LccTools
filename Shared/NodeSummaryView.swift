@@ -69,7 +69,7 @@ struct FullNodeView_Previews: PreviewProvider {
                                             "My Node Name",
                                             "And Description"))
     static var previews: some View {
-        NodeSummaryView(displayNode: displayNode)// TODO: how do we fill this in better
+        NodeSummaryView(displayNode: displayNode)
             .previewInterfaceOrientation(.portraitUpsideDown)
     }
 }
