@@ -16,39 +16,41 @@ struct OlcbToolsApp: App {
     @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"          // see ``SettingsView``
     @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"  // see ``SettingsView``
 
-    static let openlcblib = OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")) // TODO: using this_node_ID results in "Cannot use instance member 'this_node_ID' within property initializer; property initializers run before 'self' is available"
+    static var openlcblib = OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")) // TODO: using this_node_ID results in "Cannot use instance member 'this_node_ID' within property initializer; property initializers run before 'self' is available"
     
-    let telnetclient : TelnetClient
+    var telnetclient : TelnetClient! = nil
     
-    let canphysical : CanPhysicalLayerGridConnect
+    var canphysical : CanPhysicalLayerGridConnect! = nil
     
     // TODO: figure out how to make this a real (not simulated) connection even while testing
     
     let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
     init () {
-         
-        // create, but not yet connect, the Telnet connection to the hub
-        telnetclient = TelnetClient(host: "192.168.1.206", port: 12021) // TODO: connection to AppStorage ip_address
-
-        // initialize the OLCB processor
-        canphysical = CanPhysicalLayerGridConnect(callback: telnetclient.sendString)
-        OlcbToolsApp.openlcblib.configureCanTelnet(canphysical)
-        //OlcbToolsApp.openlcblib.createSampleData()
-        
         // log some info
         let temp_this_node_ID = self.this_node_ID   // avoid "capture of mutating self" compile error
         logger.info("at startup, this program's default node ID is set to: \(temp_this_node_ID)")
         let temp_hub_ip_address = self.ip_address   // avoid "capture of mutating self" compile error
         logger.info("at startup, default hub IP address is set to: \(temp_hub_ip_address)")
 
+        // TODO: reset the default node in the (static) openlcblib
+        // OlcbToolsApp.openlcblib = OpenlcbLibrary(defaultNodeID: NodeID(temp_this_node_ID))
+        
+        // create, but not yet connect, the Telnet connection to the hub
+        telnetclient = TelnetClient(host: temp_hub_ip_address, port: 12021)
+        
+        // initialize the OLCB processor
+        canphysical = CanPhysicalLayerGridConnect(callback: telnetclient!.sendString)
+        OlcbToolsApp.openlcblib.configureCanTelnet(canphysical!)
+        //OlcbToolsApp.openlcblib.createSampleData()
+        
         telnetclient.connection.receivedDataCallback = canphysical.receiveString // TODO: needs a better way to set this callback, too much visible here
         // start the connection
         telnetclient.start()
         
         // start the OLCB layer // TODO: should wait for connectionStarted callback to do this.
         canphysical.physicalLayerUp()
-     }
+}
     
     let persistenceController = PersistenceController.shared
 
