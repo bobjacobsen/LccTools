@@ -23,7 +23,7 @@ struct NodeSummaryView: View {
 
             HStack{
                 NavigationLink(destination: MonitorView()) {
-                    Image(systemName:"figure.stand.line.dotted.figure.stand") // TODO: better icon
+                    Image(systemName:"figure.stand.line.dotted.figure.stand")
                             //.resizable().frame(width:50, height:50)
                 }
  

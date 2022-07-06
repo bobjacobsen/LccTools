@@ -92,9 +92,6 @@ struct CdiEventView : View {
             }
             if item.description != "" {
                 Text(item.description).font(.footnote)
-
-                // Text("Debug: eventValue is \(eventValue)").font(.footnote)    // TODO: rm Debug output
-                // Text("Debug: currentValue is \(item.currentValue)").font(.footnote) // TODO: rm Debug output
             }
         }
     }
@@ -130,9 +127,6 @@ struct CdiIntView : View {
             }
             if item.description != "" {
                 Text(item.description).font(.footnote)
-
-                // Text("Debug: intValue is \(intValue)").font(.footnote)    // TODO: rm Debug output
-                // Text("Debug: currentValue is \(item.currentValue)").font(.footnote) // TODO: rm Debug output
             }
         }
     }
@@ -173,7 +167,7 @@ struct CdiIntMapView : View {
                 }
             } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
             //.pickerStyle(WheelPickerStyle())
-            //.pickerStyle(MenuPickerStyle())  // TODO: This seems to be causing a hard crash
+            //.pickerStyle(MenuPickerStyle())  // This seems to be causing a hard crash
             .onAppear { // initialize from model value
                 print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
                 print ("   int \(item.currentIntValue) maps to \(propertyToValue(property: item.currentIntValue))")
@@ -190,13 +184,10 @@ struct CdiIntMapView : View {
                 }
                 intValue = valueToProperty(value: stringValue)
                 item.currentIntValue = intValue  // TODO: do we need @ObservedObject for this?
-           }
+            }
+            
             Text(item.description).font(.footnote)
-            //Text("Debug: intValue is \(intValue)").font(.footnote)    // TODO: rm Debug output
-            //Text("Debug: stringValue is \(stringValue)").font(.footnote) // TODO: rm Debug output
-            //Text("Debug: currentValue is \(item.currentValue)").font(.footnote) // TODO: rm Debug output
-
-
+            
         }
     }
 }

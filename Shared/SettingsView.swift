@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// TODO: use @AppStorage to persist the IP_ADDRESS, see https://medium.com/swlh/introducing-appstorage-in-swiftui-470a56f5ba9e
+// Using @AppStorage to persist the IP_ADDRESS, see https://medium.com/swlh/introducing-appstorage-in-swiftui-470a56f5ba9e
 struct SettingsView: View {
     @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"
     @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"
