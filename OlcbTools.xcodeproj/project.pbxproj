@@ -43,8 +43,6 @@
 		2392DE642861B26600BD9391 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE622861B26600BD9391 /* MonitorView.swift */; };
 		2392DE662861B2D200BD9391 /* ThrottleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE652861B2D200BD9391 /* ThrottleView.swift */; };
 		2392DE672861B2D200BD9391 /* ThrottleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE652861B2D200BD9391 /* ThrottleView.swift */; };
-		2392DE6928622AC800BD9391 /* StackOverflowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE6828622AC800BD9391 /* StackOverflowExample.swift */; };
-		2392DE6A28622AC800BD9391 /* StackOverflowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE6828622AC800BD9391 /* StackOverflowExample.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +87,6 @@
 		230B6818285E071500C99298 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2392DE622861B26600BD9391 /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
 		2392DE652861B2D200BD9391 /* ThrottleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottleView.swift; sourceTree = "<group>"; };
-		2392DE6828622AC800BD9391 /* StackOverflowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowExample.swift; sourceTree = "<group>"; };
 		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,7 +155,6 @@
 				23008904285C949E000FB614 /* SampleCoreData.swift */,
 				230B6818285E071500C99298 /* SettingsView.swift */,
 				2392DE652861B2D200BD9391 /* ThrottleView.swift */,
-				2392DE6828622AC800BD9391 /* StackOverflowExample.swift */,
 				23008906285C94A4000FB614 /* Assets.xcassets */,
 				23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */,
 			);
@@ -384,7 +380,6 @@
 				23008952285CA46D000FB614 /* PipView.swift in Sources */,
 				2392DE632861B26600BD9391 /* MonitorView.swift in Sources */,
 				2300894F285CA41A000FB614 /* CdCdiView.swift in Sources */,
-				2392DE6928622AC800BD9391 /* StackOverflowExample.swift in Sources */,
 				2392DE662861B2D200BD9391 /* ThrottleView.swift in Sources */,
 				23008949285C961D000FB614 /* NodeSummaryView.swift in Sources */,
 				23008930285C94A4000FB614 /* SampleCoreData.swift in Sources */,
@@ -405,7 +400,6 @@
 				23008953285CA46D000FB614 /* PipView.swift in Sources */,
 				2392DE642861B26600BD9391 /* MonitorView.swift in Sources */,
 				23008950285CA41A000FB614 /* CdCdiView.swift in Sources */,
-				2392DE6A28622AC800BD9391 /* StackOverflowExample.swift in Sources */,
 				2392DE672861B2D200BD9391 /* ThrottleView.swift in Sources */,
 				2300894A285C961D000FB614 /* NodeSummaryView.swift in Sources */,
 				23008931285C94A4000FB614 /* SampleCoreData.swift in Sources */,
