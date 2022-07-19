@@ -10,26 +10,23 @@ import OpenlcbLibrary
 import os
 
 struct NodeListNavigationView: View {
-    init (openlcblib : OpenlcbLibrary) {
-        var tempnodes = openlcblib.remoteNodeStore.asArray()
-        // sort most recent node content
-        tempnodes.sort()
-        nodes = tempnodes
-        
-        let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
-        if (!tempnodes.isEmpty) {
-            logger.info("Node[0] in view startup: \(tempnodes[0], privacy: .public)")
-        } else {
-            logger.info("No nodes at startup")
-        }
-     }
+    let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
 
-    @State private var nodes : [Node]
+    @EnvironmentObject var openlcblib : OpenlcbLibrary {
+        didSet(oldvalue) {
+            logger.info("published RemoteDataSort did change")
+        }
+    }
+ 
+    init () {
+        logger.info("init NodeListNavigationView")
+    }
 
     var body: some View {
+        let _ = Self._printChanges()  // TODO: remove before ship
         NavigationView {
             List { // of all the nodes
-                ForEach(nodes, id:\.id) { (node) in
+                ForEach(openlcblib.remoteNodeStore.nodes, id:\.id) { (node) in
                     // how to display each one when selected
                     NavigationLink(destination:
                                     NodeSummaryView(displayNode: node)
@@ -56,6 +53,7 @@ struct NodeListNavigationView: View {
 
 struct NodeListNavigation_Previews: PreviewProvider {
     static var previews: some View {
-        NodeListNavigationView(openlcblib: OpenlcbLibrary(sample: true))
+        // TODO: this needs openlcblib: OpenlcbLibrary(sample: true) in the EnvironmentObject
+        NodeListNavigationView()
     }
 }

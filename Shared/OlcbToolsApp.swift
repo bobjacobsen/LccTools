@@ -13,42 +13,43 @@ import os
 
 @main
 struct OlcbToolsApp: App {
-    @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"          // see ``SettingsView``
-    @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"  // see ``SettingsView``
+    // info from settings, see `SettingsView``
+    @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"
+    @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = "05.01.01.01.03.FF"  // static for static openlcnlib
 
-    static var openlcblib = OpenlcbLibrary(defaultNodeID: NodeID("05.01.01.01.03.FF")) // TODO: using this_node_ID results in "Cannot use instance member 'this_node_ID' within property initializer; property initializers run before 'self' is available"
+    @StateObject var openlcblib = OpenlcbLibrary(defaultNodeID: NodeID(this_node_ID))
+
+    // var telnetclient : TelnetClient! = nil // making this an Optional var allows reset once ip_address is available
     
-    var telnetclient : TelnetClient! = nil
+    // var canphysical : CanPhysicalLayerGridConnect! = nil
     
-    var canphysical : CanPhysicalLayerGridConnect! = nil
-    
-    // TODO: figure out how to make this a real (not simulated) connection even while testing
+    // TODO: figure out how to make this a real (not simulated) connection even while running tests; add tests
     
     let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
     init () {
         // log some info
-        let temp_this_node_ID = self.this_node_ID   // avoid "capture of mutating self" compile error
+        let temp_this_node_ID = OlcbToolsApp.this_node_ID   // avoid "capture of mutating self" compile error
         logger.info("at startup, this program's default node ID is set to: \(temp_this_node_ID)")
         let temp_hub_ip_address = self.ip_address   // avoid "capture of mutating self" compile error
         logger.info("at startup, default hub IP address is set to: \(temp_hub_ip_address)")
-
-        // TODO: reset the default node in the (static) openlcblib
-        // OlcbToolsApp.openlcblib = OpenlcbLibrary(defaultNodeID: NodeID(temp_this_node_ID))
-        
+    }
+    
+    func startup() {
         // create, but not yet connect, the Telnet connection to the hub
-        telnetclient = TelnetClient(host: temp_hub_ip_address, port: 12021)
+        let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: 12021)
         
         // initialize the OLCB processor
-        canphysical = CanPhysicalLayerGridConnect(callback: telnetclient!.sendString)
-        OlcbToolsApp.openlcblib.configureCanTelnet(canphysical!)
+        let canphysical : CanPhysicalLayerGridConnect! = CanPhysicalLayerGridConnect(callback: telnetclient!.sendString)
+        openlcblib.configureCanTelnet(canphysical!)
+        
         //OlcbToolsApp.openlcblib.createSampleData()
         
         telnetclient.connection.receivedDataCallback = canphysical.receiveString // TODO: needs a better way to set this callback, too much visible here
         // start the connection
         telnetclient.start()
         
-        // start the OLCB layer // TODO: should wait for connectionStarted callback to do this.
+        // start the OLCB layer // TODO: should wait for connectionStarted callback frommes telnetclient to do this.
         canphysical.physicalLayerUp()
 }
     
@@ -66,11 +67,14 @@ struct OlcbToolsApp: App {
 //                        Label("Nodes", systemImage: "app.connected.to.app.below.fill")
 //                    }
 
-                NodeListNavigationView(openlcblib: OlcbToolsApp.openlcblib)
+                NodeListNavigationView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Nodes", systemImage: "app.connected.to.app.below.fill")
                     }
+                    // when this view initially appears, start up the communication links
+                    .onAppear() { self.startup() }
+                    .environmentObject(openlcblib)
 
                 MonitorView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
@@ -88,7 +92,7 @@ struct OlcbToolsApp: App {
                     .tabItem {
                         Label("Settings", systemImage: "gear")
                     }
-            }
+            }.environmentObject(openlcblib)
         }
         #if os(macOS)
         // macOS also has a separate "settings" window as Preferences
