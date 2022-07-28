@@ -82,6 +82,12 @@ struct OlcbToolsApp: App {
                         Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
                     }
 
+                ClockView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Clocks", systemImage: "clock")
+                    }
+
                 ThrottleView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {

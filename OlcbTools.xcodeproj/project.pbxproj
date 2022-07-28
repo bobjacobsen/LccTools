@@ -43,6 +43,8 @@
 		2392DE642861B26600BD9391 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE622861B26600BD9391 /* MonitorView.swift */; };
 		2392DE662861B2D200BD9391 /* ThrottleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE652861B2D200BD9391 /* ThrottleView.swift */; };
 		2392DE672861B2D200BD9391 /* ThrottleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE652861B2D200BD9391 /* ThrottleView.swift */; };
+		23A0D5482892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
+		23A0D5492892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +89,7 @@
 		230B6818285E071500C99298 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2392DE622861B26600BD9391 /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
 		2392DE652861B2D200BD9391 /* ThrottleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottleView.swift; sourceTree = "<group>"; };
+		23A0D5472892F3D0009663EA /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				23008903285C949E000FB614 /* OlcbToolsApp.swift */,
+				23A0D5472892F3D0009663EA /* ClockView.swift */,
 				2300894B285C9630000FB614 /* ContentView.swift */,
 				2300894E285CA41A000FB614 /* CdCdiView.swift */,
 				23008954285CC75C000FB614 /* EventView.swift */,
@@ -382,6 +386,7 @@
 				2300894F285CA41A000FB614 /* CdCdiView.swift in Sources */,
 				2392DE662861B2D200BD9391 /* ThrottleView.swift in Sources */,
 				23008949285C961D000FB614 /* NodeSummaryView.swift in Sources */,
+				23A0D5482892F3D0009663EA /* ClockView.swift in Sources */,
 				23008930285C94A4000FB614 /* SampleCoreData.swift in Sources */,
 				230B6819285E071500C99298 /* SettingsView.swift in Sources */,
 			);
@@ -402,6 +407,7 @@
 				23008950285CA41A000FB614 /* CdCdiView.swift in Sources */,
 				2392DE672861B2D200BD9391 /* ThrottleView.swift in Sources */,
 				2300894A285C961D000FB614 /* NodeSummaryView.swift in Sources */,
+				23A0D5492892F3D0009663EA /* ClockView.swift in Sources */,
 				23008931285C94A4000FB614 /* SampleCoreData.swift in Sources */,
 				230B681A285E071500C99298 /* SettingsView.swift in Sources */,
 			);
