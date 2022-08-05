@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
+    // TODO: Stops in background, see https://stackoverflow.com/questions/63765532/swiftui-how-to-run-a-timer-in-background
+    // TODO: Connect to clock in OpenlcbLibrary
     
     /// Current progress time expresed in seconds
     @State private var progressTime = 236
@@ -36,12 +38,10 @@ struct ClockView: View {
                 StopwatchUnit(timeUnit: hours, timeUnitText: "HR", color: .blue)
                 Text(":")
                     .font(.system(size: 48))
-                    .foregroundColor(.white)
                     .offset(y: -18)
                 StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .blue)
                 Text(":")
                     .font(.system(size: 48))
-                    .foregroundColor(.white)
                     .offset(y: -18)
                 StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue)
             }
@@ -121,7 +121,6 @@ struct StopwatchUnit: View {
             Text(timeUnitText)
                 .font(.system(size: 16))
         }
-        .foregroundColor(.white)
     }
 }
 
