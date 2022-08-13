@@ -14,10 +14,10 @@ struct NodeListNavigationView: View {
 
     @EnvironmentObject var openlcblib : OpenlcbLibrary {
         didSet(oldvalue) {
-            logger.info("published RemoteDataSort did change")
+            logger.info("EnvironmentObject openlcblib did change")
         }
     }
- 
+    
     init () {
         logger.info("init NodeListNavigationView")
     }
@@ -52,8 +52,9 @@ struct NodeListNavigationView: View {
 }
 
 struct NodeListNavigation_Previews: PreviewProvider {
+    static let openlcblib = OpenlcbLibrary(sample: true)
     static var previews: some View {
-        // TODO: this needs openlcblib: OpenlcbLibrary(sample: true) in the EnvironmentObject
         NodeListNavigationView()
+            .environmentObject(openlcblib)
     }
 }

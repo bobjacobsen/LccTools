@@ -6,30 +6,34 @@
 //
 
 import SwiftUI
+import OpenlcbLibrary
+import os
+
+// This works by timer-based periodic refresh of hours/minutes/seconds @State variables from the underlying Clock instance
+
+// TODO: take the running state from the clock when first shown
+// TODO: Decide if there's a Run/Stop button and if so what it does
 
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
-    // TODO: Stops in background, see https://stackoverflow.com/questions/63765532/swiftui-how-to-run-a-timer-in-background
-    // TODO: Connect to clock in OpenlcbLibrary
-    
-    /// Current progress time expresed in seconds
-    @State private var progressTime = 236
-    @State private var isRunning = false
-    
-    /// Computed properties to get the progressTime in hh:mm:ss format
-    var hours: Int {
-        progressTime / 3600
+
+    let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "ClockView")
+
+    @EnvironmentObject var openlcblib : OpenlcbLibrary {
+        didSet(oldvalue) {
+            logger.info("EnvironmentObject clock0 did change")
+        }
     }
     
-    var minutes: Int {
-        (progressTime % 3600) / 60
-    }
+    @State private var isRunning = false  // TODO: This isn't connected to underlying clock state (coming or going)
     
-    var seconds: Int {
-        progressTime % 60
-    }
+    @State private var hours : Int = 0
     
-    /// Increase progressTime each second
+    @State private var minutes : Int = 0
+    
+    @State private var seconds : Int = 0
+
+    /// Reload time values periodically
     @State private var timer: Timer?
     
     var body: some View {
@@ -51,8 +55,12 @@ struct ClockView: View {
                     if isRunning{
                         timer?.invalidate()
                     } else {
-                        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
-                            progressTime += 1
+                        let delay = max( 0.0833, 1.0 / openlcblib.clock0.rate / 1.25) // no more than 12fps for energy use
+                        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
+                            let date = openlcblib.clock0.getTime()
+                            hours = openlcblib.clock0.getHour(date)
+                            minutes = openlcblib.clock0.getMinute(date)
+                            seconds = openlcblib.clock0.getSecond(date)
                         })
                     }
                     isRunning.toggle()
@@ -69,7 +77,7 @@ struct ClockView: View {
                 }
                 
                 Button(action: {
-                    progressTime = 0
+                    // TODO: What does "Reset" do? Need a different button here?
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 15.0)
@@ -86,7 +94,7 @@ struct ClockView: View {
     }
 }
 
-
+// display one time unit, i.e. hours or minutes
 struct StopwatchUnit: View {
     
     var timeUnit: Int
@@ -132,7 +140,9 @@ extension String {
 }
 
 struct ClockView_Previews: PreviewProvider {
+    static let openlcblib = OpenlcbLibrary(sample: true)
     static var previews: some View {
         ClockView()
+            .environmentObject(openlcblib)
     }
 }

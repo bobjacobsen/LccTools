@@ -49,7 +49,7 @@ struct OlcbToolsApp: App {
         // start the connection
         telnetclient.start()
         
-        // start the OLCB layer // TODO: should wait for connectionStarted callback frommes telnetclient to do this.
+        // start the OLCB layer // TODO: should wait for connectionStarted callback from telnetclient to do this.
         canphysical.physicalLayerUp()
 }
     
