@@ -13,7 +13,6 @@ import os
 
 // TODO: take the running state from the clock when first shown
 // TODO: Decide if there's a Run/Stop button and if so what it does
-
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
 
