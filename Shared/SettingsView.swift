@@ -13,14 +13,16 @@ struct SettingsView: View {
     @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack() { //
             Text("Enter your hub's IP address:")
             TextField("", text: $ip_address)
+                .multilineTextAlignment(.center)
             Divider()
             Text("Enter a node ID for this program:")
             TextField("", text: $this_node_ID)
+                .multilineTextAlignment(.center)
             Divider()
-        }.frame(width: 450, height: 250)
+        }
     }
 }
 
