@@ -13,12 +13,19 @@ struct MonitorView: View {  // TODO: Is only showing messages from network, not 
     
     // TODO: Add some nice scrolling control so it stays at the bottom until user wants to stick on something
     var body: some View {
-        List {
-            ForEach(monitorModel.printingProcessorContentArray, id: \.id) { element in
-                Text(element.line)
+        ScrollView {
+            VStack(spacing: 3) {
+                ForEach(monitorModel.printingProcessorContentArray, id: \.id) { element in
+                    HStack {
+                        Text(element.line)
+                            .font(.callout)
+                        Spacer()
+                    }
+                    Divider()
+                }
             }
+            .navigationTitle("Monitor View")
         }
-        .navigationTitle("Monitor View")
     }
 }
 
