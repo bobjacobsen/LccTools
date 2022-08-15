@@ -6,86 +6,150 @@
 //
 
 import SwiftUI
+import os
 
-struct ThrottleView: View {  // TODO: Add useful stuff to make this a throttle
-    @State private var speed = 50.0         // for Slider
-    @State private var isEditing = false    // for Slider
+struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throttle
+    @State private var speed = 50.0         // for Sliders
+    @State private var isEditing = false    // for Sliders
+    
+    @State private var forward = true   // TODO: get initial state from somewhere?
+    @State private var reverse = false
     
     var bars : [ThrottleBar] = []
     let maxindex = 50
-    let maxLength : CGFloat = 150.0   // TODO: Combine two maxLength definitions
-    let maxSpeed = 100.0 // TODO: Decide how to handle speed fn, max speed
+    let maxLength : CGFloat = 150.0     // TODO: Combine two maxLength definitions
+    let maxSpeed = 100.0                // TODO: Decide how to handle max speed
     
     let maxFn = 28
-    var fnLabels : [FnLabel] = []
+    var fnLabels : [FnLabel] = []  // TODO: how associate these with state?
+    
+    let logger = Logger(subsystem: "ardenwood.org", category: "ThrottleView")
     
     init() {
         for index in 0...maxindex {
-            // compute bar length from 0 to maxlength
-            let length = CGFloat(maxLength * Double(maxindex - index) / Double(maxindex))
+            // compute bar length from 0 to maxlength // TODO: Decide how to handle speed fn curve
+            let length = CGFloat(maxLength * pow(Double(maxindex - index) / Double(maxindex), 2.0))  // pow curves the progression
             let setSpeed = length/maxLength*maxSpeed
             bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
         }
-
+        
         for index in 0...maxFn {
             // default fn labels are just the numbers
             fnLabels.append(FnLabel(label: "\(index)"))
         }
         
-        print("init of ThrottleView")
+        logger.debug("init of ThrottleView")
     }
-
+    
     
     
     var body: some View {
-        VStack {
-            Button(action:{
-                print("Locomotive Button")
-            }, // Action
-                   label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15.0)
-                        .frame(height: 50, alignment: .center) // width: 120,
-                        .foregroundColor(.green)
-                    
-                    Text("Engine 4407")
-                        .font(.title)
-                        .foregroundColor(.white)
-                }
-            } // label
-            ) // Button
-
-            Slider(
-                value: $speed,
-                in: 0...100,
-                onEditingChanged: { editing in
-                    isEditing = editing
-                }
-            )
-            HStack {
-                ThrottleSliderView(speed: $speed, bars: bars)
-
-                List {
-                    ForEach(fnLabels, id: \.id) { fnLabel in
-                        FnButtonView(fnLabel.label)
+        NavigationView {
+            VStack {
+                NavigationLink(destination: LocoSelectionView() ) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 15.0)
+                            .frame(height: 50, alignment: .center) // width: 120,
+                            .foregroundColor(.green)
+                        
+                        Text("Engine 4407")
+                            .font(.title)
+                            .foregroundColor(.white)
                     }
-                }
-
-            }
-            Spacer()
-            Slider(
-                value: $speed,
-                in: 0...100,
-                onEditingChanged: { editing in
-                    isEditing = editing
-                }
-            )
-
-            
-        }.navigationTitle("Throttle View")  // VStack
+                } // Nav Link
+                
+                Slider(
+                    value: $speed,
+                    in: 0...100,
+                    onEditingChanged: { editing in
+                        isEditing = editing
+                    }
+                ) // Slider
+                
+                HStack {
+                    ThrottleSliderView(speed: $speed, bars: bars)
+                    
+                    List {
+                        ForEach(fnLabels, id: \.id) { fnLabel in
+                            FnButtonView(fnLabel.label)
+                        }
+                    }
+                    
+                } // HStack
+                
+                Spacer()
+                
+                Slider(
+                    value: $speed,
+                    in: 0...100,
+                    onEditingChanged: { editing in
+                        isEditing = editing
+                    }
+                ) // Slider
+                
+                HStack {
+                    Button(
+                        action: {
+                            if (!reverse) {
+                                speed = 0
+                            }
+                            forward = false
+                            reverse = true
+                        },
+                        label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15.0)
+                                    .frame(height: 50, alignment: .center) // width: 120,
+                                    .foregroundColor(reverse ? .blue : .green)
+                                
+                                Text("Reverse")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
+                        } // label
+                    ) // Button
+                    Button(
+                        action: {
+                            speed = 0.0
+                        },
+                        label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15.0)
+                                    .frame(height: 50, alignment: .center) // width: 120,
+                                    .foregroundColor(.green)
+                                
+                                Text("Stop")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
+                        } // label
+                    ) // Button
+                    Button(
+                        action: {
+                            if (!forward) {
+                                speed = 0
+                            }
+                            forward = true
+                            reverse = false
+                        },
+                        label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15.0)
+                                    .frame(height: 50, alignment: .center) // width: 120,
+                                    .foregroundColor(forward ? .blue : .green)
+                                
+                                Text("Forward")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
+                        } // label
+                    ) // Button
+                } // HStack of R/S/F
+            } // VStack of entire View
+        }.navigationTitle("Throttle View")  // NavigationView
     } // body
 } // ThrottleView
-    
+
 struct ThrottleSliderView : View {
     @Binding var speed : Double
     var bars : [ThrottleBar]
@@ -121,6 +185,8 @@ struct ThrottleBarView : View {
             } // label
             ) // Button
             .padding(.vertical, 0)
+            .padding(.leading, 8)
+            .padding(.trailing, -5)
             
             // add a transparent button to fill out rest of line
             Button(action:{
@@ -131,11 +197,13 @@ struct ThrottleBarView : View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 5.0)
                         .frame(width: maxLength - bar.length) // alignment: .leading, height: 15
-                        .opacity(0.0)
+                        .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
+                        .opacity(0.1)
                 } // ZStack
             } // label
             ) // Button
             .padding(.vertical, 0)
+            .padding(.horizontal, 0)
             
             Spacer() // align to left
             
@@ -179,7 +247,11 @@ struct FnButtonView : View {
     }
 }
 
-
+struct LocoSelectionView : View {
+    var body: some View {
+        Text("Loco Selection View")
+    }
+}
 
 struct ThrottleView_Previews: PreviewProvider {
     static var previews: some View {
