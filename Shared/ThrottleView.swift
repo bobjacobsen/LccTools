@@ -23,7 +23,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     let maxFn = 28
     var fnLabels : [FnLabel] = []  // TODO: how associate these with state?
     
-    let logger = Logger(subsystem: "ardenwood.org", category: "ThrottleView")
+    let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "ThrottleView")
     
     init() {
         for index in 0...maxindex {
