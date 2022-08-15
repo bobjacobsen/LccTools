@@ -11,8 +11,9 @@ import os
 
 // This works by timer-based periodic refresh of hours/minutes/seconds @State variables from the underlying Clock instance
 
-// TODO: take the running state from the clock when first shown
-// TODO: Decide if there's a Run/Stop button and if so what it does
+// TODO: Make display larger on iPad or in landscape mode
+// See https://developer.apple.com/forums/thread/126878 for how to tell portrait from landscape
+
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
 
@@ -47,48 +48,55 @@ struct ClockView: View {
                     .font(.system(size: 48))
                     .offset(y: -18)
                 StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue)
+            }.onAppear {
+                let delay = 1.0/12.0  // 12fps for energy use compromise
+                timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
+                    let date = openlcblib.clock0.getTime()
+                    hours = openlcblib.clock0.getHour(date)
+                    minutes = openlcblib.clock0.getMinute(date)
+                    seconds = openlcblib.clock0.getSecond(date)
+                })
+            }.onDisappear {
+                timer?.invalidate()  // stop the timer when not displayed
             }
+
             
-            HStack {
-                Button(action: {
-                    if isRunning{
-                        timer?.invalidate()
-                    } else {
-                        let delay = max( 0.0833, 1.0 / openlcblib.clock0.rate / 1.25) // no more than 12fps for energy use
-                        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
-                            let date = openlcblib.clock0.getTime()
-                            hours = openlcblib.clock0.getHour(date)
-                            minutes = openlcblib.clock0.getMinute(date)
-                            seconds = openlcblib.clock0.getSecond(date)
-                        })
-                    }
-                    isRunning.toggle()
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15.0)
-                            .frame(width: 120, height: 50, alignment: .center)
-                            .foregroundColor(isRunning ? .green : .red)
-                        
-                        Text(isRunning ? "Stop" : "Start")
-                            .font(.title)
-                            .foregroundColor(.white)
-                    }
-                }
-                
-                Button(action: {
-                    // TODO: What does "Reset" do? Need a different button here?
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15.0)
-                            .frame(width: 120, height: 50, alignment: .center)
-                            .foregroundColor(.gray)
-                        
-                        Text("Reset")
-                            .font(.title)
-                            .foregroundColor(.white)
-                    }
-                }
-            }
+//            HStack {
+//                Button(action: {
+//                    // TODO: do we want a start/stop button here?
+//                    if isRunning{
+//                        //timer?.invalidate()
+//                    } else {
+//                        // set up timer
+//                    }
+//                    isRunning.toggle()
+//                }) {
+//                    ZStack {
+//                        RoundedRectangle(cornerRadius: 15.0)
+//                            .frame(width: 120, height: 50, alignment: .center)
+//                            .foregroundColor(isRunning ? .green : .red)
+//
+//                        Text(isRunning ? "Stop" : "Start")
+//                            .font(.title)
+//                            .foregroundColor(.white)
+//                    }
+//                }
+//
+//                Button(action: {
+//                    // TODO: What does "Reset" do? Need a different button here?
+//                }) {
+//                    ZStack {
+//                        RoundedRectangle(cornerRadius: 15.0)
+//                            .frame(width: 120, height: 50, alignment: .center)
+//                            .foregroundColor(.gray)
+//
+//                        Text("Reset")
+//                            .font(.title)
+//                            .foregroundColor(.white)
+//                    }
+//                }
+//            }
+        
         }
     }
 }
