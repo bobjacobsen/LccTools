@@ -218,7 +218,7 @@ struct ThrottleBar {
     let id = UUID()
 }
 
-// Data for a single function button
+// Data to construct a single function button
 struct FnLabel {
     let label : String
     let id = UUID()
@@ -226,6 +226,8 @@ struct FnLabel {
 
 // The function button itself
 struct FnButtonView : View {
+    @State var pressed = false      // true highlights button as down
+    @State var momentary = false    // false makes button push on, push off
     let number: String
     init(_ number : String) {
         self.number = number
@@ -233,11 +235,12 @@ struct FnButtonView : View {
     var body: some View {
         Button(action:{
             print("Function \(number) pressed")
+            if (!momentary) { pressed = !pressed }
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: 15.0)
                     .frame(alignment: .center) // width: 120, height: 50,
-                    .foregroundColor(.green)
+                    .foregroundColor(!momentary && pressed ? .blue : .green)
                 
                 Text("FN \(number)")
                     .font(.title)
@@ -248,8 +251,37 @@ struct FnButtonView : View {
 }
 
 struct LocoSelectionView : View {
+    @State var address  = ""
+    @State var addressForm  = 1
+    @State private var selectedAddress = "4137"
+
+    var roster = ["4137", "2111", "This is a really long roster name", "99", "2114", "2115", "2116", "2117"]
+
     var body: some View {
-        Text("Loco Selection View")
+        VStack {
+            Text("Loco Selection View")
+                .font(.title)
+            
+            Picker("Roster Entries", selection: $selectedAddress) {
+                ForEach(roster, id: \.self) {
+                    Text($0)
+                        .font(.largeTitle)
+                }
+            }   //.pickerStyle(SegmentedPickerStyle())
+                //.pickerStyle(MenuPickerStyle())  // default seems to be menu style here
+                //.pickerStyle(WheelPickerStyle())
+            
+                HStack {
+                    Text("DCC Address:")
+                    Picker(selection: $addressForm, label: Text("DCC Address Form:")) {
+                        Text("Long").tag(1)
+                        Text("Short").tag(2)
+                    }
+                    // .pickerStyle(.radioGroup)        // macOS only
+                    //.horizontalRadioGroupLayout()     // macOS only
+                }
+                TextField("Enter address...", text: $address)
+        }
     }
 }
 
