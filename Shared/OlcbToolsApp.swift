@@ -73,7 +73,7 @@ struct OlcbToolsApp: App {
                         Label("Nodes", systemImage: "app.connected.to.app.below.fill")
                     }
                     // when this view initially appears, start up the communication links
-                    .onAppear() { self.startup() }
+                    .onAppear() { self.startup() } // TODO: This gets invoked too many times - every time you go back to this view
                     .environmentObject(openlcblib)
 
                 MonitorView()
