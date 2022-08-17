@@ -173,7 +173,6 @@ struct ThrottleBarView : View {
     var body: some View {
         HStack {
             Button(action:{
-                print("Button speed \(bar.setSpeed)")
                 speed = bar.setSpeed
             }, // Action
                    label: {
@@ -190,7 +189,6 @@ struct ThrottleBarView : View {
             
             // add a transparent button to fill out rest of line
             Button(action:{
-                print("Button length \(bar.length)")
                 speed = bar.setSpeed
             }, // Action
                    label: {
@@ -234,7 +232,6 @@ struct FnButtonView : View {
     }
     var body: some View {
         Button(action:{
-            print("Function \(number) pressed")
             if (!momentary) { pressed = !pressed }
         }) {
             ZStack {
