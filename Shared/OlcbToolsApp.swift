@@ -25,7 +25,7 @@ struct OlcbToolsApp: App {
     
     // TODO: figure out how to make this a real (not simulated) connection even while running tests; add tests
     
-    let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
+    let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
     /// Only logging at creation time, see `startup()` for configuration
     init () {

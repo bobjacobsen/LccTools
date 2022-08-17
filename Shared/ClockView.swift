@@ -17,7 +17,7 @@ import os
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
 
-    let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "ClockView")
+    let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
 
     @EnvironmentObject var openlcblib : OpenlcbLibrary {
         didSet(oldvalue) {

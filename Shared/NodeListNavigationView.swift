@@ -10,7 +10,7 @@ import OpenlcbLibrary
 import os
 
 struct NodeListNavigationView: View {
-    let logger = Logger(subsystem: "org.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
+    let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
 
     @EnvironmentObject var openlcblib : OpenlcbLibrary {
         didSet(oldvalue) {
