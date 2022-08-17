@@ -9,11 +9,13 @@ import SwiftUI
 import os
 
 struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throttle
-    @State private var speed = 50.0         // for Sliders
+    @State private var speed = 0.0         // for Sliders
     @State private var isEditing = false    // for Sliders
     
     @State private var forward = true   // TODO: get initial state from somewhere?
     @State private var reverse = false
+    
+    @State private var showingSelectSheet = false
     
     var bars : [ThrottleBar] = []
     let maxindex = 50
@@ -41,23 +43,29 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
         logger.debug("init of ThrottleView")
     }
     
-    
-    
     var body: some View {
-        NavigationView {
             VStack {
-                NavigationLink(destination: LocoSelectionView() ) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15.0)
-                            .frame(height: 50, alignment: .center) // width: 120,
-                            .foregroundColor(.green)
-                        
-                        Text("Engine 4407")
-                            .font(.title)
-                            .foregroundColor(.white)
+                ZStack { // large-format button for loco selection
+                    RoundedRectangle(cornerRadius: 15.0)
+                        .frame(height: 50, alignment: .center)
+                        .foregroundColor(.green)
+                    Button("Engine 4407") {
+                        showingSelectSheet.toggle()
                     }
-                } // Nav Link
-                
+                    .font(.title)
+                    .foregroundColor(.white)
+                    // when clicked, show loco selection in a covering sheet
+                    .sheet(isPresented: $showingSelectSheet) {  // show selection in a cover sheet
+//                        if #available(iOS 16.0, *) {
+//                            LocoSelectionView()
+//                                .presentationDetents([.fraction(0.25)])
+//                        } else {
+                            // Fallback on earlier versions
+                            LocoSelectionView() // shows full sheet
+//                        }
+                    }
+                } // end ZStack button
+                    
                 Slider(
                     value: $speed,
                     in: 0...100,
@@ -99,7 +107,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
                         label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 15.0)
-                                    .frame(height: 50, alignment: .center) // width: 120,
+                                    .frame(height: 50, alignment: .center)
                                     .foregroundColor(reverse ? .blue : .green)
                                 
                                 Text("Reverse")
@@ -115,7 +123,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
                         label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 15.0)
-                                    .frame(height: 50, alignment: .center) // width: 120,
+                                    .frame(height: 50, alignment: .center)
                                     .foregroundColor(.green)
                                 
                                 Text("Stop")
@@ -135,7 +143,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
                         label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 15.0)
-                                    .frame(height: 50, alignment: .center) // width: 120,
+                                    .frame(height: 50, alignment: .center)
                                     .foregroundColor(forward ? .blue : .green)
                                 
                                 Text("Forward")
@@ -146,7 +154,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
                     ) // Button
                 } // HStack of R/S/F
             } // VStack of entire View
-        }.navigationTitle("Throttle View")  // NavigationView
+//        }.navigationTitle("Throttle View")  // NavigationView
     } // body
 } // ThrottleView
 
@@ -265,9 +273,10 @@ struct LocoSelectionView : View {
                         .font(.largeTitle)
                 }
             }   //.pickerStyle(SegmentedPickerStyle())
-                //.pickerStyle(MenuPickerStyle())  // default seems to be menu style here
-                //.pickerStyle(WheelPickerStyle())
+            //.pickerStyle(MenuPickerStyle())  // default seems to be menu style here
+            //.pickerStyle(WheelPickerStyle())
             
+            VStack {
                 HStack {
                     Text("DCC Address:")
                     Picker(selection: $addressForm, label: Text("DCC Address Form:")) {
@@ -278,6 +287,10 @@ struct LocoSelectionView : View {
                     //.horizontalRadioGroupLayout()     // macOS only
                 }
                 TextField("Enter address...", text: $address)
+                    .fixedSize()  // limit size to something reasonable
+                Spacer()
+                Text("Swipe down to close")
+            }
         }
     }
 }
