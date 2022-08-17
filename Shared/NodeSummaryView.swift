@@ -8,6 +8,8 @@
 import SwiftUI
 import OpenlcbLibrary
 
+/// Display of the details of a single node.
+/// Invoked from e.g. NodeListNavigationView
 struct NodeSummaryView: View {
     let displayNode : Node
     

@@ -8,7 +8,10 @@
 import SwiftUI
 import OpenlcbLibrary
 
-struct MonitorView: View {  // TODO: Is only showing messages from network, not ones we originate (see OpenlcbLibrary comment)
+/// Displayes the contents from the PrintingProcessor, e.g. the OpenLCB traffic monitor
+struct MonitorView: View {
+    // TODO: Is only showing messages from network, not ones we originate (see OpenlcbLibrary comment)
+    
     @ObservedObject var monitorModel:MonitorModel = MonitorModel.sharedInstance
     
     // TODO: Add some nice scrolling control so it stays at the bottom until user wants to stick on something

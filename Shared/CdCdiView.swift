@@ -10,8 +10,10 @@ import OpenlcbLibrary
 
 struct CdCdiView: View {
 
+    // TODO: Replace with read from outside node
     #if DEBUG
-    static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children! // start with Segment elements
+    // start with Segment elements present
+    static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
     #endif
     
     var body: some View {
@@ -132,7 +134,7 @@ struct CdiIntView : View {
     }
 }
 
-// view for an int value map entry
+// view for an int value map
 struct CdiIntMapView : View {
     @State var intValue : Int = -1 // -1 so we can see what it does here
     @State var stringValue : String = "<initial internal content>" // so we can see what it does here

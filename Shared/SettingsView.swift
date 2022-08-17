@@ -8,6 +8,11 @@
 import SwiftUI
 
 // Using @AppStorage to persist the IP_ADDRESS, see https://medium.com/swlh/introducing-appstorage-in-swiftui-470a56f5ba9e
+
+/// View for setting and storing user preferences for e.g. hub IP address and this node's ID
+///
+/// Stores results in @AppStorage. See `OlcbToolsApp` for example of retrieval
+///
 struct SettingsView: View {
     @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"
     @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"

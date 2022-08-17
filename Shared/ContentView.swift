@@ -9,6 +9,8 @@ import SwiftUI
 import os
 import OpenlcbLibrary
 
+/// Not currently used
+// TODO: Eventually remove this file as not used; now is an example of detecting iPad for e.g. ThrottleView
 struct ContentView: View {
 
     // iphone is one selector window
@@ -19,7 +21,7 @@ struct ContentView: View {
     #endif
     
     var body: some View {
-            //NodeListNavigationView()
+            // NodeListNavigationView()
 
             #if os(iOS)
                 if horizontalSizeClass != .compact {
