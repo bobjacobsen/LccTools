@@ -24,29 +24,31 @@ struct NodeSummaryView: View {
             Text(displayNode.id.description) // nodeID
 
             HStack{
-                NavigationLink(destination: MonitorView()) {
-                    Image(systemName:"figure.stand.line.dotted.figure.stand")
-                            //.resizable().frame(width:50, height:50)
-                }
- 
                 NavigationLink(destination: EventView()) {
-                    Image(systemName:"cpu")
-                            //.resizable().frame(width:50, height:50)
+                    VStack {
+                        Image(systemName:"cpu")
+                        //.resizable().frame(width:50, height:50)
+                        Text("Events\n")
+                            .font(.footnote)
+                    }
                 }
-                
-                NavigationLink(destination: ThrottleView()) {
-                        Image(systemName:"train.side.front.car") // TODO: better icon
-                            //.resizable().frame(width:50, height:50)
-                }
-                
+                                
                 NavigationLink(destination: CdCdiView()) {
+                    VStack {
                         Image(systemName:"square.and.pencil")
-                            //.resizable().frame(width:50, height:50)
+                        //.resizable().frame(width:50, height:50)
+                        Text("Configure\n")
+                            .font(.footnote)
+                    }
                 }
                 
                 NavigationLink(destination: PipView(displayNode: displayNode)) {
-                    Image(systemName:"gear.badge.questionmark")
-                            //.resizable().frame(width:50, height:50)
+                    VStack {
+                        Image(systemName:"gear.badge.questionmark")
+                        //.resizable().frame(width:50, height:50)
+                        Text("More\nInfo")
+                            .font(.footnote)
+                    }
                 }
             }.frame(minHeight: 75)
             
@@ -62,12 +64,12 @@ struct NodeSummaryView: View {
 }
 
 struct FullNodeView_Previews: PreviewProvider {
-    static let displayNode  = Node(NodeID(0),
+    static let displayNode  = Node(NodeID(258),
                                    snip: SNIP(
-                                            "Manufacturer!",
-                                            "Model!",
-                                            "Hardware!",
-                                            "And Software!",
+                                            "Manufacturer Name",
+                                            "Model Info",
+                                            "Hardware Info",
+                                            "And Software Info",
                                             "My Node Name",
                                             "And Description"))
     static var previews: some View {
