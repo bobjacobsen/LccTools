@@ -11,10 +11,8 @@ import OpenlcbLibrary
 struct CdCdiView: View {
 
     // TODO: Replace with read from outside node
-    #if DEBUG
     // start with Segment elements present
     static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
-    #endif
     
     // TODO: contains a lot of print statements; remove or change to logging
     
