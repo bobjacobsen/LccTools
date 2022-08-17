@@ -16,6 +16,8 @@ struct CdCdiView: View {
     static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
     #endif
     
+    // TODO: contains a lot of print statements; remove or change to logging
+    
     var body: some View {
         List(CdCdiView.data, children: \.children) { row in  // "children" makes the nested list
             containedView(item: row)
