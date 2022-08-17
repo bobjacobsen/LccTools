@@ -25,6 +25,8 @@ struct ClockView: View {
         }
     }
     
+    let cutoff = 480.0 // min size for larger display, empirically determined from iPhone 12 Pro Max at 428
+    
     @State private var isRunning = false  // TODO: This isn't connected to underlying clock state (coming or going)
     
     @State private var hours : Int = 0
@@ -36,77 +38,51 @@ struct ClockView: View {
     /// Reload time values periodically
     @State private var timer: Timer?
     
-    var body: some View {
-        VStack {
-            HStack(spacing: 10) {
-                StopwatchUnit(timeUnit: hours, timeUnitText: "HR", color: .blue)
-                Text(":")
-                    .font(.system(size: 48))
-                    .offset(y: -18)
-                StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .blue)
-                Text(":")
-                    .font(.system(size: 48))
-                    .offset(y: -18)
-                StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue)
-            }.onAppear {
-                let delay = 1.0/12.0  // 12fps for energy use compromise
-                timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
-                    let date = openlcblib.clock0.getTime()
-                    hours = openlcblib.clock0.getHour(date)
-                    minutes = openlcblib.clock0.getMinute(date)
-                    seconds = openlcblib.clock0.getSecond(date)
-                })
-            }.onDisappear {
-                timer?.invalidate()  // stop the timer when not displayed
-            }
+#if os(iOS) // to check for iPhone v iPad
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
+#endif
 
-            
-//            HStack {
-//                Button(action: {
-//                    // TODO: do we want a start/stop button here?
-//                    if isRunning{
-//                        //timer?.invalidate()
-//                    } else {
-//                        // set up timer
-//                    }
-//                    isRunning.toggle()
-//                }) {
-//                    ZStack {
-//                        RoundedRectangle(cornerRadius: 15.0)
-//                            .frame(width: 120, height: 50, alignment: .center)
-//                            .foregroundColor(isRunning ? .green : .red)
-//
-//                        Text(isRunning ? "Stop" : "Start")
-//                            .font(.title)
-//                            .foregroundColor(.white)
-//                    }
-//                }
-//
-//                Button(action: {
-//                    // TODO: What does "Reset" do? Need a different button here?
-//                }) {
-//                    ZStack {
-//                        RoundedRectangle(cornerRadius: 15.0)
-//                            .frame(width: 120, height: 50, alignment: .center)
-//                            .foregroundColor(.gray)
-//
-//                        Text("Reset")
-//                            .font(.title)
-//                            .foregroundColor(.white)
-//                    }
-//                }
-//            }
-        
-        }
-    }
+    var body: some View {
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                HStack(spacing: 10) {
+                    Spacer()
+                    StopwatchUnit(timeUnit: hours, timeUnitText: "HR", color: .blue, size: geometry.size.width > cutoff ? 175 : 75)
+                    Text(":")
+                        .font(.system(size: geometry.size.width > cutoff ? 112 : 48))
+                        .offset(y: -18)
+                    StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .blue, size: geometry.size.width > cutoff ? 175 : 75)
+                    Text(":")
+                        .font(.system(size: geometry.size.width > cutoff ? 112 : 48))
+                        .offset(y: -18)
+                    StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue, size: geometry.size.width > cutoff ? 175 : 75)
+                    Spacer()
+                }.frame(alignment: .center)
+                .onAppear {
+                    let delay = 1.0/12.0  // 12fps for energy use compromise
+                    timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
+                        let date = openlcblib.clock0.getTime()
+                        hours = openlcblib.clock0.getHour(date)
+                        minutes = openlcblib.clock0.getMinute(date)
+                        seconds = openlcblib.clock0.getSecond(date)
+                    })
+                }.onDisappear {
+                    timer?.invalidate()  // stop the timer when not displayed
+                }
+                Spacer()
+            }.frame(alignment: .center)
+        } // end GeometryReader
+    } // end body
 }
 
-// display one time unit, i.e. hours or minutes
+// display one time unit field, i.e. hours. minutes or seconds
 struct StopwatchUnit: View {
     
     var timeUnit: Int
     var timeUnitText: String
     var color: Color
+    var size: CGFloat
     
     /// Time unit expressed as String.
     /// - Includes "0" as prefix if this is less than 10.
@@ -116,20 +92,21 @@ struct StopwatchUnit: View {
     }
     
     var body: some View {
+        
         VStack {
             ZStack {
                 RoundedRectangle(cornerRadius: 15.0)
                     .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .round))
                     .fill(color)
-                    .frame(width: 75, height: 75, alignment: .center)
+                    .frame(width: size, height: size, alignment: .center)
                 
                 HStack(spacing: 2) {
                     Text(timeUnitStr.substring(index: 0))
-                        .font(.system(size: 48))
-                        .frame(width: 28)
+                        .font(.system(size: 0.64*size))
+                        .frame(width: 0.38*size)
                     Text(timeUnitStr.substring(index: 1))
-                        .font(.system(size: 48))
-                        .frame(width: 28)
+                        .font(.system(size: 0.64*size))
+                        .frame(width: 0.38*size)
                 }
             }
             
