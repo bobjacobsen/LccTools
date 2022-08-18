@@ -56,6 +56,8 @@ func containedView(item : CdiXmlMemo) -> AnyView {
         } else {
             return AnyView(CdiIntMapView(item: item))
         }
+    case .INPUT_STRING :
+        return AnyView(CdiStringView(item: item))
     default :
         if item.description != "" {
             return AnyView(VStack(alignment: .leading) {
@@ -64,6 +66,36 @@ func containedView(item : CdiXmlMemo) -> AnyView {
             })
         } else {
             return AnyView(Text(item.name))
+        }
+    }
+}
+
+// view for a read/refresh button
+struct RButtonView : View {
+    var body : some View {
+        ZStack { // formatted button for recognition
+            RoundedRectangle(cornerRadius: 10.0)
+                .frame(width: 25, height: 25, alignment: .center)
+                .foregroundColor(.green)
+            Button("R") {    // TODO: needs to be hooked to model to do Refresh
+            }
+            .font(.body)
+            .foregroundColor(.white)
+        }
+    }
+}
+
+// view for a store button
+struct WButtonView : View {
+    var body : some View {
+        ZStack { // formatted button for recognition
+            RoundedRectangle(cornerRadius: 10.0)
+                .frame(width: 25, height: 25, alignment: .center)
+                .foregroundColor(.green)
+            Button("W") {    // TODO: needs to be hooked to model to do Write
+            }
+            .font(.body)
+            .foregroundColor(.white)
         }
     }
 }
@@ -91,6 +123,9 @@ struct CdiEventView : View {
                         print ("EventID submits with \(eventValue) prior current: \(self.item.currentIntValue)")
                         item.currentStringValue = eventValue  // TODO: capture this to do a write
                     }
+                Spacer()
+                RButtonView()
+                WButtonView()
             }
             if item.description != "" {
                 Text(item.description).font(.footnote)
@@ -126,6 +161,9 @@ struct CdiIntView : View {
                         print ("Int submits with \(intValue) prior current: \(self.item.currentIntValue)")
                         item.currentIntValue = intValue  // TODO: capture this to do a write
                     }
+                Spacer()
+                RButtonView()
+                WButtonView()
             }
             if item.description != "" {
                 Text(item.description).font(.footnote)
@@ -163,48 +201,61 @@ struct CdiIntMapView : View {
 
     var body : some View {
         VStack(alignment: .leading) {
-            Picker("\(item.name)", selection: $stringValue) {
-                ForEach(item.values, id: \.self) { valueName in
-                    Text(valueName)
+            HStack {
+                Picker("\(item.name)", selection: $stringValue) {
+                    ForEach(item.values, id: \.self) { valueName in
+                        Text(valueName)
+                    }
+                } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
+                //.pickerStyle(WheelPickerStyle())
+                //.pickerStyle(MenuPickerStyle())  // This seems to be causing a hard crash
+                .onAppear { // initialize from model value
+                    print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
+                    print ("   int \(item.currentIntValue) maps to \(propertyToValue(property: item.currentIntValue))")
+                    intValue = item.currentIntValue
+                    stringValue = propertyToValue(property: intValue)
                 }
-            } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
-            //.pickerStyle(WheelPickerStyle())
-            //.pickerStyle(MenuPickerStyle())  // This seems to be causing a hard crash
-            .onAppear { // initialize from model value
-                print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
-                print ("   int \(item.currentIntValue) maps to \(propertyToValue(property: item.currentIntValue))")
-                intValue = item.currentIntValue
-                stringValue = propertyToValue(property: intValue)
-            }
-            .onReceive([self.stringValue].publisher.first()) { (value) in  // store back to model
-                print ("onReceive with \(value)")
-                print ("    start with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
-                print ("    string maps to \(valueToProperty(value: stringValue))")
-                if (stringValue == "<initial internal content>") {
-                    print ("  and returning initially")
-                    return
+                .onReceive([self.stringValue].publisher.first()) { (value) in  // store back to model
+                    print ("onReceive with \(value)")
+                    print ("    start with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
+                    print ("    string maps to \(valueToProperty(value: stringValue))")
+                    if (stringValue == "<initial internal content>") {
+                        print ("  and returning initially")
+                        return
+                    }
+                    intValue = valueToProperty(value: stringValue)
+                    item.currentIntValue = intValue  // TODO: do we need @ObservedObject for this?
                 }
-                intValue = valueToProperty(value: stringValue)
-                item.currentIntValue = intValue  // TODO: do we need @ObservedObject for this?
+                Spacer()
+                RButtonView()
+                WButtonView()
+                
             }
-            
             Text(item.description).font(.footnote)
             
         }
     }
 }
 
-// custom for data entry fields
-struct EntryView : View {
-    init(text: String) {
-        entryText = text
+// custom for String data entry fields
+struct CdiStringView : View {
+    var item : CdiXmlMemo
+    init(item : CdiXmlMemo) {
+        self.item = item
+        print ("String init starts")
     }
-    @State private var entryText : String
+
+    @State private var entryText : String = ""
     
     var body: some View {
         HStack {
-            Text("Enter: ")
-            TextField(entryText, text : $entryText)
+            Text("\(item.name) ") // display name next to value
+            Spacer()
+            TextField("Enter \(item.name)", text : $entryText)
+
+            //Spacer()
+            RButtonView()
+            WButtonView()
         }
     }
 }
