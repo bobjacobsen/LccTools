@@ -9,7 +9,7 @@ import SwiftUI
 import os
 
 struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throttle
-    @State private var speed = 0.0         // for Sliders
+    @State private var speed : Float16 = 0.0         // for Sliders
     @State private var isEditing = false    // for Sliders
     
     @State private var forward = true   // TODO: get initial state from somewhere?
@@ -31,7 +31,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
         for index in 0...maxindex {
             // compute bar length from 0 to maxlength // TODO: Decide how to handle speed fn curve
             let length = CGFloat(maxLength * pow(Double(maxindex - index) / Double(maxindex), 2.0))  // pow curves the progression
-            let setSpeed = length/maxLength*maxSpeed
+            let setSpeed = Float16( length/maxLength*maxSpeed)
             bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
         }
         
@@ -49,7 +49,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
                     RoundedRectangle(cornerRadius: 15.0)
                         .frame(height: 50, alignment: .center)
                         .foregroundColor(.green)
-                    Button("Engine 4407") {
+                    Button("DCC 4407") {    // TODO: need to load current selection from state
                         showingSelectSheet.toggle()
                     }
                     .font(.title)
@@ -159,7 +159,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
 } // ThrottleView
 
 struct ThrottleSliderView : View {
-    @Binding var speed : Double
+    @Binding var speed : Float16
     var bars : [ThrottleBar]
     
     var body: some View {
@@ -174,7 +174,7 @@ struct ThrottleSliderView : View {
 // View a single bar in the ThrottleSliderView
 struct ThrottleBarView : View {
     let bar : ThrottleBar
-    @Binding var speed : Double
+    @Binding var speed : Float16
     
     let maxLength : CGFloat = 150.0
     
@@ -220,7 +220,7 @@ struct ThrottleBarView : View {
 // Data for a single bar
 struct ThrottleBar {
     let length: CGFloat
-    let setSpeed : Double
+    let setSpeed : Float16
     let id = UUID()
 }
 
