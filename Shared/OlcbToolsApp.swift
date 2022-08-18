@@ -36,26 +36,49 @@ struct OlcbToolsApp: App {
         logger.info("at startup, default hub IP address is set to: \(temp_hub_ip_address)")
     }
     
+    var canphysical = CanPhysicalLayerGridConnect()
+    
     /// Configure the various libraries and connections, then start the network access
     func startup() {
         // create, but not yet connect, the Telnet connection to the hub
         let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: 12021)
         
         // initialize the OLCB processor
-        let canphysical : CanPhysicalLayerGridConnect! = CanPhysicalLayerGridConnect(callback: telnetclient!.sendString)
-        openlcblib.configureCanTelnet(canphysical!)
+        canphysical.setCallBack(callback: telnetclient!.sendString)
+        openlcblib.configureCanTelnet(canphysical)
         
         //OlcbToolsApp.openlcblib.createSampleData()  // commented out when real hardware is available and connected
         
         // route TelnetListenerLib incoming data to OpenlcbLib
         telnetclient.connection.receivedDataCallback = canphysical.receiveString // TODO: needs a better way to set this callback, too much visible here
+        telnetclient.setStopCallback(telnetDidStopCallback(error:))
+
         // start the connection
         telnetclient.start()
         
         // start the OLCB layer // TODO: should wait for connectionStarted callback from telnetclient to do this.
         canphysical.physicalLayerUp()
-}
+    }
     
+    // TODO: this restart only works once - maybe due to restart inside callback? Really need a better keep-alive solution
+    func restartTelnet() {
+        let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: 12021)
+        canphysical.setCallBack(callback: telnetclient!.sendString)
+        telnetclient.connection.receivedDataCallback = canphysical.receiveString // TODO: needs a better way to set this callback, too much visible here
+        telnetclient.start()
+    }
+    
+    public func telnetDidStopCallback(error: Error?) {
+        if error == nil {
+            // exit(EXIT_SUCCESS)
+            logger.info("Connection exited with SUCCESS, restarting")
+            restartTelnet()
+        } else {
+            // exit(EXIT_FAILURE)
+            logger.info("Connection exited with ERROR: \(error!, privacy: .public)")
+        }
+    }
+
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
@@ -68,8 +91,6 @@ struct OlcbToolsApp: App {
                     .tabItem {
                         Label("Nodes", systemImage: "app.connected.to.app.below.fill")
                     }
-                    // when this view initially appears, start up the communication links
-                    .onAppear() { self.startup() } // TODO: This gets invoked too many times - every time you go back to this view
                     .environmentObject(openlcblib)
 
                 MonitorView()
@@ -100,6 +121,11 @@ struct OlcbToolsApp: App {
 
             }   // TabView
                 .environmentObject(openlcblib)
+                .onAppear() {
+                    // start the connection once you have the display up to receive events
+                    self.startup()
+                }
+
         } // WindowGroup
         
 #if os(macOS)
