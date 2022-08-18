@@ -21,7 +21,7 @@ struct ClockView: View {
 
     @EnvironmentObject var openlcblib : OpenlcbLibrary {
         didSet(oldvalue) {
-            logger.info("EnvironmentObject clock0 did change")
+            logger.info("EnvironmentObject clockModel0 did change")
         }
     }
     
@@ -38,10 +38,6 @@ struct ClockView: View {
     /// Reload time values periodically
     @State private var timer: Timer?
     
-#if os(iOS) // to check for iPhone v iPad
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
-#endif
-
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -62,10 +58,10 @@ struct ClockView: View {
                 .onAppear {
                     let delay = 1.0/12.0  // 12fps for energy use compromise
                     timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
-                        let date = openlcblib.clock0.getTime()
-                        hours = openlcblib.clock0.getHour(date)
-                        minutes = openlcblib.clock0.getMinute(date)
-                        seconds = openlcblib.clock0.getSecond(date)
+                        let date = openlcblib.clockModel0.getTime()
+                        hours = openlcblib.clockModel0.getHour(date)
+                        minutes = openlcblib.clockModel0.getMinute(date)
+                        seconds = openlcblib.clockModel0.getSecond(date)
                     })
                 }.onDisappear {
                     timer?.invalidate()  // stop the timer when not displayed
