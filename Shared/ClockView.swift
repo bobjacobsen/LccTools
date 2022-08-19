@@ -40,19 +40,26 @@ struct ClockView: View {
     
     var body: some View {
         GeometryReader { geometry in
+            let width = geometry.size.width
+            let height = geometry.size.height
+            let scale = min( width / 330.0, height / 90.0)
+            let fontsize = scale * 48.0
+            let unitsize = scale * 75.0
+            let offset = fontsize > 40.0 ? -18.0 : 0.0
+            let spacing = scale * 5.0
             VStack {
                 Spacer()
-                HStack(spacing: 10) {
+                HStack(spacing: spacing) {
                     Spacer()
-                    StopwatchUnit(timeUnit: hours, timeUnitText: "HR", color: .blue, size: geometry.size.width > cutoff ? 175 : 75)
+                    StopwatchUnit(timeUnit: hours, timeUnitText: "HR", color: .blue, size: unitsize)
                     Text(":")
-                        .font(.system(size: geometry.size.width > cutoff ? 112 : 48))
-                        .offset(y: -18)
-                    StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .blue, size: geometry.size.width > cutoff ? 175 : 75)
+                        .font(.system(size: fontsize))
+                        .offset(y: offset)
+                    StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .blue, size: unitsize)
                     Text(":")
-                        .font(.system(size: geometry.size.width > cutoff ? 112 : 48))
-                        .offset(y: -18)
-                    StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue, size: geometry.size.width > cutoff ? 175 : 75)
+                        .font(.system(size: fontsize))
+                        .offset(y: offset)
+                    StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue, size: unitsize)
                     Spacer()
                 }.frame(alignment: .center)
                 .onAppear {
@@ -91,7 +98,7 @@ struct StopwatchUnit: View {
         
         VStack {
             ZStack {
-                RoundedRectangle(cornerRadius: 15.0)
+                RoundedRectangle(cornerRadius: size / 5.0)
                     .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .round))
                     .fill(color)
                     .frame(width: size, height: size, alignment: .center)
@@ -105,9 +112,10 @@ struct StopwatchUnit: View {
                         .frame(width: 0.38*size)
                 }
             }
-            
-            Text(timeUnitText)
-                .font(.system(size: 16))
+            if size > 40.0 {  // has to match offset computation above
+                Text(timeUnitText)
+                    .font(.system(size: 16))
+            }
         }
     }
 }
