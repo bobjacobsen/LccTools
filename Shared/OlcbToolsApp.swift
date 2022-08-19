@@ -19,6 +19,7 @@ import os
 struct OlcbToolsApp: App {
     // info from settings, see `SettingsView``
     @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"
+    @AppStorage("HUB_IP_PORT") private var ip_port: String = "12021"
     @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = "05.01.01.01.03.FF"  // static for static openlcnlib
 
     @StateObject var openlcblib = OpenlcbLibrary(defaultNodeID: NodeID(this_node_ID))
@@ -34,6 +35,8 @@ struct OlcbToolsApp: App {
         logger.info("at startup, this program's default node ID is set to: \(temp_this_node_ID)")
         let temp_hub_ip_address = self.ip_address   // avoid "capture of mutating self" compile error
         logger.info("at startup, default hub IP address is set to: \(temp_hub_ip_address)")
+        let temp_hub_ip_port = self.ip_port   // avoid "capture of mutating self" compile error
+        logger.info("at startup, default hub port is set to: \(temp_hub_ip_port)")
     }
     
     var canphysical = CanPhysicalLayerGridConnect()
@@ -41,7 +44,8 @@ struct OlcbToolsApp: App {
     /// Configure the various libraries and connections, then start the network access
     func startup() {
         // create, but not yet connect, the Telnet connection to the hub
-        let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: 12021)
+        let port = UInt16(self.ip_port) ?? 12021
+        let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: port)
         
         // initialize the OLCB processor
         canphysical.setCallBack(callback: telnetclient!.sendString)
