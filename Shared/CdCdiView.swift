@@ -75,9 +75,10 @@ struct RButtonView : View {
     var body : some View {
         ZStack { // formatted button for recognition
             RoundedRectangle(cornerRadius: 10.0)
-                .frame(width: 25, height: 25, alignment: .center)
+                .frame(width: 40, height: 30, alignment: .center)
                 .foregroundColor(.green)
             Button("R") {    // TODO: needs to be hooked to model to do Refresh
+                print("Refresh pressed")
             }
             .font(.body)
             .foregroundColor(.white)
@@ -90,9 +91,10 @@ struct WButtonView : View {
     var body : some View {
         ZStack { // formatted button for recognition
             RoundedRectangle(cornerRadius: 10.0)
-                .frame(width: 25, height: 25, alignment: .center)
+                .frame(width: 40, height: 30, alignment: .center)
                 .foregroundColor(.green)
             Button("W") {    // TODO: needs to be hooked to model to do Write
+                print("Write pressed")
             }
             .font(.body)
             .foregroundColor(.white)
@@ -202,34 +204,36 @@ struct CdiIntMapView : View {
     var body : some View {
         VStack(alignment: .leading) {
             HStack {
-                Picker("\(item.name)", selection: $stringValue) {
-                    ForEach(item.values, id: \.self) { valueName in
-                        Text(valueName)
+                HStack{
+                    Picker("\(item.name)", selection: $stringValue) {
+                        ForEach(item.values, id: \.self) { valueName in
+                            Text(valueName)
+                        }
+                    } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
+                    .pickerStyle(MenuPickerStyle())  // This seemed to be causing a hard crash
+                    .onAppear { // initialize from model value
+                        print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
+                        print ("   int \(item.currentIntValue) maps to \(propertyToValue(property: item.currentIntValue))")
+                        intValue = item.currentIntValue
+                        stringValue = propertyToValue(property: intValue)
                     }
-                } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
-                //.pickerStyle(WheelPickerStyle())
-                //.pickerStyle(MenuPickerStyle())  // This seems to be causing a hard crash
-                .onAppear { // initialize from model value
-                    print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
-                    print ("   int \(item.currentIntValue) maps to \(propertyToValue(property: item.currentIntValue))")
-                    intValue = item.currentIntValue
-                    stringValue = propertyToValue(property: intValue)
-                }
-                .onReceive([self.stringValue].publisher.first()) { (value) in  // store back to model
-                    print ("onReceive with \(value)")
-                    print ("    start with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
-                    print ("    string maps to \(valueToProperty(value: stringValue))")
-                    if (stringValue == "<initial internal content>") {
-                        print ("  and returning initially")
-                        return
+                    .onReceive([self.stringValue].publisher.first()) { (value) in  // store back to model
+                        print ("onReceive with \(value)")
+                        print ("    start with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
+                        print ("    string maps to \(valueToProperty(value: stringValue))")
+                        if (stringValue == "<initial internal content>") {
+                            print ("  and returning initially")
+                            return
+                        }
+                        intValue = valueToProperty(value: stringValue)
+                        item.currentIntValue = intValue  // TODO: do we need @ObservedObject for this?
                     }
-                    intValue = valueToProperty(value: stringValue)
-                    item.currentIntValue = intValue  // TODO: do we need @ObservedObject for this?
                 }
                 Spacer()
-                RButtonView()
-                WButtonView()
-                
+                HStack {
+                    RButtonView()
+                    WButtonView()
+                }
             }
             Text(item.description).font(.footnote)
             
