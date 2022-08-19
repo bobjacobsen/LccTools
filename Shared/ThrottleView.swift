@@ -9,35 +9,35 @@ import SwiftUI
 import os
 
 struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throttle
-    @State private var speed : Float16 = 0.0         // for Sliders
-    @State private var isEditing = false    // for Sliders
-    
+    @State private var speed : Float16 = 0.0  // for Sliders
+
     @State private var forward = true   // TODO: get initial state from somewhere?
     @State private var reverse = false
     
-    @State private var showingSelectSheet = false
+    @State private var isEditing = false    // for Sliders
+    @State private var showingSelectSheet = true // initially shown to do selection
     
     var bars : [ThrottleBar] = []
     let maxindex = 50
-    let maxLength : CGFloat = 150.0     // TODO: Combine two maxLength definitions
+    static let maxLength : CGFloat = 150.0
     let maxSpeed = 100.0                // TODO: Decide how to handle max speed
     
     let maxFn = 28
-    var fnLabels : [FnLabel] = []  // TODO: how associate these with state?
+    var fnLabels : [FnModel] = []  // TODO: how associate these with state?
     
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ThrottleView")
     
     init() {
         for index in 0...maxindex {
             // compute bar length from 0 to maxlength // TODO: Decide how to handle speed fn curve
-            let length = CGFloat(maxLength * pow(Double(maxindex - index) / Double(maxindex), 2.0))  // pow curves the progression
-            let setSpeed = Float16( length/maxLength*maxSpeed)
+            let length = CGFloat(ThrottleView.maxLength * pow(Double(maxindex - index) / Double(maxindex), 2.0))  // pow curves the progression
+            let setSpeed = Float16( length/ThrottleView.maxLength*maxSpeed)
             bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
         }
         
         for index in 0...maxFn {
             // default fn labels are just the numbers
-            fnLabels.append(FnLabel(label: "\(index)"))
+            fnLabels.append(FnModel(label: "\(index)"))
         }
         
         logger.debug("init of ThrottleView")
@@ -71,6 +71,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
                     in: 0...100,
                     onEditingChanged: { editing in
                         isEditing = editing
+                        print ("isEditing \(isEditing) speed \(speed)")
                     }
                 ) // Slider
                 
@@ -175,13 +176,12 @@ struct ThrottleSliderView : View {
 struct ThrottleBarView : View {
     let bar : ThrottleBar
     @Binding var speed : Float16
-    
-    let maxLength : CGFloat = 150.0
-    
+        
     var body: some View {
         HStack {
             Button(action:{
                 speed = bar.setSpeed
+                print ("button sets speed \(speed)")
             }, // Action
                    label: {
                 ZStack {
@@ -198,11 +198,12 @@ struct ThrottleBarView : View {
             // add a transparent button to fill out rest of line
             Button(action:{
                 speed = bar.setSpeed
+                print ("button sets speed \(speed)")
             }, // Action
                    label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 5.0)
-                        .frame(width: maxLength - bar.length) // alignment: .leading, height: 15
+                        .frame(width: ThrottleView.maxLength - bar.length) // alignment: .leading, height: 15
                         .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
                         .opacity(0.1)
                 } // ZStack
@@ -225,7 +226,7 @@ struct ThrottleBar {
 }
 
 // Data to construct a single function button
-struct FnLabel {
+struct FnModel {
     let label : String
     let id = UUID()
 }
@@ -264,9 +265,10 @@ struct LocoSelectionView : View {
 
     var body: some View {
         VStack {
-            Text("Loco Selection View")
+            Text("Select Locomotive")
                 .font(.title)
             
+            Text("Roster Entry")
             Picker("Roster Entries", selection: $selectedAddress) {
                 ForEach(roster, id: \.self) {
                     Text($0)
@@ -275,6 +277,10 @@ struct LocoSelectionView : View {
             }   //.pickerStyle(SegmentedPickerStyle())
             //.pickerStyle(MenuPickerStyle())  // default seems to be menu style here
             //.pickerStyle(WheelPickerStyle())
+            
+            Button("Select"){}
+            
+            Divider()
             
             VStack {
                 HStack {
@@ -288,6 +294,7 @@ struct LocoSelectionView : View {
                 }
                 TextField("Enter address...", text: $address)
                     .fixedSize()  // limit size to something reasonable
+                Button("Select"){}
                 Spacer()
                 Text("Swipe down to close")
             }
