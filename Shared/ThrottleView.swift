@@ -6,24 +6,21 @@
 //
 
 import SwiftUI
+import OpenlcbLibrary
 import os
 
+// The complete throttle view, with both speed and function sections
 struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throttle
-    @State private var speed : Float16 = 0.0  // for Sliders
-
-    @State private var forward = true   // TODO: get initial state from somewhere?
-    @State private var reverse = false
     
+    @ObservedObject var model = ThrottleModel()
+ 
     @State private var isEditing = false    // for Sliders
-    @State private var showingSelectSheet = true // initially shown to do selection
+    @State private var showingSelectSheet = false // // TODO: Connect to whether a loco is selected
     
     var bars : [ThrottleBar] = []
     let maxindex = 50
     static let maxLength : CGFloat = 150.0
     let maxSpeed = 100.0                // TODO: Decide how to handle max speed
-    
-    let maxFn = 28
-    var fnLabels : [FnModel] = []  // TODO: how associate these with state?
     
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ThrottleView")
     
@@ -35,127 +32,73 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
             bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
         }
         
-        for index in 0...maxFn {
-            // default fn labels are just the numbers
-            fnLabels.append(FnModel(label: "\(index)"))
-        }
-        
         logger.debug("init of ThrottleView")
     }
     
     var body: some View {
-            VStack {
-                ZStack { // large-format button for loco selection
-                    RoundedRectangle(cornerRadius: 15.0)
-                        .frame(height: 50, alignment: .center)
-                        .foregroundColor(.green)
-                    Button("DCC 4407") {    // TODO: need to load current selection from state
-                        showingSelectSheet.toggle()
+        VStack {
+            ZStack { // large-format button for loco selection
+                RoundedRectangle(cornerRadius: 15.0)
+                    .frame(height: 40, alignment: .center)
+                    .foregroundColor(.green)
+                Button("DCC 4407") {    // TODO: need to load current selection from state
+                    showingSelectSheet.toggle()
+                }
+                .font(.title)
+                .foregroundColor(.white)
+                // when clicked, show loco selection in a covering sheet
+                .sheet(isPresented: $showingSelectSheet) {  // show selection in a cover sheet
+                    LocoSelectionView() // shows full sheet
+                    // .presentationDetents([.fraction(0.25)]) // iOS16 feature
+                }
+            } // end ZStack button
+            
+            Slider(
+                value: $model.speed,
+                in: 0...100,
+                onEditingChanged: { editing in
+                    isEditing = editing
+                }
+            ) // Slider
+            
+            HStack {
+                ThrottleSliderView(speed: $model.speed, bars: bars)
+                FunctionsView(fnModels: model.fnModels)
+            } // HStack
+            
+            Spacer()
+            
+            Slider(
+                value: $model.speed,
+                in: 0...100,
+                onEditingChanged: { editing in
+                    isEditing = editing
+                }
+            ) // Slider
+            
+            HStack {
+                StandardToggleButton(label: "Reverse", height: 40, select: $model.reverse)
+                {
+                    if (!model.reverse) {
+                        model.speed = 0
                     }
-                    .font(.title)
-                    .foregroundColor(.white)
-                    // when clicked, show loco selection in a covering sheet
-                    .sheet(isPresented: $showingSelectSheet) {  // show selection in a cover sheet
-//                        if #available(iOS 16.0, *) {
-//                            LocoSelectionView()
-//                                .presentationDetents([.fraction(0.25)])
-//                        } else {
-                            // Fallback on earlier versions
-                            LocoSelectionView() // shows full sheet
-//                        }
+                    model.forward = false
+                    model.reverse = true
+                } // end Standard Button
+                StandardMomentaryButton(label: "Stop", height: 40)
+                {
+                    model.speed = 0.0
+                }
+                StandardToggleButton(label: "Forward", height: 40, select: $model.forward)
+                {
+                    if (!model.forward) {
+                        model.speed = 0
                     }
-                } // end ZStack button
-                    
-                Slider(
-                    value: $speed,
-                    in: 0...100,
-                    onEditingChanged: { editing in
-                        isEditing = editing
-                        print ("isEditing \(isEditing) speed \(speed)")
-                    }
-                ) // Slider
-                
-                HStack {
-                    ThrottleSliderView(speed: $speed, bars: bars)
-                    
-                    List {
-                        ForEach(fnLabels, id: \.id) { fnLabel in
-                            FnButtonView(fnLabel.label)
-                        }
-                    }
-                    
-                } // HStack
-                
-                Spacer()
-                
-                Slider(
-                    value: $speed,
-                    in: 0...100,
-                    onEditingChanged: { editing in
-                        isEditing = editing
-                    }
-                ) // Slider
-                
-                HStack {
-                    Button(
-                        action: {
-                            if (!reverse) {
-                                speed = 0
-                            }
-                            forward = false
-                            reverse = true
-                        },
-                        label: {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 15.0)
-                                    .frame(height: 50, alignment: .center)
-                                    .foregroundColor(reverse ? .blue : .green)
-                                
-                                Text("Reverse")
-                                    .font(.title)
-                                    .foregroundColor(.white)
-                            }
-                        } // label
-                    ) // Button
-                    Button(
-                        action: {
-                            speed = 0.0
-                        },
-                        label: {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 15.0)
-                                    .frame(height: 50, alignment: .center)
-                                    .foregroundColor(.green)
-                                
-                                Text("Stop")
-                                    .font(.title)
-                                    .foregroundColor(.white)
-                            }
-                        } // label
-                    ) // Button
-                    Button(
-                        action: {
-                            if (!forward) {
-                                speed = 0
-                            }
-                            forward = true
-                            reverse = false
-                        },
-                        label: {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 15.0)
-                                    .frame(height: 50, alignment: .center)
-                                    .foregroundColor(forward ? .blue : .green)
-                                
-                                Text("Forward")
-                                    .font(.title)
-                                    .foregroundColor(.white)
-                            }
-                        } // label
-                    ) // Button
-                } // HStack of R/S/F
-            } // VStack of entire View
-//        }.navigationTitle("Throttle View")  // NavigationView
+                    model.forward = true
+                    model.reverse = false
+                }
+            } // HStack of R/S/F
+        } // VStack of entire View
     } // body
 } // ThrottleView
 
@@ -181,11 +124,10 @@ struct ThrottleBarView : View {
         HStack {
             Button(action:{
                 speed = bar.setSpeed
-                print ("button sets speed \(speed)")
             }, // Action
                    label: {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 5.0)
+                    RoundedRectangle(cornerRadius: 2.0)
                         .frame(width: bar.length) // height is computed automatically
                         .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
                 }
@@ -198,14 +140,13 @@ struct ThrottleBarView : View {
             // add a transparent button to fill out rest of line
             Button(action:{
                 speed = bar.setSpeed
-                print ("button sets speed \(speed)")
             }, // Action
                    label: {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 5.0)
+                    RoundedRectangle(cornerRadius: 2.0)
                         .frame(width: ThrottleView.maxLength - bar.length) // alignment: .leading, height: 15
                         .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
-                        .opacity(0.1)
+                        .opacity(0.2)
                 } // ZStack
             } // label
             ) // Button
@@ -225,30 +166,38 @@ struct ThrottleBar {
     let id = UUID()
 }
 
-// Data to construct a single function button
-struct FnModel {
-    let label : String
-    let id = UUID()
+// the display of functions
+struct FunctionsView : View {
+    var fnModels : [FnModel]
+
+    var body: some View {
+        List {
+            ClockView() // add a clock view as the top bar  // TODO: tune clock appearance here
+            ForEach(fnModels, id: \.id) { fnModel in
+                FnButtonView(model: fnModel)
+            }
+        }
+    }
 }
 
 // The function button itself
 struct FnButtonView : View {
-    @State var pressed = false      // true highlights button as down
-    @State var momentary = false    // false makes button push on, push off
-    let number: String
-    init(_ number : String) {
-        self.number = number
-    }
+    
+    @ObservedObject var model : FnModel
+
     var body: some View {
         Button(action:{
-            if (!momentary) { pressed = !pressed }
+            if (!model.momentary) { model.pressed = !model.pressed }
+            // TODO: is a momentary press down/up being recorded?
+            // https://developer.apple.com/forums/thread/131715
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: 15.0)
                     .frame(alignment: .center) // width: 120, height: 50,
-                    .foregroundColor(!momentary && pressed ? .blue : .green)
+                    .foregroundColor(!model.momentary && model.pressed ? .blue : .green) // TODO: blue while momentary pressed
+                //
                 
-                Text("FN \(number)")
+                Text("FN \(model.label)")
                     .font(.title)
                     .foregroundColor(.white)
             }
@@ -303,7 +252,9 @@ struct LocoSelectionView : View {
 }
 
 struct ThrottleView_Previews: PreviewProvider {
+    static let openlcblib = OpenlcbLibrary(sample: true)
     static var previews: some View {
         ThrottleView()
+            .environmentObject(openlcblib)
     }
 }
