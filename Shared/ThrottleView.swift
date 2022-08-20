@@ -18,15 +18,15 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     @State private var showingSelectSheet = false // // TODO: Connect to whether a loco is selected
     
     var bars : [ThrottleBar] = []
-    let maxindex = 50
-    static let maxLength : CGFloat = 150.0
-    let maxSpeed = 100.0                // TODO: Decide how to handle max speed
+    let maxindex = 50                       // number of bars
+    static let maxLength : CGFloat = 150.0  // length of horizontal bar area
+    let maxSpeed = 100.0                    // TODO: Decide how to handle max speed - configurable?
     
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ThrottleView")
     
     init() {
         for index in 0...maxindex {
-            // compute bar length from 0 to maxlength // TODO: Decide how to handle speed fn curve
+            // compute bar length from 0 to maxlength
             let length = CGFloat(ThrottleView.maxLength * pow(Double(maxindex - index) / Double(maxindex), 2.0))  // pow curves the progression
             let setSpeed = Float16( length/ThrottleView.maxLength*maxSpeed)
             bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
@@ -37,21 +37,13 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     
     var body: some View {
         VStack {
-            ZStack { // large-format button for loco selection
-                RoundedRectangle(cornerRadius: 15.0)
-                    .frame(height: 40, alignment: .center)
-                    .foregroundColor(.green)
-                Button("DCC 4407") {    // TODO: need to load current selection from state
-                    showingSelectSheet.toggle()
-                }
-                .font(.title)
-                .foregroundColor(.white)
-                // when clicked, show loco selection in a covering sheet
-                .sheet(isPresented: $showingSelectSheet) {  // show selection in a cover sheet
-                    LocoSelectionView() // shows full sheet
-                    // .presentationDetents([.fraction(0.25)]) // iOS16 feature
-                }
-            } // end ZStack button
+            StandardMomentaryButton(label: "DCC 4408", height: 40){
+                showingSelectSheet.toggle()
+            }
+            .sheet(isPresented: $showingSelectSheet) {  // show selection in a cover sheet
+                LocoSelectionView() // shows full sheet
+                // .presentationDetents([.fraction(0.25)]) // iOS16 feature
+            }
             
             Slider(
                 value: $model.speed,
@@ -206,11 +198,11 @@ struct FnButtonView : View {
 }
 
 struct LocoSelectionView : View {
+    @ObservedObject var model = ThrottleModel()
+
     @State var address  = ""
     @State var addressForm  = 1
-    @State private var selectedAddress = "4137"
-
-    var roster = ["4137", "2111", "This is a really long roster name", "99", "2114", "2115", "2116", "2117"]
+    @State private var selectedAddress = ""  // TODO: should be initialized to an entry
 
     var body: some View {
         VStack {
@@ -219,15 +211,17 @@ struct LocoSelectionView : View {
             
             Text("Roster Entry")
             Picker("Roster Entries", selection: $selectedAddress) {
-                ForEach(roster, id: \.self) {
-                    Text($0)
+                ForEach(model.roster, id: \.self.label) {
+                    Text($0.label)
                         .font(.largeTitle)
                 }
             }   //.pickerStyle(SegmentedPickerStyle())
             //.pickerStyle(MenuPickerStyle())  // default seems to be menu style here
             //.pickerStyle(WheelPickerStyle())
             
-            Button("Select"){}
+            Button("Select"){
+                print ("upper select with \(selectedAddress)")
+            }
             
             Divider()
             
