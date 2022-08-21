@@ -109,7 +109,7 @@ struct OlcbToolsApp: App {
                         Label("Clocks", systemImage: "clock")
                     }
 
-                ThrottleView()
+                ThrottleView(throttleModel: openlcblib.throttleModel0)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Throttle", systemImage: "train.side.front.car")

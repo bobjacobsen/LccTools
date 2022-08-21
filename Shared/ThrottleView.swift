@@ -12,7 +12,7 @@ import os
 // The complete throttle view, with both speed and function sections
 struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throttle
     
-    @ObservedObject var model = ThrottleModel()
+    @ObservedObject var model: ThrottleModel
  
     @State private var isEditing = false    // for Sliders
     @State private var showingSelectSheet = false // // TODO: Connect to whether a loco is selected
@@ -24,7 +24,9 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ThrottleView")
     
-    init() {
+    init(throttleModel : ThrottleModel) {
+        self.model = throttleModel
+        
         for index in 0...maxindex {
             // compute bar length from 0 to maxlength
             let length = CGFloat(ThrottleView.maxLength * pow(Double(maxindex - index) / Double(maxindex), 2.0))  // pow curves the progression
@@ -119,7 +121,7 @@ struct ThrottleBarView : View {
             }, // Action
                    label: {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 2.0)
+                    RoundedRectangle(cornerRadius: 3.0)
                         .frame(width: bar.length) // height is computed automatically
                         .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
                 }
@@ -248,7 +250,7 @@ struct LocoSelectionView : View {
 struct ThrottleView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbLibrary(sample: true)
     static var previews: some View {
-        ThrottleView()
+        ThrottleView(throttleModel: ThrottleModel())
             .environmentObject(openlcblib)
     }
 }
