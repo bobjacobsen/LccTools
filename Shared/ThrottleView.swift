@@ -22,7 +22,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area
     let maxSpeed = 100.0                    // TODO: Decide how to handle max speed - configurable?
     
-    let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ThrottleView")
+    let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
     
     init(throttleModel : ThrottleModel) {
         self.model = throttleModel
@@ -39,11 +39,12 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     
     var body: some View {
         VStack {
-            StandardMomentaryButton(label: "DCC 4408", height: 40){
+            StandardMomentaryButton(label: model.selectedLoco,
+                                    height: 40){
                 showingSelectSheet.toggle()
             }
             .sheet(isPresented: $showingSelectSheet) {  // show selection in a cover sheet
-                LocoSelectionView() // shows full sheet
+                LocoSelectionView(model: model) // shows full sheet
                 // .presentationDetents([.fraction(0.25)]) // iOS16 feature
             }
             
@@ -200,11 +201,13 @@ struct FnButtonView : View {
 }
 
 struct LocoSelectionView : View {
-    @ObservedObject var model = ThrottleModel()
+    @ObservedObject var model : ThrottleModel
 
     @State var address  = ""
     @State var addressForm  = 1
     @State private var selectedAddress = ""  // TODO: should be initialized to an entry
+ 
+    let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LocoSelectionView")
 
     var body: some View {
         VStack {
@@ -222,7 +225,9 @@ struct LocoSelectionView : View {
             //.pickerStyle(WheelPickerStyle())
             
             Button("Select"){
-                print ("upper select with \(selectedAddress)")
+                logger.debug("upper select with \(selectedAddress, privacy:.public)")
+                let idNumber = UInt64(selectedAddress) ?? 0
+                model.startSelection(NodeID(idNumber))
             }
             
             Divider()
@@ -239,7 +244,11 @@ struct LocoSelectionView : View {
                 }
                 TextField("Enter address...", text: $address)
                     .fixedSize()  // limit size to something reasonable
-                Button("Select"){}
+                Button("Select"){
+                    logger.debug("lower select with \(address, privacy:.public)")
+                    let idNumber = UInt64(address) ?? 0
+                    model.startSelection(NodeID(idNumber))
+                }
                 Spacer()
                 Text("Swipe down to close")
             }
@@ -250,7 +259,7 @@ struct LocoSelectionView : View {
 struct ThrottleView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbLibrary(sample: true)
     static var previews: some View {
-        ThrottleView(throttleModel: ThrottleModel())
+        ThrottleView(throttleModel: ThrottleModel(nil))
             .environmentObject(openlcblib)
     }
 }
