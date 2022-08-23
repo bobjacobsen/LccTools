@@ -17,14 +17,10 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     @State private var isEditing = false    // for Sliders
     @State private var showingSelectSheet = false // // TODO: Connect to whether a loco is selected
     
-    /// 1 scale mph in meters per second for the speed commands.
-    /// The screen works in MPH; the model works in meters/sec
-    static let MPH_to_mps = 0.44704
-
     var bars : [ThrottleBar] = []
     let maxindex = 50                       // number of bars
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area
-    let maxSpeed = 100.0 / MPH_to_mps       // TODO: Decide how to handle max speed - configurable?
+    let maxSpeed = 100.0                   // TODO: Decide how to handle max speed - configurable?
 
 
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
@@ -79,11 +75,12 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
             HStack {
                 StandardToggleButton(label: "Reverse", height: 40, select: $model.reverse)
                 {
-                    if (!model.reverse) {
-                        model.speed = 0
-                    }
+                    let oldReverse = model.reverse
                     model.forward = false
                     model.reverse = true
+                    if (!oldReverse) {
+                        model.speed = 0.0
+                    }
                 } // end Standard Button
                 StandardMomentaryButton(label: "Stop", height: 40)
                 {
@@ -91,11 +88,12 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
                 }
                 StandardToggleButton(label: "Forward", height: 40, select: $model.forward)
                 {
-                    if (!model.forward) {
-                        model.speed = 0
-                    }
+                    let oldForward = model.forward
                     model.forward = true
                     model.reverse = false
+                    if (!oldForward) {
+                        model.speed = 0.0
+                    }
                 }
             } // HStack of R/S/F
         } // VStack of entire View
@@ -193,7 +191,7 @@ struct FnButtonView : View {
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: 15.0)
-                    .frame(alignment: .center) // width: 120, height: 50,
+                    .frame(alignment: .center)
                     .foregroundColor(!model.momentary && model.pressed ? .blue : .green) // TODO: blue while momentary pressed
                 //
                 
