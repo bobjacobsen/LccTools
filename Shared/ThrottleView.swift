@@ -17,11 +17,16 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     @State private var isEditing = false    // for Sliders
     @State private var showingSelectSheet = false // // TODO: Connect to whether a loco is selected
     
+    /// 1 scale mph in meters per second for the speed commands.
+    /// The screen works in MPH; the model works in meters/sec
+    static let MPH_to_mps = 0.44704
+
     var bars : [ThrottleBar] = []
     let maxindex = 50                       // number of bars
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area
-    let maxSpeed = 100.0                    // TODO: Decide how to handle max speed - configurable?
-    
+    let maxSpeed = 100.0 / MPH_to_mps       // TODO: Decide how to handle max speed - configurable?
+
+
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
     
     init(throttleModel : ThrottleModel) {
