@@ -10,7 +10,7 @@ import OpenlcbLibrary
 import os
 
 // The complete throttle view, with both speed and function sections
-struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throttle
+struct ThrottleView: View {
     
     @ObservedObject var model: ThrottleModel
  
@@ -19,7 +19,7 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     var bars : [ThrottleBar] = []
     let maxindex = 50                       // number of bars
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area
-    let maxSpeed = 100.0                   // TODO: Decide how to handle max speed - configurable?
+    let maxSpeed = 100.0                    // TODO: Decide how to handle max speed - configurable?
 
 
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
@@ -169,7 +169,7 @@ struct FunctionsView : View {
 
     var body: some View {
         List {
-            ClockView() // add a clock view as the top bar  // TODO: tune clock appearance here
+            ClockView() // add a clock view as the top bar
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
             }
@@ -251,7 +251,7 @@ struct LocoSelectionView : View {
                     logger.debug("lower select with \(address, privacy:.public)")
                     let idNumber = UInt64(address) ?? 0
                     model.startSelection(NodeID(idNumber))
-                }
+                }.disabled(Int(address)==nil) // disable select if input can't be parsed
                 Spacer()
                 Text("Swipe down to close")
             }
@@ -262,7 +262,7 @@ struct LocoSelectionView : View {
 struct ThrottleView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbLibrary(sample: true)
     static var previews: some View {
-        ThrottleView(throttleModel: ThrottleModel(nil))
+        ThrottleView(throttleModel: ThrottleModel(CanLink(localNodeID: NodeID(0))))
             .environmentObject(openlcblib)
     }
 }
