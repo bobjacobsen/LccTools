@@ -1,5 +1,5 @@
 //
-//  StandardButton.swift
+//  StandardButtons.swift
 //  OlcbTools
 //
 //  Created by Bob Jacobsen on 8/19/22.
@@ -13,6 +13,7 @@ struct StandardToggleButton: View {
     let height : CGFloat
     @Binding var select : Bool
     let action : () -> Void
+    @Environment(\.isEnabled) private var isEnabled
 
     var body: some View {
         Button(
@@ -21,7 +22,10 @@ struct StandardToggleButton: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15.0)
                         .frame(height: height, alignment: .center)
-                        .foregroundColor(select ? .blue : .green)
+                        .foregroundColor(
+                            !isEnabled ? .gray : (
+                            select ? .blue : .green)
+                        )
                     
                     Text(label)
                         .font(.title)
@@ -37,7 +41,8 @@ struct StandardMomentaryButton: View {
     let label : String
     let height : CGFloat
     let action : () -> Void
-    
+    @Environment(\.isEnabled) private var isEnabled
+
     var body: some View {
         Button(
             action: action,
@@ -45,7 +50,7 @@ struct StandardMomentaryButton: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15.0)
                         .frame(height: height, alignment: .center)
-                        .foregroundColor(.green)
+                        .foregroundColor(isEnabled ? .green : .gray)
                     
                     Text(label)
                         .font(.title)
@@ -56,10 +61,27 @@ struct StandardMomentaryButton: View {
     }
 }
 
+
+
 struct StandardButton_Previews: PreviewProvider {
+    @State static var forToggle = false
     static var previews: some View {
-        StandardMomentaryButton(label: "Foo", height: 50){
-          // on pressed
+
+        VStack {
+            StandardMomentaryButton(label: "Momentary", height: 50){
+                // on pressed
+            }
+            StandardMomentaryButton(label: "Momentary Disabled", height: 50){
+                // on pressed
+            }.disabled(true)
+            StandardToggleButton(label: "Toggle", height: 50, select: $forToggle){
+                // on pressed
+                forToggle = !forToggle
+            }
+            StandardToggleButton(label: "Toggle Disabled", height: 50, select: $forToggle){
+                // on pressed
+                forToggle = !forToggle
+            }.disabled(true)
         }
     }
 }
