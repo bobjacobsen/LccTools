@@ -15,7 +15,6 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
     @ObservedObject var model: ThrottleModel
  
     @State private var isEditing = false    // for Sliders
-    @State private var showingSelectSheet = false // // TODO: Connect to whether a loco is selected
     
     var bars : [ThrottleBar] = []
     let maxindex = 50                       // number of bars
@@ -42,9 +41,9 @@ struct ThrottleView: View {  // TODO: Add useful stuff to make this a real throt
         VStack {
             StandardMomentaryButton(label: model.selectedLoco,
                                     height: 40){
-                showingSelectSheet.toggle()
+                model.showingSelectSheet.toggle()
             }
-            .sheet(isPresented: $showingSelectSheet) {  // show selection in a cover sheet
+            .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
                 LocoSelectionView(model: model) // shows full sheet
                 // .presentationDetents([.fraction(0.25)]) // iOS16 feature
             }
@@ -208,7 +207,7 @@ struct LocoSelectionView : View {
 
     @State var address  = ""
     @State var addressForm  = 1
-    @State private var selectedAddress = ""  // TODO: should be initialized to an entry
+    @State private var selectedRosterAddress = "<none>"    
  
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LocoSelectionView")
 
@@ -218,7 +217,7 @@ struct LocoSelectionView : View {
                 .font(.title)
             
             Text("Roster Entry")
-            Picker("Roster Entries", selection: $selectedAddress) {
+            Picker("Roster Entries", selection: $selectedRosterAddress) {
                 ForEach(model.roster, id: \.self.label) {
                     Text($0.label)
                         .font(.largeTitle)
@@ -228,10 +227,11 @@ struct LocoSelectionView : View {
             //.pickerStyle(WheelPickerStyle())
             
             Button("Select"){
-                logger.debug("upper select with \(selectedAddress, privacy:.public)")
-                let idNumber = UInt64(selectedAddress) ?? 0
+                logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
+                // TODO: Get the actual node ID from the RosterEntry
+                let idNumber = UInt64(selectedRosterAddress) ?? 0
                 model.startSelection(NodeID(idNumber))
-            }
+            }.disabled(selectedRosterAddress == "<none>")
             
             Divider()
             
