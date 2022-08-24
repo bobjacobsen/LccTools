@@ -221,7 +221,7 @@ struct LocoSelectionView : View {
             VStack {
                 // Top section is for selecting from roster
                 
-                Text("Roster Entry")
+                Text("Roster Entry:")
                     .font(.title)
                 Picker("Roster Entries", selection: $selectedRosterAddress) {
                     ForEach(model.roster, id: \.self.label) {
@@ -245,27 +245,30 @@ struct LocoSelectionView : View {
             // Bottom section is for selection by entering address
             
             VStack {
-                HStack {
-                    Text("DCC Address:")
-                        .font(.title)
-                    Picker(selection: $addressForm, label: Text("DCC Address Form:")) {
-                        Text("Long").tag(1)
-                        Text("Short").tag(2)
-                    }
-                        .font(.title) // TODO: how to get size?
-                        .pickerStyle(SegmentedPickerStyle())
-                    // .pickerStyle(.radioGroup)        // macOS only
-                    //.horizontalRadioGroupLayout()     // macOS only
-                }
+                Text("DCC Address:")
+                    .font(.title)
+                
                 TextField("Enter address...", text: $address)
                     .font(.title)
                     .fixedSize()  // limit size to something reasonable
+                
+                Picker(selection: $addressForm, label: Text("DCC Address Form:")) {
+                    Text("Long").tag(1)
+                    Text("Short").tag(2)
+                }
+                .font(.title) // TODO: how to get size?
+                .pickerStyle(SegmentedPickerStyle())
+                // .pickerStyle(.radioGroup)        // macOS only
+                //.horizontalRadioGroupLayout()     // macOS only
+
                 StandardMomentaryButton(label: "Select", height: 40){
                     logger.debug("lower select with \(address, privacy:.public)")
                     let idNumber = UInt64(address) ?? 0
                     model.startSelection(NodeID(idNumber))
                 }.disabled(Int(address)==nil) // disable select if input can't be parsed
+                
                 Spacer()
+                
                 Text("Swipe down to close")
             }
         }
