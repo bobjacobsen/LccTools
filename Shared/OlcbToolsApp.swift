@@ -90,31 +90,32 @@ struct OlcbToolsApp: App {
         // macOS puts those in a tab bar at the top of the window
         WindowGroup {
             TabView {
-                NodeListNavigationView()
+                ThrottleView(throttleModel: openlcblib.throttleModel0)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Nodes", systemImage: "app.connected.to.app.below.fill")
+                        Label("Throttle", systemImage: "train.side.front.car")
                     }
-                    .environmentObject(openlcblib)
+                // TODO: add 2nd throttle on iPad?  See ContentView.swift for example code
 
+               ClockView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Clocks", systemImage: "clock")
+                    }
+                
                 MonitorView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
                     }
 
-                ClockView()
+                NodeListNavigationView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Clocks", systemImage: "clock")
+                        Label("Configure", systemImage: "app.connected.to.app.below.fill")
                     }
-
-                ThrottleView(throttleModel: openlcblib.throttleModel0)
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                    .tabItem {
-                        Label("Throttle", systemImage: "train.side.front.car")
-                    }
-                    // TODO: add 2nd throttle on iPad?  See ContentView.swift for example code
+                    .environmentObject(openlcblib)
+                
 #if os(iOS)
                 // in iOS, the settings are another tab
                 SettingsView()
