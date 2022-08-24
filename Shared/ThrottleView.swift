@@ -214,40 +214,53 @@ struct LocoSelectionView : View {
     var body: some View {
         VStack {
             Text("Select Locomotive")
-                .font(.title)
-            
-            Text("Roster Entry")
-            Picker("Roster Entries", selection: $selectedRosterAddress) {
-                ForEach(model.roster, id: \.self.label) {
-                    Text($0.label)
-                        .font(.largeTitle)
-                }
-            }   //.pickerStyle(SegmentedPickerStyle())
-            //.pickerStyle(MenuPickerStyle())  // default seems to be menu style here
-            //.pickerStyle(WheelPickerStyle())
-            
-            Button("Select"){
-                logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
-                // TODO: Get the actual node ID from the RosterEntry
-                let idNumber = UInt64(selectedRosterAddress) ?? 0
-                model.startSelection(NodeID(idNumber))
-            }.disabled(selectedRosterAddress == "<none>")
+                .font(.largeTitle)
             
             Divider()
             
             VStack {
+                // Top section is for selecting from roster
+                
+                Text("Roster Entry")
+                    .font(.title)
+                Picker("Roster Entries", selection: $selectedRosterAddress) {
+                    ForEach(model.roster, id: \.self.label) {
+                        Text($0.label)
+                            .font(.largeTitle)
+                    }
+                }   // .pickerStyle(SegmentedPickerStyle())
+                //.pickerStyle(MenuPickerStyle())  // default seems to be menu style here
+                .pickerStyle(WheelPickerStyle())
+                
+                StandardMomentaryButton(label: "Select", height: 40){
+                    logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
+                    // TODO: Get the actual node ID from the RosterEntry
+                    let idNumber = UInt64(selectedRosterAddress) ?? 0
+                    model.startSelection(NodeID(idNumber))
+                }.disabled(selectedRosterAddress == "<none>")
+            }
+            
+            Divider()
+            
+            // Bottom section is for selection by entering address
+            
+            VStack {
                 HStack {
                     Text("DCC Address:")
+                        .font(.title)
                     Picker(selection: $addressForm, label: Text("DCC Address Form:")) {
                         Text("Long").tag(1)
                         Text("Short").tag(2)
                     }
+                        .font(.title) // TODO: how to get size?
+                        .pickerStyle(SegmentedPickerStyle())
                     // .pickerStyle(.radioGroup)        // macOS only
                     //.horizontalRadioGroupLayout()     // macOS only
                 }
                 TextField("Enter address...", text: $address)
+                    .font(.title)
                     .fixedSize()  // limit size to something reasonable
-                Button("Select"){
+                StandardMomentaryButton(label: "Select", height: 40){
                     logger.debug("lower select with \(address, privacy:.public)")
                     let idNumber = UInt64(address) ?? 0
                     model.startSelection(NodeID(idNumber))
@@ -258,6 +271,8 @@ struct LocoSelectionView : View {
         }
     }
 }
+
+
 
 struct ThrottleView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbLibrary(sample: true)
