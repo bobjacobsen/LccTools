@@ -253,7 +253,7 @@ struct LocoSelectionView : View {
                     Text("Long").tag(1)
                     Text("Short").tag(2)
                 }
-                .font(.title) // TODO: how to get size?
+                .font(.title)
                 .pickerStyle(SegmentedPickerStyle())
                 // .pickerStyle(.radioGroup)        // macOS only
                 //.horizontalRadioGroupLayout()     // macOS only

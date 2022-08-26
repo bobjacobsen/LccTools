@@ -11,9 +11,6 @@ import os
 
 // This works by timer-based periodic refresh of hours/minutes/seconds @State variables from the underlying Clock instance
 
-// TODO: Make display larger on iPad or in landscape mode
-// See https://developer.apple.com/forums/thread/126878 for how to tell portrait from landscape
-
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
 
