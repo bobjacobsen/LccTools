@@ -18,8 +18,9 @@ struct NodeSummaryView: View {
         // TODO: sort out iOS vs macOS here (and also matching bracket below)
 //NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
         
+        // TODO: Title on this page shows as "Events" on iPhone, instead of More Info
         VStack(alignment: .leading) {
-            Text(displayNode.name).font(.headline)
+            Text(displayNode.name).font(.title)
             Text(displayNode.snip.userProvidedDescription)
             Text(displayNode.id.description) // nodeID
 
@@ -31,7 +32,7 @@ struct NodeSummaryView: View {
                         Text("Events")
                             .font(.footnote)
                     }
-                }.navigationTitle("Events")
+                } //.navigationTitle("Events")
                                 
                 NavigationLink(destination: CdCdiView()) {
                     VStack {
@@ -40,7 +41,7 @@ struct NodeSummaryView: View {
                         Text("Configure")
                             .font(.footnote)
                     }
-                }.navigationTitle("Configure")
+                } //.navigationTitle("Configure")
                 
                 NavigationLink(destination: PipView(displayNode: displayNode)) {
                     VStack {
@@ -49,7 +50,7 @@ struct NodeSummaryView: View {
                         Text("More Info")
                             .font(.footnote)
                     }
-                }.navigationTitle("More Info")
+                } //.navigationTitle("More Info")
             }.frame(minHeight: 75)
             
             Text(displayNode.snip.modelName)

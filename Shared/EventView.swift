@@ -20,13 +20,14 @@ struct EventView: View {  // TODO: Add specific node's view of events
                 Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
                 Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
                 Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
-                Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
+                Text("     (This is sample data)  ").frame(alignment: .trailing)
             }
             Divider()
             VStack {
                 Text("Consumes").font(.title).font(.title).frame(alignment: .leading)
                 Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
                 Text("     01.02.03.04.05.06.07.08").frame(alignment: .trailing)
+                Text("     (This is sample data)  ").frame(alignment: .trailing)
             }
         }.navigationTitle("Events")
     }
