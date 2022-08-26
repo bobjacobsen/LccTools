@@ -8,7 +8,7 @@
 import SwiftUI
 import OpenlcbLibrary
 import TelnetListenerLib
-import Network
+//import Network
 import os
 
 /// Main entry point for OlcbToolsApp
@@ -23,6 +23,8 @@ struct OlcbToolsApp: App {
     @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = "05.01.01.01.03.FF"  // static for static openlcnlib
 
     @StateObject var openlcblib = OpenlcbLibrary(defaultNodeID: NodeID(this_node_ID))
+    
+    @Environment(\.scenePhase) var scenePhase  // for .background, etc
     
     // TODO: figure out how to make this a real (not simulated) connection even while running tests; add tests
     
@@ -132,7 +134,17 @@ struct OlcbToolsApp: App {
                 }
 
         } // WindowGroup
-        
+        // TODO: stop/restart TCP connection? See https://developer.apple.com/documentation/swiftui/scenephase
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                print("Active")
+            } else if newPhase == .inactive {
+                print("Inactive")
+            } else if newPhase == .background {
+                print("Background")
+            }
+        }
+
 #if os(macOS)
         // macOS has a separate "settings" window as Preferences
         Settings {  // creates a Preferences item in App menu
@@ -142,3 +154,4 @@ struct OlcbToolsApp: App {
 
     }
 }
+
