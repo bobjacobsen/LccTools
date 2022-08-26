@@ -14,7 +14,7 @@ struct NodeListNavigationView: View {
 
     @EnvironmentObject var openlcblib : OpenlcbLibrary {
         didSet(oldvalue) {
-            logger.info("EnvironmentObject openlcblib did change")
+            logger.info("EnvironmentObject openlcblib did change in NodeListNavigationView")
         }
     }
     
