@@ -63,35 +63,30 @@ struct ThrottleView: View {
             
             Spacer()
             
-            Slider(
-                value: $model.speed,
-                in: 0...100,
-                onEditingChanged: { editing in
-                    isEditing = editing
-                }
-            ) // Slider
-            
             HStack {
-                StandardToggleButton(label: "Reverse", height: 40, select: $model.reverse)
-                {
-                    let oldReverse = model.reverse
-                    model.forward = false
-                    model.reverse = true
-                    if (!oldReverse) {
-                        model.speed = 0.0
-                    }
-                } // end Standard Button
                 StandardMomentaryButton(label: "Stop", height: 40)
                 {
                     model.speed = 0.0
                 }
-                StandardToggleButton(label: "Forward", height: 40, select: $model.forward)
-                {
-                    let oldForward = model.forward
-                    model.forward = true
-                    model.reverse = false
-                    if (!oldForward) {
-                        model.speed = 0.0
+
+                HStack {
+                    StandardToggleButton(label: "Rev", height: 40, select: $model.reverse)
+                    {
+                        let oldReverse = model.reverse
+                        model.forward = false
+                        model.reverse = true
+                        if (!oldReverse) {
+                            model.speed = 0.0
+                        }
+                    } // end Standard Button
+                    StandardToggleButton(label: "Fwd", height: 40, select: $model.forward)
+                    {
+                        let oldForward = model.forward
+                        model.forward = true
+                        model.reverse = false
+                        if (!oldForward) {
+                            model.speed = 0.0
+                        }
                     }
                 }
             } // HStack of R/S/F
@@ -184,7 +179,9 @@ struct FnButtonView : View {
 
     var body: some View {
         Button(action:{
-            if (!model.momentary) { model.pressed = !model.pressed }
+            DispatchQueue.main.async{ // to avoid "publishing changes from within view updates is not allowed"
+                if (!model.momentary) { model.pressed = !model.pressed }
+            }
             // TODO: is a momentary press down/up being recorded?
             // https://developer.apple.com/forums/thread/131715
         }) {
