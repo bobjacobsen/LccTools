@@ -23,7 +23,6 @@ struct NodeListNavigationView: View {
     }
 
     var body: some View {
-        let _ = Self._printChanges()  // TODO: remove before ship
         NavigationView {
             List { // of all the nodes
                 ForEach(openlcblib.remoteNodeStore.nodes, id:\.id) { (node) in
