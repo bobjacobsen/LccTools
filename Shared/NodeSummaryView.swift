@@ -18,7 +18,6 @@ struct NodeSummaryView: View {
         // TODO: sort out iOS vs macOS here (and also matching bracket below)
 //NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
         
-        // TODO: Title on this page shows as "Events" on iPhone, instead of More Info
         VStack(alignment: .leading) {
             Text(displayNode.name).font(.title)
             Text(displayNode.snip.userProvidedDescription)
@@ -56,7 +55,7 @@ struct NodeSummaryView: View {
             Text(displayNode.snip.modelName)
             Text(displayNode.snip.manufacturerName)
             Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
-        }
+        }.navigationTitle("\(displayNode.name) Summary")
             
 //    }.navigationTitle("\(displayNode.name) Summary") // end of macOS-only Navigation view
 
@@ -75,6 +74,5 @@ struct FullNodeView_Previews: PreviewProvider {
                                             "And Description"))
     static var previews: some View {
         NodeSummaryView(displayNode: displayNode)
-            .previewInterfaceOrientation(.portraitUpsideDown)
     }
 }
