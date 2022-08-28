@@ -260,9 +260,9 @@ struct LocoSelectionView : View {
                 //.horizontalRadioGroupLayout()     // macOS only
 
                 StandardMomentaryButton(label: "Select", height: 40){
-                    logger.debug("lower select with \(address, privacy:.public)")
+                    logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
                     let idNumber = UInt64(address) ?? 0
-                    model.startSelection(idNumber)
+                    model.startSelection(idNumber, forceLongAddr: (addressForm == 1))
                 }.disabled(Int(address)==nil) // disable select if input can't be parsed
                 
                 Spacer()
