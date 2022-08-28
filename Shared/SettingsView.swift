@@ -9,6 +9,11 @@ import SwiftUI
 
 // Using @AppStorage to persist the IP_ADDRESS, see https://medium.com/swlh/introducing-appstorage-in-swiftui-470a56f5ba9e
 
+// TODO: needs to work with a model to display mDNS results
+// TODO: needs to default to mDNS if that's available
+// TODO: should display at start if there's no configuration
+// TODO: needs an indicator of whether it's connected OK or not
+
 /// View for setting and storing user preferences for e.g. hub IP address and this node's ID
 ///
 /// Stores results in @AppStorage. See `OlcbToolsApp` for example of retrieval

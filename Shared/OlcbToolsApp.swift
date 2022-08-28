@@ -8,7 +8,6 @@
 import SwiftUI
 import OpenlcbLibrary
 import TelnetListenerLib
-//import Network
 import os
 
 /// Main entry point for OlcbToolsApp
@@ -136,12 +135,16 @@ struct OlcbToolsApp: App {
         } // WindowGroup
         // TODO: stop/restart TCP connection? See https://developer.apple.com/documentation/swiftui/scenephase
         .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active {
-                print("Active")
-            } else if newPhase == .inactive {
-                print("Inactive")
-            } else if newPhase == .background {
-                print("Background")
+            
+            switch (newPhase) {
+            case .active:
+                logger.debug("Scene Active")
+            case .inactive:
+                logger.debug("Scene Inactive")
+            case .background:
+                logger.debug("Scene Background")
+            @unknown default:
+                logger.warning("Unexpected Scene phast enum")
             }
         }
 

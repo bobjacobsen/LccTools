@@ -234,7 +234,7 @@ struct LocoSelectionView : View {
                     logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
                     // TODO: Get the actual node ID from the RosterEntry
                     let idNumber = UInt64(selectedRosterAddress) ?? 0
-                    model.startSelection(NodeID(idNumber))
+                    model.startSelection(idNumber)
                 }.disabled(selectedRosterAddress == "<none>")
             }
             
@@ -250,7 +250,7 @@ struct LocoSelectionView : View {
                     .font(.title)
                     .fixedSize()  // limit size to something reasonable
                 
-                Picker(selection: $addressForm, label: Text("DCC Address Form:")) {
+                Picker(selection: $addressForm, label: Text("DCC Address Form:")) { // DCC long/short picker
                     Text("Long").tag(1)
                     Text("Short").tag(2)
                 }
@@ -262,7 +262,7 @@ struct LocoSelectionView : View {
                 StandardMomentaryButton(label: "Select", height: 40){
                     logger.debug("lower select with \(address, privacy:.public)")
                     let idNumber = UInt64(address) ?? 0
-                    model.startSelection(NodeID(idNumber))
+                    model.startSelection(idNumber)
                 }.disabled(Int(address)==nil) // disable select if input can't be parsed
                 
                 Spacer()
