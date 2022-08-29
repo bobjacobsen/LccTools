@@ -34,6 +34,7 @@ struct ThrottleView: View {
             bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
         }
         
+        self.model.reloadRoster()
         logger.debug("init of ThrottleView")
     }
     
@@ -202,8 +203,6 @@ struct FnButtonView : View {
 struct LocoSelectionView : View {
     @ObservedObject var model : ThrottleModel
 
-    // TODO: When you come back to this View with a throttle selected, the selected loco should show in the Picker
-    // TODO: Picker needs to display S/L - where does it get it?
     @State var address  = ""
     @State var addressForm  = 1
     @State private var selectedRosterAddress = "<none>"    
