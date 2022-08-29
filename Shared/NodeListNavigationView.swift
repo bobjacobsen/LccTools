@@ -21,7 +21,9 @@ struct NodeListNavigationView: View {
     init () {
         logger.info("init NodeListNavigationView")
     }
-
+    
+    //TODO: would be nice to display this in node-name order, instead of nodeID order.
+    
     var body: some View {
         NavigationView {
             List { // of all the nodes

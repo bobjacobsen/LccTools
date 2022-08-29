@@ -202,7 +202,8 @@ struct FnButtonView : View {
 struct LocoSelectionView : View {
     @ObservedObject var model : ThrottleModel
 
-    // TODO: When you come back to this View with a throttle selected, the selected loco should show in the Picker - move selectedRosterAddress to model? Separate model?
+    // TODO: When you come back to this View with a throttle selected, the selected loco should show in the Picker
+    // TODO: Picker needs to display S/L - where does it get it?
     @State var address  = ""
     @State var addressForm  = 1
     @State private var selectedRosterAddress = "<none>"    
