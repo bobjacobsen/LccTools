@@ -29,7 +29,7 @@ struct ThrottleView: View {
         
         for index in 0...maxindex {
             // compute bar length from 0 to maxlength
-            let length = CGFloat(ThrottleView.maxLength * pow(Double(maxindex - index) / Double(maxindex), 2.0))  // pow curves the progression
+            let length = CGFloat(ThrottleView.maxLength * pow(Double(maxindex - index) / Double(maxindex), 1.5))  // pow curves the progression
             let setSpeed = Float16( length/ThrottleView.maxLength*maxSpeed)
             bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
         }
@@ -233,9 +233,16 @@ struct LocoSelectionView : View {
                 
                 StandardMomentaryButton(label: "Select", height: 40){
                     logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
-                    // TODO: Get the actual node ID from the RosterEntry
-                    let idNumber = UInt64(selectedRosterAddress) ?? 0
-                    model.startSelection(idNumber)
+                    // search model.roster for matching entry to get nodeID
+                    for rosterEntry in model.roster {
+                        if rosterEntry.label == selectedRosterAddress {
+                            model.startSelection(entry: rosterEntry)
+                            break
+                        }
+                    }
+                    
+                    //let idNumber = UInt64(selectedRosterAddress) ?? 0
+                    //model.startSelection(idNumber)
                 }.disabled(selectedRosterAddress == "<none>")
             }
             
@@ -263,7 +270,7 @@ struct LocoSelectionView : View {
                 StandardMomentaryButton(label: "Select", height: 40){
                     logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
                     let idNumber = UInt64(address) ?? 0
-                    model.startSelection(idNumber, forceLongAddr: (addressForm == 1))
+                    model.startSelection(address: idNumber, forceLongAddr: (addressForm == 1))
                 }.disabled(Int(address)==nil) // disable select if input can't be parsed
                 
                 Spacer()
