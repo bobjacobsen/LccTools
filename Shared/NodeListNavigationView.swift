@@ -18,16 +18,18 @@ struct NodeListNavigationView: View {
         }
     }
     
-    init () {
+    var nodes : [Node] = []
+    
+    init (lib: OpenlcbLibrary) { // pass explicitly instead of relying on environment to avoid change loop
+        nodes = lib.remoteNodeStore.nodes
+        nodes.sort { $0.snip.userProvidedNodeName < $1.snip.userProvidedNodeName } // display in name order
         logger.info("init NodeListNavigationView")
     }
-    
-    //TODO: would be nice to display this in node-name order, instead of nodeID order.
-    
+
     var body: some View {
         NavigationView {
             List { // of all the nodes
-                ForEach(openlcblib.remoteNodeStore.nodes, id:\.id) { (node) in
+                ForEach(nodes, id:\.id) { (node) in
                     // how to display each one when selected
                     NavigationLink(destination:
                                     NodeSummaryView(displayNode: node)
@@ -55,7 +57,7 @@ struct NodeListNavigationView: View {
 struct NodeListNavigation_Previews: PreviewProvider {
     static let openlcblib = OpenlcbLibrary(sample: true)
     static var previews: some View {
-        NodeListNavigationView()
+        NodeListNavigationView(lib: openlcblib)
             .environmentObject(openlcblib)
     }
 }

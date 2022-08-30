@@ -65,23 +65,24 @@ struct OlcbToolsApp: App {
         canphysical.physicalLayerUp()
     }
     
-    // TODO: this restart only works once - maybe due to restart inside callback? Really need a better keep-alive solution
     func restartTelnet() {
         let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: 12021)
         canphysical.setCallBack(callback: telnetclient!.sendString)
         telnetclient.connection.receivedDataCallback = canphysical.receiveString // TODO: needs a better way to set this callback, too much visible here
+        telnetclient.setStopCallback(telnetDidStopCallback(error:))
         telnetclient.start()
     }
     
     public func telnetDidStopCallback(error: Error?) {
+        print("OlcbToolsApp telnetDidStopCallback enter")
         if error == nil {
-            // exit(EXIT_SUCCESS)
-            logger.info("Connection exited with SUCCESS, restarting")
+            logger.info("Connection exited with SUCCESS, restarting from telnetDidStopCallback")
             restartTelnet()
         } else {
             // exit(EXIT_FAILURE)
             logger.info("Connection exited with ERROR: \(error!, privacy: .public), no further action")
         }
+        print("OlcbToolsApp telnetDidStopCallback leave")
     }
 
     let persistenceController = PersistenceController.shared
@@ -110,7 +111,7 @@ struct OlcbToolsApp: App {
                         Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
                     }
 
-                NodeListNavigationView()
+                NodeListNavigationView(lib: openlcblib)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Configure", systemImage: "app.connected.to.app.below.fill")
@@ -133,7 +134,6 @@ struct OlcbToolsApp: App {
                 }
 
         } // WindowGroup
-        // TODO: stop/restart TCP connection? See https://developer.apple.com/documentation/swiftui/scenephase
         .onChange(of: scenePhase) { newPhase in
             
             switch (newPhase) {
