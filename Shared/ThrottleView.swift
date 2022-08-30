@@ -79,7 +79,7 @@ struct ThrottleView: View {
                         if (!oldReverse) {
                             model.speed = 0.0
                         }
-                    } // end Standard Button
+                    } // end Reverse Standard Button
                     StandardToggleButton(label: "Fwd", height: 40, select: $model.forward)
                     {
                         let oldForward = model.forward
@@ -88,13 +88,14 @@ struct ThrottleView: View {
                         if (!oldForward) {
                             model.speed = 0.0
                         }
-                    }
-                }
-            } // HStack of R/S/F
+                    } // end Forward Standard Button
+                } // HStack of R/F
+            } // HStack of S / (R/F)
         } // VStack of entire View
     } // body
 } // ThrottleView
 
+// Show a vertical column of bars that represents the throttle position
 struct ThrottleSliderView : View {
     @Binding var speed : Float16
     var bars : [ThrottleBar]
@@ -153,13 +154,14 @@ struct ThrottleBarView : View {
 } // Throttle Bar View
 
 // Data for a single bar
+// Local, not part of model, because these together represent the `speed` value
 struct ThrottleBar {
     let length: CGFloat
     let setSpeed : Float16
     let id = UUID()
 }
 
-// the display of functions
+// Display the set of functions
 struct FunctionsView : View {
     var fnModels : [FnModel]
 
@@ -173,7 +175,7 @@ struct FunctionsView : View {
     }
 }
 
-// The function button itself
+// One function button itself
 struct FnButtonView : View {
     
     @ObservedObject var model : FnModel
@@ -200,6 +202,7 @@ struct FnButtonView : View {
     }
 }
 
+// View for selecting a locomotive, intended for a separate page
 struct LocoSelectionView : View {
     @ObservedObject var model : ThrottleModel
 
@@ -218,7 +221,6 @@ struct LocoSelectionView : View {
             
             VStack {
                 // Top section is for selecting from roster
-                
                 Text("Roster Entry:")
                     .font(.title)
                 Picker("Roster Entries", selection: $selectedRosterAddress) {
@@ -226,8 +228,9 @@ struct LocoSelectionView : View {
                         Text($0.label)
                             .font(.largeTitle)
                     }
-                }   // .pickerStyle(SegmentedPickerStyle())
-                //.pickerStyle(MenuPickerStyle())  // default seems to be menu style here
+                }
+                // .pickerStyle(SegmentedPickerStyle())
+                // .pickerStyle(MenuPickerStyle())  // default seems to be menu style here
                 .pickerStyle(WheelPickerStyle())
                 
                 StandardMomentaryButton(label: "Select", height: 40){
@@ -239,17 +242,13 @@ struct LocoSelectionView : View {
                             break
                         }
                     }
-                    
-                    //let idNumber = UInt64(selectedRosterAddress) ?? 0
-                    //model.startSelection(idNumber)
                 }.disabled(selectedRosterAddress == "<none>")
-            }
+            } // end top section to select from roster
             
             Divider()
             
-            // Bottom section is for selection by entering address
-            
             VStack {
+                // Bottom section is for selection by entering address
                 Text("DCC Address:")
                     .font(.title)
                 
@@ -274,14 +273,14 @@ struct LocoSelectionView : View {
                 
                 Spacer()
                 
-                Text("Swipe down to close")
-            }
+            } // end bottom section for selecting by address
+            Text("Swipe down to close")
         }
     }
 }
 
 
-
+// Preview
 struct ThrottleView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbLibrary(sample: true)
     static var previews: some View {
