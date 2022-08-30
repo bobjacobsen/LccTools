@@ -80,7 +80,7 @@ struct OlcbToolsApp: App {
             restartTelnet()
         } else {
             // exit(EXIT_FAILURE)
-            logger.info("Connection exited with ERROR: \(error!, privacy: .public)")
+            logger.info("Connection exited with ERROR: \(error!, privacy: .public), no further action")
         }
     }
 
