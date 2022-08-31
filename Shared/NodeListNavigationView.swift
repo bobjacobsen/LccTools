@@ -27,7 +27,8 @@ struct NodeListNavigationView: View {
     }
 
     var body: some View {
-        NavigationView {
+        // print(Self._printChanges())
+        return NavigationView {
             List { // of all the nodes
                 ForEach(nodes, id:\.id) { (node) in
                     // how to display each one when selected
