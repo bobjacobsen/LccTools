@@ -25,8 +25,6 @@ struct OlcbToolsApp: App {
     
     @Environment(\.scenePhase) var scenePhase  // for .background, etc
     
-    // TODO: figure out how to make this a real (not simulated) connection even while running tests; add tests
-    
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
     /// Only logging at creation time, see `startup()` for configuration
@@ -97,7 +95,7 @@ struct OlcbToolsApp: App {
                     .tabItem {
                         Label("Throttle", systemImage: "train.side.front.car")
                     }
-                // TODO: add 2nd throttle on iPad?  See ContentView.swift for example code
+                // TODO: add 2nd throttle on iPad?  See ContentView.swift for example View code; needs 2nd ThrottleModel
 
                ClockView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
