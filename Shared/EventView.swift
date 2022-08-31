@@ -24,7 +24,7 @@ struct EventView: View {  // TODO: Add specific node's view of events
                 ForEach(produced, id:\.eventID) { (event) in
                     EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                         .padding(.vertical, 0)
-                }
+                }.listRowSeparator(.hidden)
                 Text("     (This is sample data)  ").frame(alignment: .trailing)
             }
             Divider()
@@ -33,7 +33,7 @@ struct EventView: View {  // TODO: Add specific node's view of events
                 ForEach(produced, id:\.eventID) { (event) in
                     EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                         .padding(.vertical, 0)
-                }
+                }.listRowSeparator(.hidden)
                 Text("     (This is sample data)  ").frame(alignment: .trailing)
             }
         }.navigationTitle("Events") // TODO: This seems to be associated with the 2nd (RHS) List on the screen, not even across the screen

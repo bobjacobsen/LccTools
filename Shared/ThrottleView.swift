@@ -39,7 +39,8 @@ struct ThrottleView: View {
     }
     
     var body: some View {
-        VStack {
+        // print(Self._printChanges())
+        return VStack {
             StandardMomentaryButton(label: model.selectedLoco,
                                     height: 40){
                 model.showingSelectSheet.toggle()
@@ -170,6 +171,7 @@ struct FunctionsView : View {
             ClockView() // add a clock view as the top bar
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
+                    .listRowSeparator(.hidden)
             }
         }
     }
