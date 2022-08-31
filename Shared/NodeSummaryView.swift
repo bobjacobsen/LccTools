@@ -24,7 +24,7 @@ struct NodeSummaryView: View {
             Text(displayNode.id.description) // nodeID
 
             HStack{
-                NavigationLink(destination: EventView()) {
+                NavigationLink(destination: EventView(displayNode: displayNode)) {
                     VStack {
                         Image(systemName:"cpu")
                         //.resizable().frame(width:50, height:50)
