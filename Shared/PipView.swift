@@ -9,11 +9,20 @@ import SwiftUI
 import OpenlcbLibrary
 
 struct PipView: View {
+    
+    var elements :  [String]
     let displayNode : Node
+
+    init(displayNode : Node) {
+        self.displayNode = displayNode
+        elements = Array(PIP.contentsNames(displayNode.pipSet))
+        elements.sort() // put PIP contents in alphabetic order
+    }
+    
     var body: some View {
         VStack {
-            ForEach(PIP.contentsNames(displayNode.pipSet), id: \.description) { (pip) in
-                Text(pip)  // contains pretty name of each member of the supported set // TODO: think about order; Set<> does not have defined order
+            ForEach(elements, id: \.description) { (pip) in
+                Text(pip)  // contains pretty name of each member of the supported set
             }
         }.navigationTitle("Supported Protocols")
     }
