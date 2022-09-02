@@ -102,11 +102,27 @@ struct OlcbToolsApp: App {
                     .tabItem {
                         Label("Clocks", systemImage: "clock")
                     }
-                
+              
                 MonitorView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
+                    }
+
+#if os(iOS)
+                // in iOS, the settings are another tab
+                SettingsView()
+                    .tabItem {
+                        Label("Settings", systemImage: "gear")
+                    }
+#endif
+
+                // iPhone 12 goes to "More..." at this point
+                
+                ConsistView(model: openlcblib.throttleModel0)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Consists", systemImage: "forward")
                     }
 
                 NodeListNavigationView(lib: openlcblib)
@@ -116,14 +132,6 @@ struct OlcbToolsApp: App {
                     }
                     .environmentObject(openlcblib)
                 
-#if os(iOS)
-                // in iOS, the settings are another tab
-                SettingsView()
-                    .tabItem {
-                        Label("Settings", systemImage: "gear")
-                    }
-#endif
-
             }   // TabView
                 .environmentObject(openlcblib)
                 .onAppear() {

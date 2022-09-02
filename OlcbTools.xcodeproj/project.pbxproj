@@ -39,6 +39,8 @@
 		230B681A285E071500C99298 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B6818285E071500C99298 /* SettingsView.swift */; };
 		2334B5D8286F52E900C2A959 /* TelnetListenerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 2334B5D7286F52E900C2A959 /* TelnetListenerLib */; };
 		2334B5DA286F52F400C2A959 /* TelnetListenerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 2334B5D9286F52F400C2A959 /* TelnetListenerLib */; };
+		235DFF4428C1017100B03999 /* ConsistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235DFF4328C1017100B03999 /* ConsistView.swift */; };
+		235DFF4528C1017100B03999 /* ConsistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235DFF4328C1017100B03999 /* ConsistView.swift */; };
 		2392DE632861B26600BD9391 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE622861B26600BD9391 /* MonitorView.swift */; };
 		2392DE642861B26600BD9391 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE622861B26600BD9391 /* MonitorView.swift */; };
 		2392DE662861B2D200BD9391 /* ThrottleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392DE652861B2D200BD9391 /* ThrottleView.swift */; };
@@ -89,6 +91,7 @@
 		23008954285CC75C000FB614 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		23008957285CEA4A000FB614 /* NodeListNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeListNavigationView.swift; sourceTree = "<group>"; };
 		230B6818285E071500C99298 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		235DFF4328C1017100B03999 /* ConsistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsistView.swift; sourceTree = "<group>"; };
 		2392DE622861B26600BD9391 /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
 		2392DE652861B2D200BD9391 /* ThrottleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottleView.swift; sourceTree = "<group>"; };
 		2395165928AFDB8D00F3A872 /* StandardToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardToggleButton.swift; sourceTree = "<group>"; };
@@ -151,6 +154,7 @@
 			children = (
 				23008903285C949E000FB614 /* OlcbToolsApp.swift */,
 				23A0D5472892F3D0009663EA /* ClockView.swift */,
+				235DFF4328C1017100B03999 /* ConsistView.swift */,
 				2300894B285C9630000FB614 /* ContentView.swift */,
 				2300894E285CA41A000FB614 /* CdCdiView.swift */,
 				23008954285CC75C000FB614 /* EventView.swift */,
@@ -379,6 +383,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				235DFF4428C1017100B03999 /* ConsistView.swift in Sources */,
 				2300892C285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
 				23008932285C94A4000FB614 /* Persistence.swift in Sources */,
 				2300894C285C9630000FB614 /* ContentView.swift in Sources */,
@@ -401,6 +406,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				235DFF4528C1017100B03999 /* ConsistView.swift in Sources */,
 				2300892D285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
 				23008933285C94A4000FB614 /* Persistence.swift in Sources */,
 				2300894D285C9630000FB614 /* ContentView.swift in Sources */,
