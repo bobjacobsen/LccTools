@@ -42,7 +42,7 @@ struct ThrottleView: View {
         // print(Self._printChanges())
         return VStack {
             StandardMomentaryButton(label: model.selectedLoco,
-                                    height: 40){
+                                    height: 40, font: .title){
                 model.showingSelectSheet.toggle()
             }
             .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
@@ -66,7 +66,7 @@ struct ThrottleView: View {
             Spacer()
             
             HStack {
-                StandardMomentaryButton(label: "Stop", height: 40)
+                StandardMomentaryButton(label: "Stop", height: 40, font: .title)
                 {
                     model.speed = 0.0
                 }
@@ -235,7 +235,7 @@ struct LocoSelectionView : View {
                 // .pickerStyle(MenuPickerStyle())  // default seems to be menu style here
                 .pickerStyle(WheelPickerStyle())
                 
-                StandardMomentaryButton(label: "Select", height: 40){
+                StandardMomentaryButton(label: "Select", height: 40, font: .title){
                     logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
                     // search model.roster for matching entry to get nodeID
                     for rosterEntry in model.roster {
@@ -267,7 +267,7 @@ struct LocoSelectionView : View {
                 // .pickerStyle(.radioGroup)        // macOS only
                 //.horizontalRadioGroupLayout()     // macOS only
 
-                StandardMomentaryButton(label: "Select", height: 40){
+                StandardMomentaryButton(label: "Select", height: 40, font: .title){
                     logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
                     let idNumber = UInt64(address) ?? 0
                     model.startSelection(address: idNumber, forceLongAddr: (addressForm == 1))

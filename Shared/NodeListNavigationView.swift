@@ -11,12 +11,6 @@ import os
 
 struct NodeListNavigationView: View {
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
-
-    @EnvironmentObject var openlcblib : OpenlcbLibrary {
-        didSet(oldvalue) {
-            logger.info("EnvironmentObject openlcblib did change in NodeListNavigationView")
-        }
-    }
     
     var nodes : [Node] = []
     

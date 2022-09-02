@@ -40,6 +40,7 @@ struct StandardToggleButton: View {
 struct StandardMomentaryButton: View {
     let label : String
     let height : CGFloat
+    let font : Font
     let action : () -> Void
     @Environment(\.isEnabled) private var isEnabled
 
@@ -53,7 +54,7 @@ struct StandardMomentaryButton: View {
                         .foregroundColor(isEnabled ? .green : .gray)
                     
                     Text(label)
-                        .font(.title)
+                        .font(font)
                         .foregroundColor(.white)
                 }
             } // label
@@ -68,10 +69,10 @@ struct StandardButton_Previews: PreviewProvider {
     static var previews: some View {
 
         VStack {
-            StandardMomentaryButton(label: "Momentary", height: 50){
+            StandardMomentaryButton(label: "Momentary", height: 50, font: .title){
                 // on pressed
             }
-            StandardMomentaryButton(label: "Momentary Disabled", height: 50){
+            StandardMomentaryButton(label: "Momentary Disabled", height: 50, font: .title){
                 // on pressed
             }.disabled(true)
             StandardToggleButton(label: "Toggle", height: 50, select: $forToggle){
