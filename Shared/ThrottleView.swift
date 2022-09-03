@@ -164,7 +164,7 @@ struct ThrottleBar {
 
 // Display the set of functions
 struct FunctionsView : View {
-    var fnModels : [FnModel]
+    var fnModels : [ThrottleModel.FnModel]
 
     var body: some View {
         List {
@@ -180,7 +180,7 @@ struct FunctionsView : View {
 // One function button itself
 struct FnButtonView : View {
     
-    @ObservedObject var model : FnModel
+    @ObservedObject var model : ThrottleModel.FnModel
 
     var body: some View {
         Button(action:{
