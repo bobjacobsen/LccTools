@@ -36,12 +36,21 @@ struct OlcbToolsApp: App {
         logger.info("at startup, default hub IP address is set to: \(temp_hub_ip_address)")
         let temp_hub_ip_port = self.ip_port   // avoid "capture of mutating self" compile error
         logger.info("at startup, default hub port is set to: \(temp_hub_ip_port)")
+        
     }
     
     var canphysical = CanPhysicalLayerGridConnect()
     
     /// Configure the various libraries and connections, then start the network access
     func startup() {
+//        // TODO: Commented out until (1) better location is found to avoid redraw and (2) we have a start/restart strategy and maybe (3) mDNS is doing something for this
+//        // if there's no host name, show settings
+//        if self.ip_address == "" {
+//            self.selectedTab = "Settings"
+//        } else {
+//            self.selectedTab = "Throttle"
+//        }
+
         // create, but not yet connect, the Telnet connection to the hub
         let port = UInt16(self.ip_port) ?? 12021
         let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: port)
@@ -85,36 +94,37 @@ struct OlcbToolsApp: App {
 
     let persistenceController = PersistenceController.shared
 
+    @State private var selectedTab : String = "Throttle"
+    
     var body: some Scene {
         // iOS has four windows available fom the navigation bar at the bottom
         // macOS puts those in a tab bar at the top of the window
         WindowGroup {
-            TabView {
+            TabView(selection: $selectedTab) {
                 ThrottleView(throttleModel: openlcblib.throttleModel0)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Throttle", systemImage: "train.side.front.car")
-                    }
-                // TODO: add 2nd throttle on iPad?  See ContentView.swift for example View code; needs 2nd ThrottleModel
+                    }.tag("Throttle")
 
                ClockView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Clocks", systemImage: "clock")
-                    }
+                    }.tag("Clock")
               
                 MonitorView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
-                    }
+                    }.tag("Monitor")
 
 #if os(iOS)
                 // in iOS, the settings are another tab
                 SettingsView()
                     .tabItem {
                         Label("Settings", systemImage: "gear")
-                    }
+                    }.tag("Settings")
 #endif
 
                 // iPhone 12 goes to "More..." at this point
@@ -123,13 +133,13 @@ struct OlcbToolsApp: App {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Consists", systemImage: "forward")
-                    }
+                    }.tag("Consist")
 
                 NodeListNavigationView(lib: openlcblib)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Configure", systemImage: "app.connected.to.app.below.fill")
-                    }
+                    }.tag("NodeListNavigation")
                     .environmentObject(openlcblib)
                 
             }   // TabView
