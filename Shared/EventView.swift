@@ -29,14 +29,14 @@ struct EventView: View {
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                             .padding(.vertical, 0)
                     }.listRowSeparator(.hidden)
-                }
+                }.padding(.horizontal, -15.0)
                 List {
                     Text("Consumes").font(.title).font(.title).frame(alignment: .leading)
                     ForEach(consumed, id:\.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                             .padding(.vertical, 0)
                     }.listRowSeparator(.hidden)
-                }
+                }.padding(.horizontal, -15.0)
             }
         }.navigationTitle("Events")
     }
@@ -45,15 +45,24 @@ struct EventView: View {
 struct EventViewOneEvent : View {
     @EnvironmentObject var openlcblib : OpenlcbLibrary
     
+#if os(iOS) // to check for iPhone v iPad & orientation
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
+#endif
+
     let eventID : EventID
     
     var body: some View {
-        StandardMomentaryButton(label: "\(eventID.description)", height: 35, font: .headline) {
-            // TODO: Encapsulate this and set Message, sendMessage back to internal
-            let msg = Message(mti: .Producer_Consumer_Event_Report, source: openlcblib.linkLevel.localNodeID, data: eventID.toArray())
-            openlcblib.linkLevel.sendMessage(msg)
-            // button action
-        }.font(.subheadline)
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            let fontsize = Font.system(size: width / 12.5) // empirically derived
+            
+            StandardMomentaryButton(label: "\(eventID.description)", height: 35, font: fontsize) {
+                // TODO: Encapsulate this and set Message, sendMessage back to internal
+                let msg = Message(mti: .Producer_Consumer_Event_Report, source: openlcblib.linkLevel.localNodeID, data: eventID.toArray())
+                openlcblib.linkLevel.sendMessage(msg)
+                // button action
+            }.padding(.horizontal, -5.0)
+        }
     }
 }
 
