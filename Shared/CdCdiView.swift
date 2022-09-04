@@ -10,6 +10,18 @@ import OpenlcbLibrary
 
 struct CdCdiView: View {
 
+    var displayNode: Node
+    let lib : OpenlcbLibrary
+
+    func callback(memo : MemoryService.MemoryReadMemo) {
+    }
+
+    init(displayNode: Node, lib: OpenlcbLibrary){
+        self.displayNode = displayNode
+        self.lib = lib
+        
+    }
+    
     // TODO: Replace with read from outside node
     // start with Segment elements present
     static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
@@ -266,6 +278,6 @@ struct CdiStringView : View {
 
 struct CdCdiView_Previews: PreviewProvider {
     static var previews: some View {
-        CdCdiView()
+        CdCdiView(displayNode: Node(NodeID(123)), lib: OpenlcbLibrary(defaultNodeID: NodeID(123)))
     }
 }

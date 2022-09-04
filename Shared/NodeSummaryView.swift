@@ -12,6 +12,7 @@ import OpenlcbLibrary
 /// Invoked from e.g. NodeListNavigationView
 struct NodeSummaryView: View {
     let displayNode : Node
+    let lib : OpenlcbLibrary
     
     var body: some View {
 
@@ -33,7 +34,7 @@ struct NodeSummaryView: View {
                     }
                 } //.navigationTitle("Events")
                                 
-                NavigationLink(destination: CdCdiView()) {
+                NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: lib)) {
                     VStack {
                         Image(systemName:"square.and.pencil")
                         //.resizable().frame(width:50, height:50)
@@ -73,6 +74,6 @@ struct FullNodeView_Previews: PreviewProvider {
                                             "My Node Name",
                                             "And Description"))
     static var previews: some View {
-        NodeSummaryView(displayNode: displayNode)
+        NodeSummaryView(displayNode: displayNode, lib: OpenlcbLibrary(defaultNodeID: NodeID(258)))
     }
 }

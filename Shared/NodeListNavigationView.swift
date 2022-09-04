@@ -12,9 +12,12 @@ import os
 struct NodeListNavigationView: View {
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
     
+    let lib : OpenlcbLibrary
+    
     var nodes : [Node] = []
     
     init (lib: OpenlcbLibrary) { // pass explicitly instead of relying on environment to avoid change loop
+        self.lib = lib
         nodes = lib.remoteNodeStore.nodes
         nodes.sort { $0.snip.userProvidedNodeName < $1.snip.userProvidedNodeName } // display in name order
         logger.info("init NodeListNavigationView")
@@ -27,7 +30,7 @@ struct NodeListNavigationView: View {
                 ForEach(nodes, id:\.id) { (node) in
                     // how to display each one when selected
                     NavigationLink(destination:
-                                    NodeSummaryView(displayNode: node)
+                                    NodeSummaryView(displayNode: node, lib: lib)
                     ){ // how to display each one in the list
                         VStack {
                             if node.name != "" {
