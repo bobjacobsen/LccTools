@@ -28,14 +28,20 @@ struct EventView: View {
                     ForEach(produced, id:\.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                             .padding(.vertical, 0)
-                    }.listRowSeparator(.hidden)
+                    }
+                    #if os(iOS)
+                        .listRowSeparator(.hidden)  // first supported in macOS 13
+                    #endif
                 }.padding(.horizontal, -15.0)
                 List {
                     Text("Consumes").font(.title).font(.title).frame(alignment: .leading)
                     ForEach(consumed, id:\.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                             .padding(.vertical, 0)
-                    }.listRowSeparator(.hidden)
+                    }
+                    #if os(iOS)
+                        .listRowSeparator(.hidden) // first supported in macOS 13
+                    #endif
                 }.padding(.horizontal, -15.0)
             }
         }.navigationTitle("Events")

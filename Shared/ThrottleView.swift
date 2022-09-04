@@ -171,7 +171,9 @@ struct FunctionsView : View {
             ClockView() // add a clock view as the top bar
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
-                    .listRowSeparator(.hidden)
+                #if os(iOS)
+                    .listRowSeparator(.hidden) // first supported in macOS 13
+                #endif
             }
         }
     }
@@ -234,7 +236,9 @@ struct LocoSelectionView : View {
                 }
                 // .pickerStyle(SegmentedPickerStyle())
                 // .pickerStyle(MenuPickerStyle())  // default seems to be menu style here
-                .pickerStyle(WheelPickerStyle())
+                #if os(iOS)
+                    .pickerStyle(WheelPickerStyle())
+                #endif
                 
                 StandardMomentaryButton(label: "Select", height: 40, font: .title){
                     logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
