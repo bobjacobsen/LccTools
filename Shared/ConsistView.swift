@@ -71,7 +71,7 @@ struct ConsistLocoView : View {
                     Label("Link F0:", systemImage: "lightbulb")
                 }
                 Toggle(isOn: $someBindingForToggle3) {
-                    Label("Link Fn:", systemImage: "lightbulb.2")
+                    Label("Link Fn:", image: "lightbulb.2") // only available as systemimage in iOS 16
                 }
             }.frame(width: 80)
                 .labelStyle(.iconOnly)
