@@ -215,6 +215,7 @@ struct LocoSelectionView : View {
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LocoSelectionView")
 
     var body: some View {
+        // TODO: add a search component above the roster that narrows down the roster selection?
         VStack {
             Text("Select Locomotive")
                 .font(.largeTitle)
