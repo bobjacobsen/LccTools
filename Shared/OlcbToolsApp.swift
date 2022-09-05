@@ -25,6 +25,8 @@ struct OlcbToolsApp: App {
     
     @Environment(\.scenePhase) var scenePhase  // for .background, etc
     
+    @State var commStatus : String = "No Connection"
+    
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
     /// Only logging at creation time, see `startup()` for configuration
@@ -83,13 +85,19 @@ struct OlcbToolsApp: App {
     public func telnetDidStopCallback(error: Error?) {
         print("OlcbToolsApp telnetDidStopCallback enter")
         if error == nil {
-            logger.info("Connection exited with SUCCESS, restarting from telnetDidStopCallback")
+            logger.info("Connection exited with SUCCESS, restarting from OlcbToolsApp telnetDidStopCallback")
+            commStatus = "Restarted"
             restartTelnet()
         } else {
             // exit(EXIT_FAILURE)
-            logger.info("Connection exited with ERROR: \(error!, privacy: .public), no further action")
+            logger.info("Connection exited with ERROR: \(error!, privacy: .public), restarting from OlcbToolsApp telnetDidStopCallback")
+            var err = "unknown"
+            if let error {
+                err = "\(error)"
+            }
+            commStatus = "Restarted after error: \(err)"
+            restartTelnet()
         }
-        print("OlcbToolsApp telnetDidStopCallback leave")
     }
 
     let persistenceController = PersistenceController.shared
@@ -121,7 +129,7 @@ struct OlcbToolsApp: App {
 
 #if os(iOS)
                 // in iOS, the settings are another tab
-                SettingsView()
+                SettingsView(commStatus: $commStatus)
                     .tabItem {
                         Label("Settings", systemImage: "gear")
                     }.tag("Settings")
@@ -167,7 +175,7 @@ struct OlcbToolsApp: App {
 #if os(macOS)
         // macOS has a separate "settings" window as Preferences
         Settings {  // creates a Preferences item in App menu
-            SettingsView()
+            SettingsView(commStatus: commStatus)
         }
 #endif
 

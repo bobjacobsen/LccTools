@@ -19,6 +19,8 @@ import SwiftUI
 /// Stores results in @AppStorage. See `OlcbToolsApp` for example of retrieval
 ///
 struct SettingsView: View {
+    @Binding var commStatus: String
+    
     @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"
     @AppStorage("HUB_IP_PORT") private var ip_port: String = "12021"
     @AppStorage("THIS_NODE_ID") private var this_node_ID: String = "05.01.01.01.03.FF"
@@ -37,12 +39,14 @@ struct SettingsView: View {
             TextField("", text: $this_node_ID)
                 .multilineTextAlignment(.center)
             Divider()
+            Text(commStatus)
         }
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
+    @State static var commStatus = "status goes here"
     static var previews: some View {
-        SettingsView()
+        SettingsView(commStatus: $commStatus)
     }
 }
