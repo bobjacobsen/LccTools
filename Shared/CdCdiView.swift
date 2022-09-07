@@ -10,34 +10,31 @@ import OpenlcbLibrary
 
 struct CdCdiView: View {
 
+    // TODO: Replace with read from outside node
+    // static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
+    
+    // start with Segment elements present
+    @ObservedObject var model : CdiModel
+
     var displayNode: Node
     let lib : OpenlcbLibrary
-
-    func callback(memo : MemoryService.MemoryReadMemo) {
-    }
 
     init(displayNode: Node, lib: OpenlcbLibrary){
         self.displayNode = displayNode
         self.lib = lib
         
-        // does the node already have CDI?
-        // has it been loaded?
+        // TODO: does the node already have CDI?
+        // TODO: has it been loaded?
         // No, create it and load it
-        let cdiModel = CdiModel(mservice: lib.mservice, nodeID: displayNode.id)
-        cdiModel.readModel(nodeID: displayNode.id)
-        CdCdiView.data = cdiModel.tree
+        model = CdiModel(mservice: lib.mservice, nodeID: displayNode.id)
+        model.readModel(nodeID: displayNode.id)
     }
     
-    // TODO: Replace with read from outside node
-    // static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
-
-    // start with Segment elements present
-    static var data : [CdiXmlMemo] = []
     
     // TODO: contains a lot of print statements; remove or change to logging
     
     var body: some View {
-        List(CdCdiView.data, children: \.children) { row in  // "children" makes the nested list
+        List(model.tree, children: \.children) { row in  // "children" makes the nested list
             containedView(item: row)
         }.padding(10).navigationTitle("Node Configuration")
     }
