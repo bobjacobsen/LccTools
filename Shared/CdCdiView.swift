@@ -20,11 +20,19 @@ struct CdCdiView: View {
         self.displayNode = displayNode
         self.lib = lib
         
+        // does the node already have CDI?
+        // has it been loaded?
+        // No, create it and load it
+        let cdiModel = CdiModel(mservice: lib.mservice, nodeID: displayNode.id)
+        cdiModel.readModel(nodeID: displayNode.id)
+        CdCdiView.data = cdiModel.tree
     }
     
     // TODO: Replace with read from outside node
+    // static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
+
     // start with Segment elements present
-    static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
+    static var data : [CdiXmlMemo] = []
     
     // TODO: contains a lot of print statements; remove or change to logging
     
@@ -120,7 +128,7 @@ struct CdiEventView : View {
     var item : CdiXmlMemo
     init(item : CdiXmlMemo) {
         self.item = item
-        print ("Int init starts")
+        print ("Event init starts")
     }
     
     var body : some View {
