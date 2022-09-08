@@ -9,9 +9,6 @@ import SwiftUI
 import OpenlcbLibrary
 
 struct CdCdiView: View {
-
-    // TODO: Replace with read from outside node
-    // static let data = CdiSampleDataAccess.sampleCdiXmlData()[0].children!
     
     // start with Segment elements present
     @ObservedObject var model : CdiModel
@@ -34,9 +31,14 @@ struct CdCdiView: View {
     // TODO: contains a lot of print statements; remove or change to logging
     
     var body: some View {
-        List(model.tree, children: \.children) { row in  // "children" makes the nested list
-            containedView(item: row)
-        }.padding(10).navigationTitle("Node Configuration")
+        VStack {
+            if (model.loading) {
+                Text("\(model.nextReadAddress) bytes read")
+            }
+            List(model.tree, children: \.children) { row in  // "children" makes the nested list
+                containedView(item: row)
+            }.padding(10).navigationTitle("Node Configuration")
+        }
     }
 }
 
@@ -105,6 +107,7 @@ struct RButtonView : View {
 
 // view for a store button
 struct WButtonView : View {
+    @State var pressed = false
     var body : some View {
         ZStack { // formatted button for recognition
             RoundedRectangle(cornerRadius: 10.0)
@@ -145,7 +148,7 @@ struct CdiEventView : View {
                 Spacer()
                 RButtonView()
                 WButtonView()
-            }
+            }.buttonStyle(BorderlessButtonStyle())
             if item.description != "" {
                 Text(item.description).font(.footnote)
             }
@@ -183,7 +186,7 @@ struct CdiIntView : View {
                 Spacer()
                 RButtonView()
                 WButtonView()
-            }
+            }.buttonStyle(BorderlessButtonStyle())
             if item.description != "" {
                 Text(item.description).font(.footnote)
             }
@@ -250,7 +253,7 @@ struct CdiIntMapView : View {
                 HStack {
                     RButtonView()
                     WButtonView()
-                }
+                }.buttonStyle(BorderlessButtonStyle())
             }
             Text(item.description).font(.footnote)
             
@@ -277,7 +280,7 @@ struct CdiStringView : View {
             //Spacer()
             RButtonView()
             WButtonView()
-        }
+        }.buttonStyle(BorderlessButtonStyle())
     }
 }
 
