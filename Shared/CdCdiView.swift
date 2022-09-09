@@ -228,7 +228,7 @@ struct CdiIntMapView : View {
 
     var item : CdiXmlMemo
     let model : CdiModel
-    var startUpIgnoreReceive = true // true while onReceive should be ignored untiul first onAppear
+    var startUpIgnoreReceive = true // true while onReceive should be ignored until first onAppear
     
     init(item : CdiXmlMemo, model: CdiModel) {
         self.item = item
@@ -284,6 +284,7 @@ struct CdiIntMapView : View {
                         model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
                             (readValue : Int) in
                             self.intValue = readValue
+                            self.stringValue = propertyToValue(property: self.intValue)
                         }
                     }
                     WButtonView(address: self.item.startAddress, model: model){
