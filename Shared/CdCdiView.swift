@@ -160,11 +160,13 @@ struct CdiEventView : View {
                     }
                 Spacer()
                 RButtonView(address: self.item.startAddress, model: model){
-                    self.eventValue = self.eventValue+" +"
-                    print ("Can update value to \(self.eventValue)")
+                    model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: 8){
+                        (readValue : Int) in
+                        self.eventValue = EventID(UInt64(readValue)).description
+                    }
                 }
                 WButtonView(address: self.item.startAddress, model: model){
-                    print ("Can read value of \(self.eventValue)")
+                    model.writeInt(value: Int(EventID(eventValue).eventID), at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                 }
             }.buttonStyle(BorderlessButtonStyle())
             if item.description != "" {
