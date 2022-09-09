@@ -24,7 +24,7 @@ struct EventView: View {
             HStack {
                 // TODO: Work on left/right margins to make a bit more space in portrait
                 List {
-                    Text("Produces").font(.title).font(.title).frame(alignment: .leading)
+                    Text("Produces").font(.title).frame(alignment: .leading)
                     ForEach(produced, id:\.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                             .padding(.vertical, 0)
