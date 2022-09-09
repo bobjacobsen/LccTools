@@ -127,6 +127,22 @@ struct OlcbToolsApp: App {
                         Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
                     }.tag("Monitor")
 
+                // TODO: This has wierd nav issues if it comes from "More..."
+                NodeListNavigationView(lib: openlcblib)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Configure", systemImage: "app.connected.to.app.below.fill")
+                    }.tag("NodeListNavigation")
+                    .environmentObject(openlcblib)
+
+                // iPhone 12 goes to "More..." at this point
+
+                ConsistView(model: openlcblib.throttleModel0)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Consists", systemImage: "forward")
+                    }.tag("Consist")
+
 #if os(iOS)
                 // in iOS, the settings are another tab
                 SettingsView(commStatus: $commStatus)
@@ -134,21 +150,6 @@ struct OlcbToolsApp: App {
                         Label("Settings", systemImage: "gear")
                     }.tag("Settings")
 #endif
-
-                // iPhone 12 goes to "More..." at this point
-                
-                ConsistView(model: openlcblib.throttleModel0)
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                    .tabItem {
-                        Label("Consists", systemImage: "forward")
-                    }.tag("Consist")
-
-                NodeListNavigationView(lib: openlcblib)
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                    .tabItem {
-                        Label("Configure", systemImage: "app.connected.to.app.below.fill")
-                    }.tag("NodeListNavigation")
-                    .environmentObject(openlcblib)
                 
             }   // TabView
                 .environmentObject(openlcblib)

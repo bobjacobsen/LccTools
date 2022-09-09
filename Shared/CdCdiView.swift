@@ -20,13 +20,14 @@ struct CdCdiView: View {
         self.displayNode = displayNode
         self.lib = lib
         
-        // TODO: does the node already have CDI?
-        // TODO: has it been loaded?
-        // No, create it and load it
-        model = CdiModel(mservice: lib.mservice, nodeID: displayNode.id)
-        model.readModel(nodeID: displayNode.id)
+        // does the node already have CDI that's currently loaded
+        if displayNode.cdi == nil || !displayNode.cdi!.loaded {
+            // No, create it and load it - we're doing this as early as possible
+            displayNode.cdi = CdiModel(mservice: lib.mservice, nodeID: displayNode.id)
+            displayNode.cdi!.readModel(nodeID: displayNode.id)
+        }
+        model = displayNode.cdi!
     }
-    
     
     // TODO: contains a lot of print statements; remove or change to logging
     
@@ -34,16 +35,17 @@ struct CdCdiView: View {
         VStack {
             if (model.loading) {
                 Text("\(model.nextReadAddress) bytes read")
+                ProgressView() // TODO: needs to read memory space size and show fraction done
             }
             List(model.tree, children: \.children) { row in  // "children" makes the nested list
-                containedView(item: row)
+                containedView(item: row, model: model)
             }.padding(10).navigationTitle("Node Configuration")
         }
     }
 }
 
 // decode each item (CdiXmlMemo node) and display for all types of nodes
-func containedView(item : CdiXmlMemo) -> AnyView {
+func containedView(item : CdiXmlMemo, model: CdiModel) -> AnyView {
     switch item.type {
     case .SEGMENT :
         if item.description != "" {
@@ -65,18 +67,18 @@ func containedView(item : CdiXmlMemo) -> AnyView {
         }
     case .INPUT_EVENTID :
         if (item.properties.count == 0 ) { // no map
-            return AnyView(CdiEventView(item: item))
+            return AnyView(CdiEventView(item: item, model: model))
         } else {
-            return AnyView(CdiEventView(item: item)) // TODO: add CdiEventMapView here
+            return AnyView(CdiEventView(item: item, model: model)) // TODO: add CdiEventMapView here
         }
     case .INPUT_INT :
         if (item.properties.count == 0 ) { // no map
-            return AnyView(CdiIntView(item: item))
+            return AnyView(CdiIntView(item: item, model: model))
         } else {
-            return AnyView(CdiIntMapView(item: item))
+            return AnyView(CdiIntMapView(item: item, model: model))
         }
     case .INPUT_STRING :
-        return AnyView(CdiStringView(item: item))
+        return AnyView(CdiStringView(item: item, model: model))
     default :
         if item.description != "" {
             return AnyView(VStack(alignment: .leading) {
@@ -91,13 +93,18 @@ func containedView(item : CdiXmlMemo) -> AnyView {
 
 // view for a read/refresh button
 struct RButtonView : View {
+    let address : Int
+    let model : CdiModel
+    let action : () -> ()
+    
     var body : some View {
         ZStack { // formatted button for recognition
             RoundedRectangle(cornerRadius: 10.0)
                 .frame(width: 40, height: 30, alignment: .center)
                 .foregroundColor(.green)
             Button("R") {    // TODO: needs to be hooked to model to do Refresh
-                print("Refresh pressed")
+                action()
+                print("Refresh pressed for \(address)")
             }
             .font(.body)
             .foregroundColor(.white)
@@ -107,14 +114,18 @@ struct RButtonView : View {
 
 // view for a store button
 struct WButtonView : View {
-    @State var pressed = false
+    let address : Int
+    let model : CdiModel
+    let action : () -> ()
+
     var body : some View {
         ZStack { // formatted button for recognition
             RoundedRectangle(cornerRadius: 10.0)
                 .frame(width: 40, height: 30, alignment: .center)
                 .foregroundColor(.green)
             Button("W") {    // TODO: needs to be hooked to model to do Write
-                print("Write pressed")
+                action()
+                print("Write pressed for \(address)")
             }
             .font(.body)
             .foregroundColor(.white)
@@ -126,8 +137,10 @@ struct WButtonView : View {
 struct CdiEventView : View {
     @State var eventValue : String = "00.00.00.00.00.00.00.00" // TODO:  initial value vs read?
     var item : CdiXmlMemo
-    init(item : CdiXmlMemo) {
+    let model : CdiModel
+    init(item : CdiXmlMemo, model : CdiModel) {
         self.item = item
+        self.model = model
         print ("Event init starts")
     }
     
@@ -146,8 +159,13 @@ struct CdiEventView : View {
                         item.currentStringValue = eventValue  // TODO: capture this to do a write
                     }
                 Spacer()
-                RButtonView()
-                WButtonView()
+                RButtonView(address: self.item.startAddress, model: model){
+                    self.eventValue = self.eventValue+" +"
+                    print ("Can update value to \(self.eventValue)")
+                }
+                WButtonView(address: self.item.startAddress, model: model){
+                    print ("Can read value of \(self.eventValue)")
+                }
             }.buttonStyle(BorderlessButtonStyle())
             if item.description != "" {
                 Text(item.description).font(.footnote)
@@ -161,8 +179,10 @@ struct CdiIntView : View {
     @State var intValue : Int = -1 // -1 so we can see what it does here
     var formatter = NumberFormatter()
     var item : CdiXmlMemo
-    init(item : CdiXmlMemo) {
+    let model : CdiModel
+    init(item : CdiXmlMemo, model: CdiModel) {
         self.item = item
+        self.model = model
         formatter.minimum = NSNumber(integerLiteral: item.minValue)
         formatter.maximum = NSNumber(integerLiteral: item.maxValue)
         formatter.maximumFractionDigits = 0
@@ -181,11 +201,18 @@ struct CdiIntView : View {
                     }
                     .onSubmit {
                         print ("Int submits with \(intValue) prior current: \(self.item.currentIntValue)")
-                        item.currentIntValue = intValue  // TODO: capture this to do a write
+                        item.currentIntValue = intValue
                     }
                 Spacer()
-                RButtonView()
-                WButtonView()
+                RButtonView(address: self.item.startAddress, model: model){
+                    model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
+                        (readValue : Int) in
+                        self.intValue = readValue
+                    }
+                }
+                WButtonView(address: self.item.startAddress, model: model){
+                    model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+                }
             }.buttonStyle(BorderlessButtonStyle())
             if item.description != "" {
                 Text(item.description).font(.footnote)
@@ -200,10 +227,12 @@ struct CdiIntMapView : View {
     @State var stringValue : String = "<initial internal content>" // so we can see what it does here
 
     var item : CdiXmlMemo
+    let model : CdiModel
     var startUpIgnoreReceive = true // true while onReceive should be ignored untiul first onAppear
     
-    init(item : CdiXmlMemo) {
+    init(item : CdiXmlMemo, model: CdiModel) {
         self.item = item
+        self.model = model
         print ("Int map init starts \(self.item.defaultValue) \(self.item.currentIntValue)")
         intValue = item.currentIntValue
         stringValue = propertyToValue(property: intValue)
@@ -230,7 +259,7 @@ struct CdiIntMapView : View {
                             Text(valueName)
                         }
                     } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
-                    .pickerStyle(MenuPickerStyle())  // This seemed to be causing a hard crash
+                    .pickerStyle(MenuPickerStyle())
                     .onAppear { // initialize from model value
                         print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
                         print ("   int \(item.currentIntValue) maps to \(propertyToValue(property: item.currentIntValue))")
@@ -246,13 +275,20 @@ struct CdiIntMapView : View {
                             return
                         }
                         intValue = valueToProperty(value: stringValue)
-                        item.currentIntValue = intValue  // TODO: do we need @ObservedObject for this?
+                        item.currentIntValue = intValue
                     }
                 }
                 Spacer()
                 HStack {
-                    RButtonView()
-                    WButtonView()
+                    RButtonView(address: self.item.startAddress, model: model){
+                        model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
+                            (readValue : Int) in
+                            self.intValue = readValue
+                        }
+                    }
+                    WButtonView(address: self.item.startAddress, model: model){
+                        model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+                    }
                 }.buttonStyle(BorderlessButtonStyle())
             }
             Text(item.description).font(.footnote)
@@ -264,8 +300,11 @@ struct CdiIntMapView : View {
 // custom for String data entry fields
 struct CdiStringView : View {
     var item : CdiXmlMemo
-    init(item : CdiXmlMemo) {
+    let model : CdiModel
+
+    init(item : CdiXmlMemo, model: CdiModel) {
         self.item = item
+        self.model = model
         print ("String init starts")
     }
 
@@ -278,8 +317,15 @@ struct CdiStringView : View {
             TextField("Enter \(item.name)", text : $entryText)
 
             //Spacer()
-            RButtonView()
-            WButtonView()
+            RButtonView(address: self.item.startAddress, model: model){
+                model.readString(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
+                    (readValue : String) in
+                    self.entryText = readValue
+                }
+            }
+            WButtonView(address: self.item.startAddress, model: model){
+                model.writeString(value: self.entryText, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+            }
         }.buttonStyle(BorderlessButtonStyle())
     }
 }

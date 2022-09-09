@@ -18,7 +18,7 @@ struct ConsistView: View {
 
     var body: some View {
         VStack {
-            Text("Select Roster Entry for Consist")
+            Text("Select Consist Roster Entry")
             Picker("Roster Entries", selection: $selectedRConsistAddress) {
                 ForEach(model.roster, id: \.self.label) {
                     Text($0.label)
@@ -75,9 +75,6 @@ struct ConsistLocoView : View {
                 }
             }.frame(width: 80)
                 .labelStyle(.iconOnly)
-            StandardMomentaryButton(label: "Drop", height: 35, font: .title2) {
-                
-            }.frame(width: 70)
         }
     }
 }
