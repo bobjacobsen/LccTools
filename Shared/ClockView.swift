@@ -24,7 +24,7 @@ struct ClockView: View {
     
     let cutoff = 480.0 // min size for larger display, empirically determined from iPhone 12 Pro Max at 428
     
-    @State private var isRunning = false  // TODO: Is this connected to underlying clock state (coming or going)?
+    @State private var isRunning = false // will be updated when we first hear from clock
     
     @State private var hours : Int = 0
     
