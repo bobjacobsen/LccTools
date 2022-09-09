@@ -49,6 +49,8 @@
 		2395165B28AFDB8E00F3A872 /* StandardToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2395165928AFDB8D00F3A872 /* StandardToggleButton.swift */; };
 		23A0D5482892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
 		23A0D5492892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
+		23C40BBB28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */; };
+		23C40BBC28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,7 @@
 		2395165928AFDB8D00F3A872 /* StandardToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardToggleButton.swift; sourceTree = "<group>"; };
 		239ADD1E28C4F78000E13A32 /* OlcbTools (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OlcbTools (iOS).entitlements"; sourceTree = "<group>"; };
 		23A0D5472892F3D0009663EA /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
+		23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexadecimalKeyboard.swift; sourceTree = "<group>"; };
 		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,6 +161,7 @@
 				23A0D5472892F3D0009663EA /* ClockView.swift */,
 				235DFF4328C1017100B03999 /* ConsistView.swift */,
 				2300894B285C9630000FB614 /* ContentView.swift */,
+				23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */,
 				2300894E285CA41A000FB614 /* CdCdiView.swift */,
 				23008954285CC75C000FB614 /* EventView.swift */,
 				2392DE622861B26600BD9391 /* MonitorView.swift */,
@@ -387,6 +391,7 @@
 			files = (
 				235DFF4428C1017100B03999 /* ConsistView.swift in Sources */,
 				2300892C285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
+				23C40BBB28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */,
 				23008932285C94A4000FB614 /* Persistence.swift in Sources */,
 				2300894C285C9630000FB614 /* ContentView.swift in Sources */,
 				23008955285CC75C000FB614 /* EventView.swift in Sources */,
@@ -410,6 +415,7 @@
 			files = (
 				235DFF4528C1017100B03999 /* ConsistView.swift in Sources */,
 				2300892D285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
+				23C40BBC28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */,
 				23008933285C94A4000FB614 /* Persistence.swift in Sources */,
 				2300894D285C9630000FB614 /* ContentView.swift in Sources */,
 				23008956285CC75C000FB614 /* EventView.swift in Sources */,
