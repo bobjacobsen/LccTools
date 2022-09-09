@@ -25,7 +25,8 @@ class HexadecimalKeyboard: UIView {
         button.hexCharacter = $0
         button.setTitle("\($0)", for: .normal)
         button.backgroundColor = UIColor.secondarySystemGroupedBackground
-        button.addTarget(self, action: #selector(didTapHexButton(_:)), for: .touchUpInside)
+        // button.addTarget(self, action: #selector(didTapHexButton(_:)), for: .touchUpInside)
+        button.addTarget(HexadecimalKeyboard.self, action: #selector(didTapHexButton(_:)), for: .touchUpInside)
         return button
     }
     
@@ -34,7 +35,8 @@ class HexadecimalKeyboard: UIView {
         button.setTitle("⌫", for: .normal)
         button.backgroundColor = UIColor.systemGray4
         button.accessibilityLabel = "Delete"
-        button.addTarget(self, action: #selector(didTapDeleteButton(_:)), for: .touchUpInside)
+        // button.addTarget(self, action: #selector(didTapDeleteButton(_:)), for: .touchUpInside)
+        button.addTarget(HexadecimalKeyboard.self, action: #selector(didTapDeleteButton(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -43,7 +45,8 @@ class HexadecimalKeyboard: UIView {
         button.setTitle("OK", for: .normal)
         button.backgroundColor = UIColor.systemGray4
         button.accessibilityLabel = "OK"
-        button.addTarget(self, action: #selector(didTapOKButton(_:)), for: .touchUpInside)
+        // button.addTarget(self, action: #selector(didTapOKButton(_:)), for: .touchUpInside)
+        button.addTarget(HexadecimalKeyboard.self, action: #selector(didTapOKButton(_:)), for: .touchUpInside)
         return button
     }()
     
