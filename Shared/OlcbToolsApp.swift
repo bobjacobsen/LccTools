@@ -105,9 +105,10 @@ struct OlcbToolsApp: App {
     @State private var selectedTab : String = "Throttle"
     
     var body: some Scene {
+        print("OlcbToolsApp body")
         // iOS has four windows available fom the navigation bar at the bottom
         // macOS puts those in a tab bar at the top of the window
-        WindowGroup {
+        return WindowGroup {
             TabView(selection: $selectedTab) {
                 ThrottleView(throttleModel: openlcblib.throttleModel0)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
