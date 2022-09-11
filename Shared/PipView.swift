@@ -24,7 +24,7 @@ struct PipView: View {
             ForEach(elements, id: \.description) { (pip) in
                 Text(pip)  // contains pretty name of each member of the supported set
             }
-        }.navigationTitle("Supported Protocols")
+        }.navigationTitle("\(displayNode.name) Supported Protocols")
     }
 }
 

@@ -39,7 +39,7 @@ struct CdCdiView: View {
             }
             List(model.tree, children: \.children) { row in  // "children" makes the nested list
                 containedView(item: row, model: model)
-            }.padding(10).navigationTitle("Node Configuration")
+            }.padding(10).navigationTitle("\(displayNode.name) Configuration")
         }
     }
 }

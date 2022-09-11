@@ -16,9 +16,10 @@ struct NodeSummaryView: View {
     
     var body: some View {
 
+        //#if os(macOS)
         // TODO: sort out iOS vs macOS here (and also matching bracket below)
-//NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
-        
+        //NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
+        //#endif
         VStack(alignment: .leading) {
             Text(displayNode.name).font(.title)
             Text(displayNode.snip.userProvidedDescription)
@@ -56,10 +57,11 @@ struct NodeSummaryView: View {
             Text(displayNode.snip.modelName)
             Text(displayNode.snip.manufacturerName)
             Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
-        }.navigationTitle("\(displayNode.name) Summary")
-            
-//    }.navigationTitle("\(displayNode.name) Summary") // end of macOS-only Navigation view
-
+        } .navigationTitle("\(displayNode.name) Summary")
+         
+    //#if os(macOS)
+    //}.navigationTitle("\(displayNode.name) Summary") // end of macOS-only Navigation view
+    //#endif
             
     }
 }

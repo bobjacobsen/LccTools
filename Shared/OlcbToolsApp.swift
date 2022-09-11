@@ -105,10 +105,9 @@ struct OlcbToolsApp: App {
     @State private var selectedTab : String = "Throttle"
     
     var body: some Scene {
-        print("OlcbToolsApp body")
         // iOS has four windows available fom the navigation bar at the bottom
         // macOS puts those in a tab bar at the top of the window
-        return WindowGroup {
+        WindowGroup {
             TabView(selection: $selectedTab) {
                 ThrottleView(throttleModel: openlcblib.throttleModel0)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
@@ -159,6 +158,7 @@ struct OlcbToolsApp: App {
                     self.startup()
                 }
 
+
         } // WindowGroup
         .onChange(of: scenePhase) { newPhase in
             
@@ -177,9 +177,10 @@ struct OlcbToolsApp: App {
 #if os(macOS)
         // macOS has a separate "settings" window as Preferences
         Settings {  // creates a Preferences item in App menu
-            SettingsView(commStatus: commStatus)
+            SettingsView(commStatus: $commStatus)
         }
 #endif
+
 
     }
 }

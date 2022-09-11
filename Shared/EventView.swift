@@ -44,7 +44,7 @@ struct EventView: View {
                     #endif
                 }.padding(.horizontal, -15.0)
             }
-        }.navigationTitle("Events")
+        }.navigationTitle("\(displayNode.name) Events")
     }
 }
 

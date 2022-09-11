@@ -6,6 +6,9 @@
 //  See also https://github.com/PepperoniJoe/HexadecimalKeyboard
 
 import Foundation
+
+#if canImport(UIKit)
+
 import UIKit
 
 protocol RemoveKeyboardDelegate: AnyObject {
@@ -158,3 +161,5 @@ private extension HexadecimalKeyboard {
         return stackView
     }
 }
+
+#endif
