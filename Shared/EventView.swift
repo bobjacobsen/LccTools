@@ -22,28 +22,27 @@ struct EventView: View {
         return VStack {
             Divider() // Needed to align tops of columns
             HStack {
-                // TODO: Work on left/right margins to make a bit more space in portrait
                 List {
                     Text("Produces").font(.title).frame(alignment: .leading)
                     ForEach(produced, id:\.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
-                            .padding(.vertical, 0)
+                            .padding(.vertical, -5)
                     }
                     #if os(iOS)
-                        .listRowSeparator(.hidden)  // first supported in macOS 13
+                        .listRowSeparator(.hidden)  // TODO: first supported in macOS 13
                     #endif
                 }.padding(.horizontal, -15.0)
                 List {
-                    Text("Consumes").font(.title).font(.title).frame(alignment: .leading)
+                    Text("Consumes").font(.title).frame(alignment: .trailing)
                     ForEach(consumed, id:\.eventID) { (event) in
-                        EventViewOneEvent(eventID: event).frame(alignment: .trailing)
-                            .padding(.vertical, 0)
+                        EventViewOneEvent(eventID: event).frame(alignment: .leading)
+                            .padding(.vertical, -5)
                     }
                     #if os(iOS)
-                        .listRowSeparator(.hidden) // first supported in macOS 13
+                        .listRowSeparator(.hidden) // TODO: first supported in macOS 13
                     #endif
                 }.padding(.horizontal, -15.0)
-            }
+            }.padding(.horizontal, -10.0)
         }.navigationTitle("\(displayNode.name) Events")
     }
 }
@@ -51,10 +50,6 @@ struct EventView: View {
 struct EventViewOneEvent : View {
     @EnvironmentObject var openlcblib : OpenlcbLibrary
     
-#if os(iOS) // to check for iPhone v iPad & orientation
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
-#endif
-
     let eventID : EventID
     
     var body: some View {
@@ -63,10 +58,7 @@ struct EventViewOneEvent : View {
             let fontsize = Font.system(size: width / 12.5) // empirically derived
             
             StandardMomentaryButton(label: "\(eventID.description)", height: 35, font: fontsize) {
-                // TODO: Encapsulate this and set Message, sendMessage back to internal
-                let msg = Message(mti: .Producer_Consumer_Event_Report, source: openlcblib.linkLevel.localNodeID, data: eventID.toArray())
-                openlcblib.linkLevel.sendMessage(msg)
-                // button action
+                openlcblib.produceEvent(eventID: eventID)
             }.padding(.horizontal, -5.0)
         }
     }
