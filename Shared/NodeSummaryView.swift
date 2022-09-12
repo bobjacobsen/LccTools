@@ -20,11 +20,13 @@ struct NodeSummaryView: View {
         // TODO: sort out iOS vs macOS here (and also matching bracket below)
         //NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
         //#endif
-        VStack(alignment: .leading) {
+        VStack( /* alignment: .leading */) {
+            // TODO: Making this a list (instead of a VStack) to allow pull-to-refresh messes up navigation: Buttons don't go where they're supposed to, and can only be clicked once. The back link from those shows "Back" unless you un-comment the navigationTitle items below. But having them uncommented when using a VStack results in wrong titles on pages when navigating back.
             Text(displayNode.name).font(.title)
             Text(displayNode.snip.userProvidedDescription)
             Text(displayNode.id.description) // nodeID
 
+            // TODO: Make these conditional on whether the capability is present to suppress them on e.g. JMRI
             HStack{
                 NavigationLink(destination: EventView(displayNode: displayNode)) {
                     VStack {
@@ -76,6 +78,7 @@ struct FullNodeView_Previews: PreviewProvider {
                                             "My Node Name",
                                             "And Description"))
     static var previews: some View {
-        NodeSummaryView(displayNode: displayNode, lib: OpenlcbLibrary(defaultNodeID: NodeID(258)))
+        let olcblibrary = OpenlcbLibrary(defaultNodeID: NodeID(258))
+        return NodeSummaryView(displayNode: displayNode, lib: olcblibrary)
     }
 }
