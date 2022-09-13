@@ -28,20 +28,28 @@ struct EventView: View {
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                             .padding(.vertical, -5)
                     }
-                    #if os(iOS)
-                        .listRowSeparator(.hidden)  // TODO: first supported in macOS 13
-                    #endif
+#if os(iOS)
+                    .listRowSeparator(.hidden)  // TODO: first supported in macOS 13
+#endif
                 }.padding(.horizontal, -15.0)
+                    .refreshable {
+                        print ("refreshing produced events")
+                        // TODO: Refresh the events produced by this node
+                    }
                 List {
                     Text("Consumes").font(.title).frame(alignment: .trailing)
                     ForEach(consumed, id:\.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .leading)
                             .padding(.vertical, -5)
                     }
-                    #if os(iOS)
-                        .listRowSeparator(.hidden) // TODO: first supported in macOS 13
-                    #endif
+#if os(iOS)
+                    .listRowSeparator(.hidden) // TODO: first supported in macOS 13
+#endif
                 }.padding(.horizontal, -15.0)
+                    .refreshable {
+                        print ("refreshing consumed events")
+                        // TODO: Refresh the events consumed by this node
+                    }
             }.padding(.horizontal, -10.0)
         }.navigationTitle("\(displayNode.name) Events")
     }

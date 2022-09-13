@@ -47,6 +47,10 @@ struct NodeListNavigationView: View {
                 }
             }.navigationTitle("Remote Nodes")
              .listStyle(SidebarListStyle())
+             .refreshable {
+                 print("refresh operation available")
+                 // TODO add code to redo the node search here
+             }
             
             Text("No Selection")
         }

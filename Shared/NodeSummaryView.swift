@@ -22,9 +22,17 @@ struct NodeSummaryView: View {
         //#endif
         VStack( /* alignment: .leading */) {
             // TODO: Making this a list (instead of a VStack) to allow pull-to-refresh messes up navigation: Buttons don't go where they're supposed to, and can only be clicked once. The back link from those shows "Back" unless you un-comment the navigationTitle items below. But having them uncommented when using a VStack results in wrong titles on pages when navigating back.
-            Text(displayNode.name).font(.title)
-            Text(displayNode.snip.userProvidedDescription)
-            Text(displayNode.id.description) // nodeID
+            List {
+                Text(displayNode.name).font(.title)
+                Text(displayNode.snip.userProvidedDescription)
+                Text(displayNode.id.description) // nodeID
+                Text(displayNode.snip.modelName)
+                Text(displayNode.snip.manufacturerName)
+                Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
+            }.refreshable {
+                print ("refresh node")
+                // TODO: Refresh SNIP
+            }
 
             // TODO: Make these conditional on whether the capability is present to suppress them on e.g. JMRI
             HStack{
@@ -56,9 +64,6 @@ struct NodeSummaryView: View {
                 } //.navigationTitle("More Info")
             }.frame(minHeight: 75)
             
-            Text(displayNode.snip.modelName)
-            Text(displayNode.snip.manufacturerName)
-            Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
         } .navigationTitle("\(displayNode.name) Summary")
          
     //#if os(macOS)
