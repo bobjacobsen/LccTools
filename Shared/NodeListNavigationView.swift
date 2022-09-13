@@ -12,7 +12,7 @@ import os
 struct NodeListNavigationView: View {
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
     
-    let network : OpenlcbLibrary
+    @ObservedObject var network : OpenlcbLibrary
     
     var nodes : [Node] = []
     
@@ -42,6 +42,7 @@ struct NodeListNavigationView: View {
                                 Text(node.id.description)
                                 Text(node.snip.userProvidedDescription).font(.footnote)
                             }
+                            Divider()
                         }
                     }
                 }
