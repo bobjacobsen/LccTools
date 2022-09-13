@@ -10,6 +10,7 @@ import OpenlcbLibrary
 
 struct CdCdiView: View {
     
+    // TODO: is not properly handling a read already in progress, i.e. if you start one, move away, and return. That results in two reads running in parallel.
     // start with Segment elements present
     @ObservedObject var model : CdiModel
 
