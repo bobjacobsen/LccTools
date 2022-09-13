@@ -11,8 +11,8 @@ import OpenlcbLibrary
 /// Display of the details of a single node.
 /// Invoked from e.g. NodeListNavigationView
 struct NodeSummaryView: View {
-    let displayNode : Node
-    let lib : OpenlcbLibrary
+    @ObservedObject var displayNode : Node
+    let network : OpenlcbLibrary
     
     var body: some View {
 
@@ -21,7 +21,6 @@ struct NodeSummaryView: View {
         //NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
         //#endif
         VStack( /* alignment: .leading */) {
-            // TODO: Making this a list (instead of a VStack) to allow pull-to-refresh messes up navigation: Buttons don't go where they're supposed to, and can only be clicked once. The back link from those shows "Back" unless you un-comment the navigationTitle items below. But having them uncommented when using a VStack results in wrong titles on pages when navigating back.
             List {
                 Text(displayNode.name).font(.title)
                 Text(displayNode.snip.userProvidedDescription)
@@ -30,8 +29,7 @@ struct NodeSummaryView: View {
                 Text(displayNode.snip.manufacturerName)
                 Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
             }.refreshable {
-                print ("refresh node")
-                // TODO: Refresh SNIP
+                network.refreshNode(node: displayNode)
             }
 
             // TODO: Make these conditional on whether the capability is present to suppress them on e.g. JMRI
@@ -45,7 +43,7 @@ struct NodeSummaryView: View {
                     }
                 } //.navigationTitle("Events")
                                 
-                NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: lib)) {
+                NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
                     VStack {
                         Image(systemName:"square.and.pencil")
                         //.resizable().frame(width:50, height:50)
@@ -84,6 +82,6 @@ struct FullNodeView_Previews: PreviewProvider {
                                             "And Description"))
     static var previews: some View {
         let olcblibrary = OpenlcbLibrary(defaultNodeID: NodeID(258))
-        return NodeSummaryView(displayNode: displayNode, lib: olcblibrary)
+        return NodeSummaryView(displayNode: displayNode, network: olcblibrary)
     }
 }
