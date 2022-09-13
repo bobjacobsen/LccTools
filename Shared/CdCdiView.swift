@@ -15,11 +15,11 @@ struct CdCdiView: View {
     @ObservedObject var model : CdiModel
 
     var displayNode: Node
-    let lib : OpenlcbLibrary
+    let network : OpenlcbLibrary
 
     init(displayNode: Node, lib: OpenlcbLibrary){
         self.displayNode = displayNode
-        self.lib = lib
+        self.network = lib
         
         // does the node already have CDI that's currently loaded
         if displayNode.cdi == nil || !displayNode.cdi!.loaded {
