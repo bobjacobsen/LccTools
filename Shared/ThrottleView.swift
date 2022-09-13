@@ -47,7 +47,7 @@ struct ThrottleView: View {
             }
             .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
                 LocoSelectionView(model: model) // shows full sheet
-                // .presentationDetents([.fraction(0.25)]) // iOS16 feature
+                // .presentationDetents([.fraction(0.25)]) // iOS16 feature                
             }
             
             Slider(
