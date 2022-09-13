@@ -90,7 +90,7 @@ struct OlcbToolsApp: App {
             restartTelnet()
         } else {
             // exit(EXIT_FAILURE)
-            logger.info("Connection exited with ERROR: \(error!, privacy: .public), restarting from OlcbToolsApp telnetDidStopCallback")
+            logger.info("Connection exited with ERROR: \(error!.localizedDescription, privacy: .public), restarting from OlcbToolsApp telnetDidStopCallback")
             var err = "unknown"
             if let error {
                 err = "\(error)"
