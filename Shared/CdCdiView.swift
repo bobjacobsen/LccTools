@@ -103,7 +103,7 @@ struct RButtonView : View {
             RoundedRectangle(cornerRadius: 10.0)
                 .frame(width: 40, height: 30, alignment: .center)
                 .foregroundColor(.green)
-            Button("R") {    // TODO: needs to be hooked to model to do Refresh
+            Button("R") {
                 action()
                 print("Refresh pressed for \(address)")
             }
@@ -124,7 +124,7 @@ struct WButtonView : View {
             RoundedRectangle(cornerRadius: 10.0)
                 .frame(width: 40, height: 30, alignment: .center)
                 .foregroundColor(.green)
-            Button("W") {    // TODO: needs to be hooked to model to do Write
+            Button("W") {
                 action()
                 print("Write pressed for \(address)")
             }

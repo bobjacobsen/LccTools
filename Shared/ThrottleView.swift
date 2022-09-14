@@ -19,7 +19,7 @@ struct ThrottleView: View {
     var bars : [ThrottleBar] = []
     let maxindex = 50                       // number of bars
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area
-    let maxSpeed = 100.0                    // TODO: Decide how to handle max speed - configurable?
+    let maxSpeed = 100.0                    // MPH   // TODO: Decide how to handle max speed - configurable?
 
 
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
@@ -47,7 +47,7 @@ struct ThrottleView: View {
             }
             .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
                 LocoSelectionView(model: model) // shows full sheet
-                // .presentationDetents([.fraction(0.25)]) // iOS16 feature                
+                // .presentationDetents([.fraction(0.25)]) // iOS16 feature
             }
             
             Slider(
@@ -189,7 +189,7 @@ struct FnButtonView : View {
             DispatchQueue.main.async{ // to avoid "publishing changes from within view updates is not allowed"
                 if (!model.momentary) { model.pressed = !model.pressed }
             }
-            // TODO: is a momentary press down/up being recorded?
+            // TODO: a momentary press down/up is not being handled for momentary buttons
             // https://developer.apple.com/forums/thread/131715
         }) {
             ZStack {

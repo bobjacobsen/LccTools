@@ -32,7 +32,7 @@ struct NodeSummaryView: View {
                 network.refreshNode(node: displayNode)
             }
 
-            // TODO: Make these conditional on whether the capability is present to suppress them on e.g. JMRI
+            // TODO: Make these conditional on whether the capability is present to suppress them for e.g. JMRI
             HStack{
                 NavigationLink(destination: EventView(displayNode: displayNode)) {
                     VStack {
