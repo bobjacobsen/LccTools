@@ -137,7 +137,7 @@ struct OlcbToolsApp: App {
 
                 // iPhone 12 goes to "More..." at this point
 
-                ConsistView(model: openlcblib.throttleModel0)
+                ConsistView(consistModel: openlcblib.consistModel0, selectionModel: openlcblib.throttleModel0)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
                         Label("Consists", systemImage: "forward")
