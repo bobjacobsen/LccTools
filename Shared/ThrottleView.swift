@@ -212,7 +212,7 @@ struct LocoSelectionView : View {
 
     @State var address  = ""
     @State var addressForm  = 1
-    @State private var selectedRosterAddress = "<none>"    
+    @State private var selectedRosterAddress = "<None>"    
  
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LocoSelectionView")
 
@@ -249,7 +249,7 @@ struct LocoSelectionView : View {
                             break
                         }
                     }
-                }.disabled(selectedRosterAddress == "<none>")
+                }.disabled(selectedRosterAddress == "<None>")
             } // end top section to select from roster
             
             Divider()
