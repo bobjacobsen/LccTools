@@ -87,7 +87,13 @@ struct OlcbToolsApp: App {
         if error == nil {
             logger.info("Connection exited with SUCCESS, restarting from OlcbToolsApp telnetDidStopCallback")
             commStatus = "Restarted"
-            restartTelnet()
+
+            let deadlineTime = DispatchTime.now() + .milliseconds(1000)
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                self.logger.info("   calling start after delay")
+                restartTelnet()
+            }
+            
         } else {
             // exit(EXIT_FAILURE)
             logger.info("Connection exited with ERROR: \(error!.localizedDescription, privacy: .public), restarting from OlcbToolsApp telnetDidStopCallback")
