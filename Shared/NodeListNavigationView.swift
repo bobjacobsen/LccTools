@@ -24,7 +24,6 @@ struct NodeListNavigationView: View {
     }
 
     var body: some View {
-        print("NodeListNavigationView body")
         // print(Self._printChanges())
         return NavigationView {
             List { // of all the nodes
