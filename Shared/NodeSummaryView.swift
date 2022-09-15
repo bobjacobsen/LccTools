@@ -30,6 +30,7 @@ struct NodeSummaryView: View {
                 Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
             }.refreshable {
                 network.refreshNode(node: displayNode)
+                // TODO: reloadRoster() here happens too soon, network update hasn't happened yet
             }
 
             // TODO: Make these conditional on whether the capability is present to suppress them for e.g. JMRI

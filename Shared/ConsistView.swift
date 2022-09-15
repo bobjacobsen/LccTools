@@ -20,6 +20,7 @@ struct ConsistView: View {
     var body: some View {
         VStack {
             Text("Select Consist Roster Entry")
+            
             Picker("Roster Entries", selection: $selectedConsistAddress) {
                 ForEach(selectionModel.roster, id: \.self.label) {
                     Text($0.label)
@@ -30,11 +31,9 @@ struct ConsistView: View {
                 consistModel.forLoco = selectionModel.getRosterEntryNodeID(from: selectedConsistAddress)
                 consistModel.fetchConsist()
             }
-            //            StandardMomentaryButton(label: "Read Consist", height: 35, font: .title2) {
-            //                consistModel.forLoco = selectionModel.getRosterEntryNodeID(from: selectedConsistAddress)
-            //                consistModel.fetchConsist()
-            //            }
+
             Divider()
+
             List {
                 ForEach(consistModel.consist, id: \.self.id) {
                     ConsistLocoView(
@@ -47,8 +46,11 @@ struct ConsistView: View {
                     )
                 }
             }
+
             Divider()
+
             Text("Select Locomotive to Add")
+
             HStack {
                 Picker("Roster Entries", selection: $selectedAddAddress) {
                     ForEach(selectionModel.roster, id: \.self.label) {
@@ -60,8 +62,8 @@ struct ConsistView: View {
                 StandardMomentaryButton(label: "Add", height: 35, font: .title2) {
                     consistModel.addLocoToConsist(add: selectionModel.getRosterEntryNodeID(from: selectedAddAddress))
                 }.disabled(disableAddButton()).frame(width: 70)
-                    
             }
+            
         }
     }
     

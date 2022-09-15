@@ -9,7 +9,7 @@ import SwiftUI
 import OpenlcbLibrary
 import os
 
-// TODO: What causes an update of the roster?  Not changing when CDI changes. Maybe when node is updated (pull to refresh)?
+// TODO: What causes an update of the roster?  Not changing names when CDI changes. Maybe when node is updated (pull to refresh)?
 
 // The complete throttle view, with both speed and function sections
 struct ThrottleView: View {
