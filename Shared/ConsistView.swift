@@ -12,11 +12,11 @@ import os
 struct ConsistView: View {
     @ObservedObject var consistModel: ConsistModel
     @ObservedObject var selectionModel: ThrottleModel
-
-    @State private var selectedConsistAddress = "<none>"
-
-    @State private var selectedAddAddress = "<none>"
-
+    
+    @State private var selectedConsistAddress = "<None>"
+    
+    @State private var selectedAddAddress = "<None>"
+    
     var body: some View {
         VStack {
             Text("Select Consist Roster Entry")
@@ -26,18 +26,27 @@ struct ConsistView: View {
                         .font(.largeTitle)
                 }
             } //.pickerStyle(WheelPickerStyle())
-            StandardMomentaryButton(label: "Read Consist", height: 35, font: .title2) {
+            .onChange(of: selectedConsistAddress) { value in
                 consistModel.forLoco = selectionModel.getRosterEntryNodeID(from: selectedConsistAddress)
                 consistModel.fetchConsist()
             }
+            //            StandardMomentaryButton(label: "Read Consist", height: 35, font: .title2) {
+            //                consistModel.forLoco = selectionModel.getRosterEntryNodeID(from: selectedConsistAddress)
+            //                consistModel.fetchConsist()
+            //            }
             Divider()
             List {
                 ForEach(consistModel.consist, id: \.self.id) {
-                    ConsistLocoView(name: selectionModel.getRosterEntryName(from: $0.childLoco))
+                    ConsistLocoView(
+                        consistModel: consistModel,
+                        entry: $0,
+                        name: selectionModel.getRosterEntryName(from: $0.childLoco),
+                        reverse: $0.reverse,
+                        echoF0: $0.echoF0,
+                        echoFn: $0.echoFn
+                    )
                 }
             }
-            // TODO: Define consist model and add display here
-            // options are Rev Direction; Link F0; link Fn; maybe Hide - who are those linked _to_?
             Divider()
             Text("Select Locomotive to Add")
             HStack {
@@ -47,41 +56,77 @@ struct ConsistView: View {
                             .font(.largeTitle)
                     }
                 } // .pickerStyle(WheelPickerStyle())
+                // TODO: must disable button (onChange above) if address <None> or same as consist address
                 StandardMomentaryButton(label: "Add", height: 35, font: .title2) {
-                    // TODO deactivate button if selected loco is already in consist
                     consistModel.addLocoToConsist(add: selectionModel.getRosterEntryNodeID(from: selectedAddAddress))
-                }.frame(width: 70)
+                }.disabled(disableAddButton()).frame(width: 70)
+                    
             }
         }
-   }
+    }
+    
+    func disableAddButton() -> Bool {
+        return selectedAddAddress == "<None>" || selectedConsistAddress == "<None>" || selectedAddAddress == selectedConsistAddress
+    }
 }
 
 struct ConsistLocoView : View {
+    let consistModel : ConsistModel
+    let entry : ConsistModel.ConsistEntryModel
     let name : String
-    @State private var bindingForReverse = false
-    @State private var bindingForEchoF0  = false
-    @State private var bindingForEchoFN  = false
+    @State private var reverse : Bool
+    @State private var echoF0  : Bool
+    @State private var echoFn  : Bool
+    
+    init(consistModel : ConsistModel, entry : ConsistModel.ConsistEntryModel, name : String,
+         reverse : Bool, echoF0 : Bool, echoFn : Bool) {
+        self.consistModel = consistModel
+        self.entry = entry
+        self.name = name
 
+        self.reverse = reverse
+        self.echoF0 = echoF0
+        self.echoFn = echoFn
+    }
+    
     var body: some View {
         HStack {
+            StandardMomentaryButton(label: "Del", height: 35, font: .title2) {
+                consistModel.removeLocoFromConsist(remove: entry.childLoco)
+                // TODO: (if needed) refresh consist ala Add
+            }.frame(width: 60)
             Spacer()
             Text(name)
                 .frame(alignment: .center)
                 .font(.title2)
             VStack{
-                Toggle(isOn: $bindingForReverse) {
+                Toggle(isOn: $reverse) {
                     Label("Rev:", systemImage: "repeat")
                 }
-                Toggle(isOn: $bindingForEchoF0) {
+                .onChange(of: reverse) { value in
+                    changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+                }
+                Toggle(isOn: $echoF0) {
                     Label("Link F0:", systemImage: "lightbulb")
                 }
-                Toggle(isOn: $bindingForEchoFN) {
+                .onChange(of: echoF0) { value in
+                    changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+                }
+                Toggle(isOn: $echoFn) {
                     Label("Link Fn:", image: "lightbulb.2") // only available as systemimage in iOS 16, macOS 13
+                }
+                .onChange(of: echoFn) { value in
+                    changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                 }
             }.frame(width: 80)
                 .labelStyle(.iconOnly)
         }
     }
+    
+    func changingToggle(reverse : Bool, echoF0 : Bool, echoFn : Bool) {
+        consistModel.resetFlags(on: entry.childLoco, reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+    }
+    
 }
 
 struct ConsisteView_Previews: PreviewProvider {
