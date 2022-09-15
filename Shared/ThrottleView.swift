@@ -9,6 +9,8 @@ import SwiftUI
 import OpenlcbLibrary
 import os
 
+// TODO: What causes an update of the roster?  Not changing when CDI changes. Maybe when node is updated (pull to refresh)?
+
 // The complete throttle view, with both speed and function sections
 struct ThrottleView: View {
     
@@ -39,7 +41,6 @@ struct ThrottleView: View {
     }
     
     var body: some View {
-        // print(Self._printChanges())
         return VStack {
             StandardMomentaryButton(label: model.selectedLoco,
                                     height: 40, font: .title){
@@ -212,7 +213,7 @@ struct LocoSelectionView : View {
 
     @State var address  = ""
     @State var addressForm  = 1
-    @State private var selectedRosterAddress = "<None>"    
+    @State private var selectedRosterAddress = "<None>"
  
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LocoSelectionView")
 

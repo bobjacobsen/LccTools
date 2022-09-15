@@ -30,8 +30,6 @@ struct CdCdiView: View {
         model = displayNode.cdi!
     }
     
-    // TODO: contains a lot of print statements; remove or change to logging
-    
     var body: some View {
         VStack {
             if (model.loading) {
@@ -105,7 +103,6 @@ struct RButtonView : View {
                 .foregroundColor(.green)
             Button("R") {
                 action()
-                print("Refresh pressed for \(address)")
             }
             .font(.body)
             .foregroundColor(.white)
@@ -126,7 +123,6 @@ struct WButtonView : View {
                 .foregroundColor(.green)
             Button("W") {
                 action()
-                print("Write pressed for \(address)")
             }
             .font(.body)
             .foregroundColor(.white)
@@ -142,7 +138,6 @@ struct CdiEventView : View {
     init(item : CdiXmlMemo, model : CdiModel) {
         self.item = item
         self.model = model
-        print ("Event init starts")
     }
     
     var body : some View {
@@ -152,11 +147,9 @@ struct CdiEventView : View {
                 
                 TextField("Enter \(item.name)", text: $eventValue) // TODO: needs custom formatter
                     .onAppear {
-                        print ("EventID appears with \(eventValue) current: \(self.item.currentIntValue)")
                         eventValue = item.currentStringValue
                     }
                     .onSubmit {
-                        print ("EventID submits with \(eventValue) prior current: \(self.item.currentIntValue)")
                         item.currentStringValue = eventValue  // TODO: capture this to do a write
                     }
                 Spacer()
@@ -189,7 +182,6 @@ struct CdiIntView : View {
         formatter.minimum = NSNumber(integerLiteral: item.minValue)
         formatter.maximum = NSNumber(integerLiteral: item.maxValue)
         formatter.maximumFractionDigits = 0
-        print ("Int init starts")
     }
     
     var body : some View {
@@ -199,11 +191,9 @@ struct CdiIntView : View {
                 
                 TextField("Enter \(item.name)", value: $intValue,  formatter: formatter)
                     .onAppear {
-                        print ("Int appears with \(intValue) current: \(self.item.currentIntValue)")
                         intValue = item.currentIntValue
                     }
                     .onSubmit {
-                        print ("Int submits with \(intValue) prior current: \(self.item.currentIntValue)")
                         item.currentIntValue = intValue
                     }
                 Spacer()
@@ -236,10 +226,8 @@ struct CdiIntMapView : View {
     init(item : CdiXmlMemo, model: CdiModel) {
         self.item = item
         self.model = model
-        print ("Int map init starts \(self.item.defaultValue) \(self.item.currentIntValue)")
         intValue = item.currentIntValue
         stringValue = propertyToValue(property: intValue)
-        print (" Int map init done with stringValue is \(stringValue)")
     }
     
     func valueToProperty(value : String ) -> Int {
@@ -264,17 +252,11 @@ struct CdiIntMapView : View {
                     } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
                     .pickerStyle(MenuPickerStyle())
                     .onAppear { // initialize from model value
-                        print ("IntMap appears with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
-                        print ("   int \(item.currentIntValue) maps to \(propertyToValue(property: item.currentIntValue))")
                         intValue = item.currentIntValue
                         stringValue = propertyToValue(property: intValue)
                     }
                     .onReceive([self.stringValue].publisher.first()) { (value) in  // store back to model
-                        print ("onReceive with \(value)")
-                        print ("    start with \(intValue) \(stringValue) current: \(self.item.currentIntValue)")
-                        print ("    string maps to \(valueToProperty(value: stringValue))")
                         if (stringValue == "<initial internal content>") {
-                            print ("  and returning initially")
                             return
                         }
                         intValue = valueToProperty(value: stringValue)
@@ -309,7 +291,6 @@ struct CdiStringView : View {
     init(item : CdiXmlMemo, model: CdiModel) {
         self.item = item
         self.model = model
-        print ("String init starts")
     }
 
     @State private var entryText : String = ""
