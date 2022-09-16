@@ -30,10 +30,10 @@ struct NodeSummaryView: View {
                 Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
             }.refreshable {
                 network.refreshNode(node: displayNode)
-                // TODO: reloadRoster() here happens too soon, network update hasn't happened yet
+                // TODO: reloadRoster() here would happen too soon, network update hasn't happened yet
             }
 
-            // TODO: Make these conditional on whether the capability is present to suppress them for e.g. JMRI
+            // TODO: Make conditional on whether the capability is present in PIP to suppress them for e.g. JMRI
             HStack{
                 NavigationLink(destination: EventView(displayNode: displayNode)) {
                     VStack {

@@ -17,15 +17,15 @@ import os
 @main
 struct OlcbToolsApp: App {
     // info from settings, see `SettingsView``
-    @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = "localhost"
+    @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = ""
     @AppStorage("HUB_IP_PORT") private var ip_port: String = "12021"
     @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = "05.01.01.01.03.FF"  // static for static openlcnlib
 
     @StateObject var openlcblib = OpenlcbLibrary(defaultNodeID: NodeID(this_node_ID))
     
     @Environment(\.scenePhase) var scenePhase  // for .background, etc
-    
-    @State var commStatus : String = "No Connection"
+        
+    var tcpConnectionModel = TcpConnectionModel()
     
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
@@ -45,74 +45,41 @@ struct OlcbToolsApp: App {
     
     /// Configure the various libraries and connections, then start the network access
     func startup() {
-//        // TODO: Commented out until (1) better location is found to avoid redraw and (2) we have a start/restart strategy and maybe (3) mDNS is doing something for this
-//        // if there's no host name, show settings
-//        if self.ip_address == "" {
-//            self.selectedTab = "Settings"
-//        } else {
-//            self.selectedTab = "Throttle"
-//        }
-
-        // create, but not yet connect, the Telnet connection to the hub
-        let port = UInt16(self.ip_port) ?? 12021
-        let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: port)
+        // TODO: This causes a brief flash of throttle before Settings is shown; is there a better solution?
+        // if there's no host name, show settings
+        if self.ip_address == "" {
+            self.selectedTab = "Settings"
+        } else {
+            self.selectedTab = "Throttle"
+        }
         
-        // initialize the OLCB processor
-        canphysical.setCallBack(callback: telnetclient!.sendString)
+        // create, but not yet connect, the Telnet connection to the hub (connection done on transition to Active state below)
+        let port = UInt16(self.ip_port) ?? 12021
+        tcpConnectionModel.load(hostName: self.ip_address, portNumber: port, receivedDataCallback: canphysical.receiveString, startUpCallback: startUpCallback)
+        
+        // configure the OLCB processor -> telnet link
+        canphysical.setCallBack(callback: tcpConnectionModel.send(string:))
+        
         openlcblib.configureCanTelnet(canphysical)
         
         //OlcbToolsApp.openlcblib.createSampleData()  // commented out when real hardware is available and connected
         
-        // route TelnetListenerLib incoming data to OpenlcbLib
-        telnetclient.connection.receivedDataCallback = canphysical.receiveString // TODO: needs a better way to set this callback, too much visible here
-        telnetclient.setStopCallback(telnetDidStopCallback(error:))
-
-        // start the connection
-        telnetclient.start()
-        
-        // start the OLCB layer // TODO: should wait for connectionStarted callback from telnetclient to do this.
+    }
+    
+    // connection call back when link goes to 'ready' for first time, starts OpenLCB processing
+    private func startUpCallback() {
+        // start the OLCB layer
+        logger.debug("starting OpenLCB layer")
         canphysical.physicalLayerUp()
     }
     
-    func restartTelnet() {
-        let telnetclient : TelnetClient! = TelnetClient(host: self.ip_address, port: 12021)
-        canphysical.setCallBack(callback: telnetclient!.sendString)
-        telnetclient.connection.receivedDataCallback = canphysical.receiveString // TODO: needs a better way to set this callback, too much visible here
-        telnetclient.setStopCallback(telnetDidStopCallback(error:))
-        telnetclient.start()
-    }
-    
-    public func telnetDidStopCallback(error: Error?) {
-        print("OlcbToolsApp telnetDidStopCallback enter")
-        if error == nil {
-            logger.info("Connection exited with SUCCESS, restarting from OlcbToolsApp telnetDidStopCallback")
-            commStatus = "Restarted"
-
-            let deadlineTime = DispatchTime.now() + .milliseconds(1000)
-            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                self.logger.info("   calling start after delay")
-                restartTelnet()
-            }
-            
-        } else {
-            // exit(EXIT_FAILURE)
-            logger.info("Connection exited with ERROR: \(error!.localizedDescription, privacy: .public), restarting from OlcbToolsApp telnetDidStopCallback")
-            var err = "unknown"
-            if let error {
-                err = "\(error)"
-            }
-            commStatus = "Restarted after error: \(err)"
-            restartTelnet()
-        }
-    }
-
     let persistenceController = PersistenceController.shared
 
     @State private var selectedTab : String = "Throttle"
     
     var body: some Scene {
-        // iOS has four windows available fom the navigation bar at the bottom
-        // macOS puts those in a tab bar at the top of the window
+        // iOS on iPhone has four spots available in the navigation bar at the bottom
+        // macOS puts all the tabs in a tab bar at the top of the window
         WindowGroup {
             TabView(selection: $selectedTab) {
                 ThrottleView(throttleModel: openlcblib.throttleModel0)
@@ -133,7 +100,7 @@ struct OlcbToolsApp: App {
                         Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
                     }.tag("Monitor")
 
-                // TODO: This has wierd nav issues if it comes from "More..."
+                // This has wierd nav issues if it comes from "More..." so keep it above that
                 NodeListNavigationView(lib: openlcblib)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
@@ -151,7 +118,7 @@ struct OlcbToolsApp: App {
 
 #if os(iOS)
                 // in iOS, the settings are another tab
-                SettingsView(commStatus: $commStatus)
+                SettingsView(commModel: tcpConnectionModel)
                     .tabItem {
                         Label("Settings", systemImage: "gear")
                     }.tag("Settings")
@@ -164,17 +131,18 @@ struct OlcbToolsApp: App {
                     self.startup()
                 }
 
-
         } // WindowGroup
         .onChange(of: scenePhase) { newPhase in
             
             switch (newPhase) {
             case .active:
                 logger.debug("Scene Active")
+                tcpConnectionModel.start()
             case .inactive:
                 logger.debug("Scene Inactive")
             case .background:
                 logger.debug("Scene Background")
+                tcpConnectionModel.stop()
             @unknown default:
                 logger.warning("Unexpected Scene phast enum")
             }

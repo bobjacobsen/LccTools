@@ -58,10 +58,11 @@ struct ConsistView: View {
                             .font(.largeTitle)
                     }
                 } // .pickerStyle(WheelPickerStyle())
-                // TODO: must disable button (onChange above) if address <None> or same as consist address
+
                 StandardMomentaryButton(label: "Add", height: 35, font: .title2) {
                     consistModel.addLocoToConsist(add: selectionModel.getRosterEntryNodeID(from: selectedAddAddress))
                 }.disabled(disableAddButton()).frame(width: 70)
+                
             }
             
         }

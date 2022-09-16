@@ -11,7 +11,8 @@ import OpenlcbLibrary
 struct CdCdiView: View {
     
     // TODO: is not properly handling a read already in progress, i.e. if you start one, move away, and return. That results in two reads running in parallel.
-    // start with Segment elements present
+    // TODO: would be good to read values as they are shown instead of requiring hit "R"
+
     @ObservedObject var model : CdiModel
 
     var displayNode: Node
@@ -132,7 +133,7 @@ struct WButtonView : View {
 
 // view for an eventID value entry
 struct CdiEventView : View {
-    @State var eventValue : String = "00.00.00.00.00.00.00.00" // TODO:  initial value vs read?
+    @State var eventValue : String = "00.00.00.00.00.00.00.00"
     var item : CdiXmlMemo
     let model : CdiModel
     init(item : CdiXmlMemo, model : CdiModel) {
@@ -150,7 +151,7 @@ struct CdiEventView : View {
                         eventValue = item.currentStringValue
                     }
                     .onSubmit {
-                        item.currentStringValue = eventValue  // TODO: capture this to do a write
+                        item.currentStringValue = eventValue
                     }
                 Spacer()
                 RButtonView(address: self.item.startAddress, model: model){
