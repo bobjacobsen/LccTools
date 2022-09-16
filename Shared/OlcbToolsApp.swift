@@ -94,11 +94,11 @@ struct OlcbToolsApp: App {
                         Label("Clocks", systemImage: "clock")
                     }.tag("Clock")
               
-                MonitorView()
+                ConsistView(consistModel: openlcblib.consistModel0, selectionModel: openlcblib.throttleModel0)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
-                    }.tag("Monitor")
+                        Label("Consists", systemImage: "forward")
+                    }.tag("Consist")
 
                 // This has wierd nav issues if it comes from "More..." so keep it above that
                 NodeListNavigationView(lib: openlcblib)
@@ -110,11 +110,11 @@ struct OlcbToolsApp: App {
 
                 // iPhone 12 goes to "More..." at this point
 
-                ConsistView(consistModel: openlcblib.consistModel0, selectionModel: openlcblib.throttleModel0)
+                MonitorView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Consists", systemImage: "forward")
-                    }.tag("Consist")
+                        Label("Monitor", systemImage: "figure.stand.line.dotted.figure.stand")
+                    }.tag("Monitor")
 
 #if os(iOS)
                 // in iOS, the settings are another tab
