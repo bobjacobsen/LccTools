@@ -35,15 +35,23 @@ struct ConsistView: View {
             Divider()
 
             List {
-                ForEach(consistModel.consist, id: \.self.id) {
+                ForEach(consistModel.consist, id: \.self.id) { entry in
                     ConsistLocoView(
                         consistModel: consistModel,
-                        entry: $0,
-                        name: selectionModel.getRosterEntryName(from: $0.childLoco),
-                        reverse: $0.reverse,
-                        echoF0: $0.echoF0,
-                        echoFn: $0.echoFn
+                        entry: entry,
+                        name: selectionModel.getRosterEntryName(from: entry.childLoco),
+                        reverse: entry.reverse,
+                        echoF0: entry.echoF0,
+                        echoFn: entry.echoFn
                     )
+                    
+                      .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            () in self.deleteLoco(entry)
+                        } label: {
+                            Text("Delete")
+                        }
+                    }
                 }
             }
 
@@ -66,6 +74,10 @@ struct ConsistView: View {
             }
             
         }
+    }
+    
+    func deleteLoco(_ entry : ConsistModel.ConsistEntryModel ) {
+        consistModel.removeLocoFromConsist(remove: entry.childLoco)
     }
     
     func disableAddButton() -> Bool {
@@ -94,14 +106,16 @@ struct ConsistLocoView : View {
     
     var body: some View {
         HStack {
-            StandardMomentaryButton(label: "Del", height: 35, font: .title2) {
-                consistModel.removeLocoFromConsist(remove: entry.childLoco)
-                // TODO: (if needed) refresh consist ala Add
-            }.frame(width: 60)
-            Spacer()
+//            StandardMomentaryButton(label: "Del", height: 35, font: .title2) {
+//                deleteLoco(entry)
+//            }.frame(width: 60)
+            
+            Spacer() // force presentation to right side
+            
             Text(name)
                 .frame(alignment: .center)
                 .font(.title2)
+            
             VStack{
                 Toggle(isOn: $reverse) {
                     Label("Rev:", systemImage: "repeat")
@@ -130,6 +144,10 @@ struct ConsistLocoView : View {
         consistModel.resetFlags(on: entry.childLoco, reverse: reverse, echoF0: echoF0, echoFn: echoFn)
     }
     
+//    func deleteLoco(_ entry : ConsistModel.ConsistEntryModel ) {
+//        consistModel.removeLocoFromConsist(remove: entry.childLoco)
+//    }
+
 }
 
 struct ConsisteView_Previews: PreviewProvider {
