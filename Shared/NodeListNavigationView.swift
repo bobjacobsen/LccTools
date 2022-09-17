@@ -9,6 +9,8 @@ import SwiftUI
 import OpenlcbLibrary
 import os
 
+/// Display the list of known nodes, and provide address to `NodeSummaryView`.
+/// Needs access to the OLCB network to retrieve the node list.
 struct NodeListNavigationView: View {
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
     

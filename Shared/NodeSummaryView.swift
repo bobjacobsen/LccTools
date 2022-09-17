@@ -16,10 +16,11 @@ struct NodeSummaryView: View {
     
     var body: some View {
 
-        //#if os(macOS)
+        #if os(macOS)
+        #warning("macOS navigation in NodeSummaryView has not been sorted out yet")
         // TODO: sort out iOS vs macOS here (and also matching bracket below)
         //NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
-        //#endif
+        #endif
         VStack( /* alignment: .leading */) {
             List {
                 Text(displayNode.name).font(.title)
