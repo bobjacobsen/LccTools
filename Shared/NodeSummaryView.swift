@@ -16,11 +16,11 @@ struct NodeSummaryView: View {
     
     var body: some View {
 
-        #if os(macOS)
-        #warning("macOS navigation in NodeSummaryView has not been sorted out yet")
-        // TODO: sort out iOS vs macOS here (and also matching bracket below)
-        //NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
-        #endif
+//#if os(macOS)
+//#warning("macOS navigation in NodeSummaryView has not been sorted out yet")
+// TODO: sort out iOS vs macOS here (and also matching bracket below)
+// NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
+//#endif
         VStack( /* alignment: .leading */) {
             List {
                 Text(displayNode.name).font(.title)
@@ -36,39 +36,39 @@ struct NodeSummaryView: View {
 
             // TODO: Make conditional on whether the capability is present in PIP to suppress them for e.g. JMRI
             HStack{
-                NavigationLink(destination: EventView(displayNode: displayNode)) {
-                    VStack {
-                        Image(systemName:"cpu")
-                        //.resizable().frame(width:50, height:50)
-                        Text("Events")
-                            .font(.footnote)
-                    }
-                } //.navigationTitle("Events")
-                                
-                NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
-                    VStack {
-                        Image(systemName:"square.and.pencil")
-                        //.resizable().frame(width:50, height:50)
-                        Text("Configure")
-                            .font(.footnote)
-                    }
-                } //.navigationTitle("Configure")
-                
-                NavigationLink(destination: PipView(displayNode: displayNode)) {
-                    VStack {
-                        Image(systemName:"gear.badge.questionmark")
-                        //.resizable().frame(width:50, height:50)
-                        Text("More Info")
-                            .font(.footnote)
-                    }
-                } //.navigationTitle("More Info")
+                    NavigationLink(destination: EventView(displayNode: displayNode)) {
+                        VStack {
+                            Image(systemName:"cpu")
+                            //.resizable().frame(width:50, height:50)
+                            Text("Events")
+                                .font(.footnote)
+                        }
+                    } //.navigationTitle("Events")
+                    
+                    NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
+                        VStack {
+                            Image(systemName:"square.and.pencil")
+                            //.resizable().frame(width:50, height:50)
+                            Text("Configure")
+                                .font(.footnote)
+                        }
+                    } //.navigationTitle("Configure")
+                    
+                    NavigationLink(destination: PipView(displayNode: displayNode)) {
+                        VStack {
+                            Image(systemName:"gear.badge.questionmark")
+                            //.resizable().frame(width:50, height:50)
+                            Text("More Info")
+                                .font(.footnote)
+                        }
+                    } //.navigationTitle("More Info")
             }.frame(minHeight: 75)
             
         } .navigationTitle("\(displayNode.name) Summary")
          
-    //#if os(macOS)
-    //}.navigationTitle("\(displayNode.name) Summary") // end of macOS-only Navigation view
-    //#endif
+//#if os(macOS)
+//x`}.navigationTitle("\(displayNode.name) Summary") // end of macOS-only Navigation view
+//#endif
             
     }
 }

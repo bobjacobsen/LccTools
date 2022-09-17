@@ -151,7 +151,7 @@ struct OlcbToolsApp: App {
 #if os(macOS)
         // macOS has a separate "settings" window as Preferences
         Settings {  // creates a Preferences item in App menu
-            SettingsView(commStatus: $commStatus)
+            SettingsView(commModel: tcpConnectionModel)
         }
 #endif
 
