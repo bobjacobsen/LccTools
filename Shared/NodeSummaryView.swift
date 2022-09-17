@@ -19,7 +19,7 @@ struct NodeSummaryView: View {
 //#if os(macOS)
 //#warning("macOS navigation in NodeSummaryView has not been sorted out yet")
 // TODO: sort out iOS vs macOS here (and also matching bracket below)
-// NavigationView { // TODO: needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
+// NavigationView { // needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
 //#endif
         VStack( /* alignment: .leading */) {
             List {
@@ -34,8 +34,8 @@ struct NodeSummaryView: View {
                 // TODO: reloadRoster() here would happen too soon, network update hasn't happened yet
             }
 
-            // TODO: Make conditional on whether the capability is present in PIP to suppress them for e.g. JMRI
             HStack{
+                if displayNode.pipSet.contains(.EVENT_EXCHANGE_PROTOCOL) {
                     NavigationLink(destination: EventView(displayNode: displayNode)) {
                         VStack {
                             Image(systemName:"cpu")
@@ -44,7 +44,9 @@ struct NodeSummaryView: View {
                                 .font(.footnote)
                         }
                     } //.navigationTitle("Events")
-                    
+                }
+                
+                if displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL) {
                     NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
                         VStack {
                             Image(systemName:"square.and.pencil")
@@ -53,15 +55,17 @@ struct NodeSummaryView: View {
                                 .font(.footnote)
                         }
                     } //.navigationTitle("Configure")
-                    
-                    NavigationLink(destination: PipView(displayNode: displayNode)) {
-                        VStack {
-                            Image(systemName:"gear.badge.questionmark")
-                            //.resizable().frame(width:50, height:50)
-                            Text("More Info")
-                                .font(.footnote)
-                        }
-                    } //.navigationTitle("More Info")
+                }
+                
+                NavigationLink(destination: PipView(displayNode: displayNode)) {
+                    VStack {
+                        Image(systemName:"gear.badge.questionmark")
+                        //.resizable().frame(width:50, height:50)
+                        Text("More Info")
+                            .font(.footnote)
+                    }
+                } //.navigationTitle("More Info")
+                
             }.frame(minHeight: 75)
             
         } .navigationTitle("\(displayNode.name) Summary")
