@@ -11,7 +11,7 @@ import OpenlcbLibrary
 struct CdCdiView: View {
     
     // TODO: is not properly handling a read already in progress, i.e. if you start one, move away, and return. That results in two reads running in parallel.
-    // TODO: would be good to read values as they are shown instead of requiring hit "R"
+    // TODO: values are read as they are shown, repeatedly, instead of being cached
 
     @ObservedObject var model : CdiModel
 
@@ -155,10 +155,7 @@ struct CdiEventView : View {
                     }
                 Spacer()
                 RButtonView(address: self.item.startAddress, model: model){
-                    model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: 8){
-                        (readValue : Int) in
-                        self.eventValue = EventID(UInt64(readValue)).description
-                    }
+                    read()
                 }
                 WButtonView(address: self.item.startAddress, model: model){
                     model.writeInt(value: Int(EventID(eventValue).eventID), at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
@@ -167,6 +164,16 @@ struct CdiEventView : View {
             if item.description != "" {
                 Text(item.description).font(.footnote)
             }
+        }
+        .onAppear(){
+            read()
+        }
+    }
+    
+    func read() {
+        model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: 8){
+            (readValue : Int) in
+            self.eventValue = EventID(UInt64(readValue)).description
         }
     }
 }
@@ -199,10 +206,7 @@ struct CdiIntView : View {
                     }
                 Spacer()
                 RButtonView(address: self.item.startAddress, model: model){
-                    model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
-                        (readValue : Int) in
-                        self.intValue = readValue
-                    }
+                    read()
                 }
                 WButtonView(address: self.item.startAddress, model: model){
                     model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
@@ -211,6 +215,16 @@ struct CdiIntView : View {
             if item.description != "" {
                 Text(item.description).font(.footnote)
             }
+        }
+        .onAppear(){
+            read()
+        }
+    }
+    
+    func read() {
+        model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
+            (readValue : Int) in
+            self.intValue = readValue
         }
     }
 }
@@ -267,11 +281,7 @@ struct CdiIntMapView : View {
                 Spacer()
                 HStack {
                     RButtonView(address: self.item.startAddress, model: model){
-                        model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
-                            (readValue : Int) in
-                            self.intValue = readValue
-                            self.stringValue = propertyToValue(property: self.intValue)
-                        }
+                        read()
                     }
                     WButtonView(address: self.item.startAddress, model: model){
                         model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
@@ -280,6 +290,17 @@ struct CdiIntMapView : View {
             }
             Text(item.description).font(.footnote)
             
+        }
+        .onAppear(){
+            read()
+        }
+    }
+    
+    func read() {
+        model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
+            (readValue : Int) in
+            self.intValue = readValue
+            self.stringValue = propertyToValue(property: self.intValue)
         }
     }
 }
@@ -304,15 +325,22 @@ struct CdiStringView : View {
 
             //Spacer()
             RButtonView(address: self.item.startAddress, model: model){
-                model.readString(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
-                    (readValue : String) in
-                    self.entryText = readValue
-                }
+                read()
             }
             WButtonView(address: self.item.startAddress, model: model){
                 model.writeString(value: self.entryText, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
             }
         }.buttonStyle(BorderlessButtonStyle())
+            .onAppear(){
+                read()
+            }
+    }
+    
+    func read() {
+        model.readString(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
+            (readValue : String) in
+            self.entryText = readValue
+        }
     }
 }
 
