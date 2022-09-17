@@ -29,6 +29,8 @@ struct OlcbToolsApp: App {
     
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
+    static var doneStartup = false  // static to avoid "self is immutable" issue
+    
     /// Only logging at creation time, see `startup()` for configuration
     init () {
         // log some info at creation time
@@ -46,6 +48,11 @@ struct OlcbToolsApp: App {
     /// Configure the various libraries and connections, then start the network access
     func startup() {
         // TODO: This causes a brief flash of throttle before Settings is shown; is there a better solution?
+        
+        // only do once
+        guard !OlcbToolsApp.doneStartup else { return }
+        OlcbToolsApp.doneStartup = true
+        
         // if there's no host name, show settings
         if self.ip_address == "" {
             self.selectedTab = "Settings"
@@ -128,7 +135,7 @@ struct OlcbToolsApp: App {
                 .environmentObject(openlcblib)
                 .onAppear() {
                     // start the connection once you have the display up to receive events
-                    self.startup()
+                    self.startup()   // this will only run once, sometimes .active occurs first
                 }
 
         } // WindowGroup
@@ -137,7 +144,8 @@ struct OlcbToolsApp: App {
             switch (newPhase) {
             case .active:
                 logger.debug("Scene Active")
-                tcpConnectionModel.start()
+                self.startup()  // this will only run once, sometimes onAppear occurs first
+                tcpConnectionModel.start() // TODO: This is not invoked on native macOS, have to start via settings
             case .inactive:
                 logger.debug("Scene Inactive")
             case .background:
