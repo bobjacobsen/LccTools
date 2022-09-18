@@ -67,7 +67,7 @@ struct EventViewOneEvent : View {
             let width = geometry.size.width
             let fontsize = Font.system(size: width / 12.5) // empirically derived
             
-            StandardMomentaryButton(label: "\(eventID.description)", height: 35, font: fontsize) {
+            StandardMomentaryButton(label: "\(eventID.description)", height: STANDARD_BUTTON_HEIGHT, font: fontsize) {
                 openlcblib.produceEvent(eventID: eventID)
             }.padding(.horizontal, -5.0)
         }

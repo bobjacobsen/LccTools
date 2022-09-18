@@ -24,9 +24,9 @@ struct ConsistView: View {
             Picker("Roster Entries", selection: $selectedConsistAddress) {
                 ForEach(selectionModel.roster, id: \.self.label) {
                     Text($0.label)
-                        .font(.largeTitle)
+                        .font(.title)
                 }
-            } //.pickerStyle(WheelPickerStyle())
+            } // .pickerStyle(WheelPickerStyle())  // wheel takes up too much space on iOS
             .onChange(of: selectedConsistAddress) { value in
                 consistModel.forLoco = selectionModel.getRosterEntryNodeID(from: selectedConsistAddress)
                 consistModel.fetchConsist()
@@ -63,11 +63,12 @@ struct ConsistView: View {
                 Picker("Roster Entries", selection: $selectedAddAddress) {
                     ForEach(selectionModel.roster, id: \.self.label) {
                         Text($0.label)
-                            .font(.largeTitle)
+                            .font(.title)
                     }
-                } // .pickerStyle(WheelPickerStyle())
+                } //.font(.title2) // .pickerStyle(WheelPickerStyle())
 
-                StandardMomentaryButton(label: "Add", height: 35, font: .title2) {
+                // This button should be smaller to match picker box
+                StandardMomentaryButton(label: "Add", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                     consistModel.addLocoToConsist(add: selectionModel.getRosterEntryNodeID(from: selectedAddAddress))
                 }.disabled(disableAddButton()).frame(width: 70)
                 
@@ -106,9 +107,6 @@ struct ConsistLocoView : View {
     
     var body: some View {
         HStack {
-//            StandardMomentaryButton(label: "Del", height: 35, font: .title2) {
-//                deleteLoco(entry)
-//            }.frame(width: 60)
             
             Spacer() // force presentation to right side
             

@@ -7,7 +7,15 @@
 
 import SwiftUI
 
-// Button that toggles a state on and off
+public let STANDARD_BUTTON_CORNER_RADIUS    = 15.0
+
+public let STANDARD_BUTTON_HEIGHT           = 35.0
+public let SMALL_BUTTON_HEIGHT              = 25.0
+
+public let STANDARD_BUTTON_FONT             = Font.title
+public let SMALL_BUTTON_FONT                = Font.title2
+
+// Button that toggles a state selected / not selected
 struct StandardToggleButton: View {
     let label : String
     let height : CGFloat
@@ -20,7 +28,7 @@ struct StandardToggleButton: View {
             action: action,
             label: {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 15.0)
+                    RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
                         .frame(height: height, alignment: .center)
                         .foregroundColor(
                             !isEnabled ? .gray : (
@@ -28,7 +36,7 @@ struct StandardToggleButton: View {
                         )
                     
                     Text(label)
-                        .font(.title)
+                        .font(STANDARD_BUTTON_FONT)
                         .foregroundColor(.white)
                 }
             } // label
@@ -40,7 +48,7 @@ struct StandardToggleButton: View {
 struct StandardMomentaryButton: View {
     let label : String
     let height : CGFloat
-    let font : Font
+    let font : Font  // c.f. STANDARD_BUTTON_FONT, SMALL_BUTTON_FONT
     let action : () -> Void
     @Environment(\.isEnabled) private var isEnabled
 
@@ -49,7 +57,7 @@ struct StandardMomentaryButton: View {
             action: action,
             label: {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 15.0)
+                    RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
                         .frame(height: height, alignment: .center)
                         .foregroundColor(isEnabled ? .green : .gray)
                     

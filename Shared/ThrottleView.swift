@@ -19,9 +19,11 @@ struct ThrottleView: View {
     @State private var isEditing = false    // for Sliders
     
     var bars : [ThrottleBar] = []
-    let maxindex = 50                       // number of bars
+
+    let maxindex = 50       // number of bars - set with maxSpeed, throttle curve to have low bars ~ 1mph
+    let maxSpeed = 100.0    // MPH   // TODO: Decide how to handle max speed - configurable? 128?
+
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area
-    let maxSpeed = 100.0                    // MPH   // TODO: Decide how to handle max speed - configurable?
 
 
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
@@ -43,7 +45,7 @@ struct ThrottleView: View {
     var body: some View {
         return VStack {
             StandardMomentaryButton(label: model.selectedLoco,
-                                    height: 40, font: .title){
+                                    height: 40, font: STANDARD_BUTTON_FONT){
                 model.showingSelectSheet.toggle()
             }
             .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
@@ -67,7 +69,7 @@ struct ThrottleView: View {
             Spacer()
             
             HStack {
-                StandardMomentaryButton(label: "Stop", height: 40, font: .title)
+                StandardMomentaryButton(label: "Stop", height: 40, font: STANDARD_BUTTON_FONT)
                 {
                     model.speed = 0.0
                 }
@@ -122,11 +124,9 @@ struct ThrottleBarView : View {
                 speed = bar.setSpeed
             }, // Action
                    label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 3.0)
-                        .frame(width: bar.length) // height is computed automatically
-                        .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
-                }
+                RoundedRectangle(cornerRadius: 3.0)
+                    .frame(width: bar.length) // height is computed automatically
+                    .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
             } // label
             ) // Button
             .padding(.vertical, 0)
@@ -138,12 +138,10 @@ struct ThrottleBarView : View {
                 speed = bar.setSpeed
             }, // Action
                    label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 2.0)
-                        .frame(width: ThrottleView.maxLength - bar.length) // alignment: .leading, height: 15
-                        .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
-                        .opacity(0.2)
-                } // ZStack
+                RoundedRectangle(cornerRadius: 2.0)
+                    .frame(width: ThrottleView.maxLength - bar.length)
+                    .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
+                    .opacity(0.2)
             } // label
             ) // Button
             .padding(.vertical, 0)
@@ -194,13 +192,13 @@ struct FnButtonView : View {
             // https://developer.apple.com/forums/thread/131715
         }) {
             ZStack {
-                RoundedRectangle(cornerRadius: 15.0)
+                RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
                     .frame(alignment: .center)
                     .foregroundColor(!model.momentary && model.pressed ? .blue : .green) // TODO: blue while momentary pressed
                 //
                 
                 Text("FN \(model.label)")
-                    .font(.title)
+                    .font(STANDARD_BUTTON_FONT)
                     .foregroundColor(.white)
             }
         }.padding(.vertical, 0)

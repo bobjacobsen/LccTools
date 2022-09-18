@@ -47,7 +47,7 @@ struct SettingsView: View {
             Divider()
 
             Text(commModel.statusString)
-            StandardMomentaryButton(label: commModel.started ? "Restart Connection" : "Start Connection", height: 35, font: .title2) {
+            StandardMomentaryButton(label: commModel.started ? "Restart Connection" : "Start Connection", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT) {
                 commModel.retarget(hostName: ip_address, portNumber: UInt16(ip_port) ?? UInt16(12021) )
                 commModel.stop()
                 commModel.start()
