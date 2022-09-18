@@ -35,7 +35,7 @@ struct CdCdiView: View {
         VStack {
             if (model.loading) {
                 Text("\(model.nextReadAddress) bytes read")
-                ProgressView() // TODO: needs to read memory space size and show fraction done
+                ProgressView(value: Double(model.nextReadAddress)/(Double(model.cdiLength)+2.0))
             }
             List(model.tree, children: \.children) { row in  // "children" makes the nested list
                 containedView(item: row, model: model)
