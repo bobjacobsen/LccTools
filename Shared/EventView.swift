@@ -35,6 +35,7 @@ struct EventView: View {
                     .refreshable {
                         print ("refreshing produced events")
                         // TODO: Refresh the events produced by this node
+                        // Is this needed? Or does the model keep this up to date?
                     }
                 List {
                     Text("Consumes").font(.title).frame(alignment: .trailing)
@@ -49,6 +50,7 @@ struct EventView: View {
                     .refreshable {
                         print ("refreshing consumed events")
                         // TODO: Refresh the events consumed by this node
+                        // Is this needed? Or does the model keep this up to date?
                     }
             }.padding(.horizontal, -10.0)
         }.navigationTitle("\(displayNode.name) Events")
