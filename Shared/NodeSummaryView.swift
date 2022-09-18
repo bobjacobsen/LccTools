@@ -31,7 +31,13 @@ struct NodeSummaryView: View {
                 Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
             }.refreshable {
                 network.refreshNode(node: displayNode)
-                // TODO: reloadRoster() here would happen too soon, network update hasn't happened yet
+                
+                // reloadRoster() here would happen too soon, network update hasn't happened yet
+                // so schedule for a second from now
+                let deadlineTime = DispatchTime.now() + .milliseconds(1000)
+                DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                    network.throttleModel0.reloadRoster()
+                }
             }
 
             HStack{
