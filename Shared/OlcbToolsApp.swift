@@ -47,8 +47,6 @@ struct OlcbToolsApp: App {
     
     /// Configure the various libraries and connections, then start the network access
     func startup() {
-        // TODO: This causes a brief flash of throttle before Settings is shown; is there a better solution?
-        
         // only do once
         guard !OlcbToolsApp.doneStartup else { return }
         OlcbToolsApp.doneStartup = true

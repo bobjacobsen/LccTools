@@ -12,7 +12,6 @@ import TelnetListenerLib
 
 // TODO: needs to work with a model to display mDNS results
 // TODO: needs to default to mDNS if that's available
-// TODO: should display at start if there's no configuration
 
 /// View for setting and storing user preferences for e.g. hub IP address and this node's ID
 ///
