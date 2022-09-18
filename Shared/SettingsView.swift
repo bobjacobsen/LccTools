@@ -24,9 +24,14 @@ struct SettingsView: View {
     @AppStorage("HUB_IP_PORT")    private var ip_port:      String = "12021"
     @AppStorage("THIS_NODE_ID")   private var this_node_ID: String = "05.01.01.01.03.FF"
     
+    let buildNumber : String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "<Unknown>"
+    
     var body: some View {
         VStack() {
-            VStack() {
+                        
+            Spacer()
+            
+            VStack {
                 Text("Enter your hub's IP address:")
                 TextField("", text: $ip_address)
                     .multilineTextAlignment(.center)
@@ -51,6 +56,10 @@ struct SettingsView: View {
                 commModel.stop()
                 commModel.start()
             }.disabled(false) // TODO: add disable on connection valid?
+
+            Spacer()
+            
+            Text("Version number: \(buildNumber)")
 
         }
     }
