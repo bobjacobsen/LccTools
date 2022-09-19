@@ -8,6 +8,7 @@
 import Foundation
 
 #if canImport(UIKit)
+// iOS only - macOS has physical keyboards
 
 import UIKit
 
