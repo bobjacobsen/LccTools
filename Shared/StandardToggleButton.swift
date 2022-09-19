@@ -64,6 +64,7 @@ struct StandardMomentaryButton: View {
                     Text(label)
                         .font(font)
                         .foregroundColor(.white)
+                        .frame(height: height, alignment: .center)
                 }
             } // label
         ) // Button

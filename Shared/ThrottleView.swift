@@ -23,7 +23,6 @@ struct ThrottleView: View {
 
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area
 
-
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
     
     init(throttleModel : ThrottleModel) {
@@ -43,7 +42,7 @@ struct ThrottleView: View {
     var body: some View {
         return VStack {
             StandardMomentaryButton(label: model.selectedLoco,
-                                    height: 40, font: STANDARD_BUTTON_FONT){
+                                    height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT){
                 model.showingSelectSheet.toggle()
             }
             .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
@@ -67,13 +66,13 @@ struct ThrottleView: View {
             Spacer()
             
             HStack {
-                StandardMomentaryButton(label: "Stop", height: 40, font: STANDARD_BUTTON_FONT)
+                StandardMomentaryButton(label: "Stop", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT)
                 {
                     model.speed = 0.0
                 }
 
                 HStack {
-                    StandardToggleButton(label: "Rev", height: 40, select: $model.reverse)
+                    StandardToggleButton(label: "Rev", height: STANDARD_BUTTON_HEIGHT, select: $model.reverse)
                     {
                         let oldReverse = model.reverse
                         model.forward = false
@@ -82,7 +81,7 @@ struct ThrottleView: View {
                             model.speed = 0.0
                         }
                     } // end Reverse Standard Button
-                    StandardToggleButton(label: "Fwd", height: 40, select: $model.forward)
+                    StandardToggleButton(label: "Fwd", height: STANDARD_BUTTON_HEIGHT, select: $model.forward)
                     {
                         let oldForward = model.forward
                         model.forward = true
@@ -228,7 +227,6 @@ struct LocoSelectionView : View {
                 Picker("Roster Entries", selection: $selectedRosterAddress) {
                     ForEach(model.roster, id: \.self.label) {
                         Text($0.label)
-                            .font(.largeTitle)
                     }
                 }
                 // .pickerStyle(SegmentedPickerStyle())
@@ -237,7 +235,7 @@ struct LocoSelectionView : View {
                     .pickerStyle(WheelPickerStyle())
                 #endif
                 
-                StandardMomentaryButton(label: "Select", height: 40, font: .title){
+                StandardMomentaryButton(label: "Select", height: STANDARD_BUTTON_HEIGHT, font: .title){
                     logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
                     // search model.roster for matching entry to get nodeID
                     for rosterEntry in model.roster {
@@ -272,7 +270,7 @@ struct LocoSelectionView : View {
                 // .pickerStyle(.radioGroup)        // macOS only
                 //.horizontalRadioGroupLayout()     // macOS only
 
-                StandardMomentaryButton(label: "Select", height: 40, font: .title){
+                StandardMomentaryButton(label: "Select", height: STANDARD_BUTTON_HEIGHT, font: .title){
                     logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
                     let idNumber = UInt64(address) ?? 0
                     model.startSelection(address: idNumber, forceLongAddr: (addressForm == 1))
