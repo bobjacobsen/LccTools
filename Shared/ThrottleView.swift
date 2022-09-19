@@ -199,14 +199,14 @@ struct FnButtonView : View {
                     .font(STANDARD_BUTTON_FONT)
                     .foregroundColor(.white)
             }
-        }.padding(.vertical, 0)
+        }.padding(.vertical, 0) // 0 on iOS
     }
 }
 
 // View for selecting a locomotive, intended for a separate page
 struct LocoSelectionView : View {
     @ObservedObject var model : ThrottleModel
-
+    
     @State var address  = ""
     @State var addressForm  = 1
     @State private var selectedRosterAddress = "<None>"
@@ -259,6 +259,9 @@ struct LocoSelectionView : View {
                 TextField("Enter address...", text: $address)
                     .font(.title)
                     .fixedSize()  // limit size to something reasonable
+#if os(iOS)
+                    .keyboardType(.numbersAndPunctuation) // macOS 13
+#endif
                 
                 Picker(selection: $addressForm, label: Text("DCC Address Form:")) { // DCC long/short picker
                     Text("Long").tag(1)

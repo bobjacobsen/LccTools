@@ -25,7 +25,7 @@ struct SettingsView: View {
     @AppStorage("THIS_NODE_ID")   private var this_node_ID: String = "05.01.01.01.03.FF"
     
     let buildNumber : String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "<Unknown>"
-    
+
     var body: some View {
         VStack() {
                         
@@ -35,9 +35,16 @@ struct SettingsView: View {
                 Text("Enter your hub's IP address:")
                 TextField("", text: $ip_address)
                     .multilineTextAlignment(.center)
+#if os(iOS)
+                    .keyboardType(.numbersAndPunctuation) // macOS 13
+#endif
                 Text("Enter your hub's port:")
                 TextField("", text: $ip_port)
                     .multilineTextAlignment(.center)
+#if os(iOS)
+                    .keyboardType(.numbersAndPunctuation) // macOS 13
+#endif
+
             }
 
             Divider()
@@ -46,6 +53,9 @@ struct SettingsView: View {
                 Text("Enter a node ID for this program:")
                 TextField("", text: $this_node_ID)
                     .multilineTextAlignment(.center)
+#if os(iOS)
+                    .keyboardType(.numbersAndPunctuation) // macOS 13
+#endif
             }
             
             Divider()
