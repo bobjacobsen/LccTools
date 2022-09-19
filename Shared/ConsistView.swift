@@ -32,7 +32,7 @@ struct ConsistView: View {
                 consistModel.fetchConsist()
             }
 
-            Divider()
+            StandardHDivider()
 
             List {
                 ForEach(consistModel.consist, id: \.self.id) { entry in
@@ -54,8 +54,9 @@ struct ConsistView: View {
                     }
                 }
             }
+            Text("Swipe Left to Remove")
 
-            Divider()
+            StandardHDivider()
 
             Text("Select Locomotive to Add")
 
@@ -73,7 +74,6 @@ struct ConsistView: View {
                 }.disabled(disableAddButton()).frame(width: 70)
                 
             }
-            
         }
     }
     

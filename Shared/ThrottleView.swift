@@ -219,7 +219,7 @@ struct LocoSelectionView : View {
             Text("Select Locomotive")
                 .font(.largeTitle)
             
-            Divider()
+            StandardHDivider()
             
             VStack {
                 // Top section is for selecting from roster
@@ -249,7 +249,7 @@ struct LocoSelectionView : View {
                 }.disabled(selectedRosterAddress == "<None>")
             } // end top section to select from roster
             
-            Divider()
+            StandardHDivider()
             
             VStack {
                 // Bottom section is for selection by entering address

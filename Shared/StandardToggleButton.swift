@@ -70,6 +70,14 @@ struct StandardMomentaryButton: View {
     }
 }
 
+// This centralizes horizontal dividers.
+struct StandardHDivider : View {
+    var body : some View {
+        Divider()
+            .frame(height: 1)
+            .overlay(.gray)
+    }
+}
 
 
 struct StandardButton_Previews: PreviewProvider {
