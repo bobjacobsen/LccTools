@@ -17,6 +17,7 @@ import os
 @main
 struct OlcbToolsApp: App {
     // info from settings, see `SettingsView``
+    @AppStorage("HUB_SERVICE")    private var selectedHubAddress = SamplePeerBrowserDelegate.PeerBrowserDelegateNoHubSelected
     @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = ""
     @AppStorage("HUB_IP_PORT") private var ip_port: String = "12021"
     @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = "05.01.01.01.03.FF"  // static for static openlcnlib
@@ -60,7 +61,7 @@ struct OlcbToolsApp: App {
         
         // create, but not yet connect, the Telnet connection to the hub (connection done on transition to Active state below)
         let port = UInt16(self.ip_port) ?? 12021
-        tcpConnectionModel.load(hostName: self.ip_address, portNumber: port, receivedDataCallback: canphysical.receiveString, startUpCallback: startUpCallback)
+        tcpConnectionModel.load(serviceName: selectedHubAddress, hostName: self.ip_address, portNumber: port, receivedDataCallback: canphysical.receiveString, startUpCallback: startUpCallback)
         
         // configure the OLCB processor -> telnet link
         canphysical.setCallBack(callback: tcpConnectionModel.send(string:))

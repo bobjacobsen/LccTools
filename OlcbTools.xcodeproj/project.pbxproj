@@ -101,6 +101,7 @@
 		23A0D5472892F3D0009663EA /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexadecimalKeyboard.swift; sourceTree = "<group>"; };
 		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
+		23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "OlcbTools--iOS--Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +143,7 @@
 		230088FB285C949E000FB614 = {
 			isa = PBXGroup;
 			children = (
+				23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */,
 				239ADD1E28C4F78000E13A32 /* OlcbTools (iOS).entitlements */,
 				23D66405286F5269001CDBDD /* TelnetListenerLib */,
 				23008944285C94FD000FB614 /* OpenlcbLibrary */,
@@ -607,8 +609,10 @@
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "OlcbTools--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LccTools;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "LccTools uses the local network to connect to an LCC hub";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -644,8 +648,10 @@
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "OlcbTools--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LccTools;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "LccTools uses the local network to connect to an LCC hub";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

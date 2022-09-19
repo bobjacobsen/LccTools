@@ -5,6 +5,7 @@
 //  Created by Bob Jacobsen on 6/18/22.
 //
 
+import Network
 import SwiftUI
 import TelnetListenerLib
 
@@ -18,20 +19,30 @@ import TelnetListenerLib
 ///
 struct SettingsView: View {
     @ObservedObject var commModel: TcpConnectionModel
-    
+
+    @AppStorage("HUB_SERVICE")    private var selectedHubAddress = SamplePeerBrowserDelegate.PeerBrowserDelegateNoHubSelected
     @AppStorage("HUB_IP_ADDRESS") private var ip_address:   String = ""
     @AppStorage("HUB_IP_PORT")    private var ip_port:      String = "12021"
     @AppStorage("THIS_NODE_ID")   private var this_node_ID: String = "05.01.01.01.03.FF"
-    
+
+
     let buildNumber : String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "<Unknown>"
 
     var body: some View {
         VStack() {
-                        
-            Spacer()
+            VStack {
+                Text("Select a Hub:")
+                Picker("Visible Hubs", selection: $selectedHubAddress) {
+                    ForEach(commModel.browserhandler.destinations, id: \.self.name) {
+                        Text($0.name)
+                            .font(.title)
+                    }
+                } // .pickerStyle(WheelPickerStyle())  // wheel takes up too much space on iOS
+            }
+            StandardHDivider()
             
             VStack {
-                Text("Enter your hub's IP address:")
+                Text("Or enter your hub's address below:")
                 TextField("", text: $ip_address)
                     .multilineTextAlignment(.center)
 #if os(iOS)
@@ -46,7 +57,7 @@ struct SettingsView: View {
 
             }
 
-            Divider()
+            StandardHDivider()
 
             VStack {
                 Text("Enter a node ID for this program:")
@@ -57,11 +68,11 @@ struct SettingsView: View {
 #endif
             }
             
-            Divider()
+            StandardHDivider()
 
             Text(commModel.statusString)
             StandardMomentaryButton(label: commModel.started ? "Restart Connection" : "Start Connection", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT) {
-                commModel.retarget(hostName: ip_address, portNumber: UInt16(ip_port) ?? UInt16(12021) )
+                commModel.retarget(serviceName: selectedHubAddress, hostName: ip_address, portNumber: UInt16(ip_port) ?? UInt16(12021) )
                 commModel.stop()
                 commModel.start()
             }.disabled(false) // TODO: add disable on connection valid?
