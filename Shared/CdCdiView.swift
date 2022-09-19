@@ -16,9 +16,9 @@ struct CdCdiView: View {
     @ObservedObject var model : CdiModel
 
     var displayNode: Node
-    let network : OpenlcbLibrary
+    let network : OpenlcbNetwork
 
-    init(displayNode: Node, lib: OpenlcbLibrary){
+    init(displayNode: Node, lib: OpenlcbNetwork){
         self.displayNode = displayNode
         self.network = lib
         
@@ -353,6 +353,6 @@ struct CdiStringView : View {
 
 struct CdCdiView_Previews: PreviewProvider {
     static var previews: some View {
-        CdCdiView(displayNode: Node(NodeID(123)), lib: OpenlcbLibrary(defaultNodeID: NodeID(123)))
+        CdCdiView(displayNode: Node(NodeID(123)), lib: OpenlcbNetwork(defaultNodeID: NodeID(123)))
     }
 }

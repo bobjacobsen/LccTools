@@ -16,7 +16,7 @@ struct ClockView: View {
 
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
 
-    @EnvironmentObject var openlcblib : OpenlcbLibrary {
+    @EnvironmentObject var openlcblib : OpenlcbNetwork {
         didSet(oldvalue) {
             logger.info("EnvironmentObject clockModel0 did change")
         }
@@ -125,7 +125,7 @@ extension String {
 }
 
 struct ClockView_Previews: PreviewProvider {
-    static let openlcblib = OpenlcbLibrary(sample: true)
+    static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {
         ClockView()
             .environmentObject(openlcblib)

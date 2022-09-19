@@ -149,7 +149,7 @@ struct ConsistLocoView : View {
 }
 
 struct ConsisteView_Previews: PreviewProvider {
-    static let openlcblib = OpenlcbLibrary(sample: true)
+    static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {
         let consistModel = ConsistModel(linkLayer : LinkLayer(NodeID(100)))
         consistModel.forLoco = NodeID(200)

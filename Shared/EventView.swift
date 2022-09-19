@@ -12,7 +12,7 @@ struct EventView: View {
     
     @ObservedObject var displayNode : Node
     
-    @EnvironmentObject var network : OpenlcbLibrary
+    @EnvironmentObject var network : OpenlcbNetwork
     
     var body: some View {
         var produced = Array(displayNode.events.eventsProduced)
@@ -58,7 +58,7 @@ struct EventView: View {
 }
 
 struct EventViewOneEvent : View {
-    @EnvironmentObject var openlcblib : OpenlcbLibrary
+    @EnvironmentObject var openlcblib : OpenlcbNetwork
     
     let eventID : EventID
     

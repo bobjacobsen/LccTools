@@ -12,7 +12,7 @@ import OpenlcbLibrary
 /// Invoked from e.g. NodeListNavigationView
 struct NodeSummaryView: View {
     @ObservedObject var displayNode : Node
-    let network : OpenlcbLibrary
+    let network : OpenlcbNetwork
     
     var body: some View {
 
@@ -93,7 +93,7 @@ struct FullNodeView_Previews: PreviewProvider {
                                             "My Node Name",
                                             "And Description"))
     static var previews: some View {
-        let olcblibrary = OpenlcbLibrary(defaultNodeID: NodeID(258))
+        let olcblibrary = OpenlcbNetwork(defaultNodeID: NodeID(258))
         return NodeSummaryView(displayNode: displayNode, network: olcblibrary)
     }
 }

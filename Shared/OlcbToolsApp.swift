@@ -22,7 +22,7 @@ struct OlcbToolsApp: App {
     @AppStorage("HUB_IP_PORT") private var ip_port: String = "12021"
     @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = "05.01.01.01.03.FF"  // static for static openlcnlib
 
-    @StateObject var openlcblib = OpenlcbLibrary(defaultNodeID: NodeID(this_node_ID))
+    @StateObject var openlcblib = OpenlcbNetwork(defaultNodeID: NodeID(this_node_ID))
     
     @Environment(\.scenePhase) var scenePhase  // for .background, etc
         

@@ -14,11 +14,11 @@ import os
 struct NodeListNavigationView: View {
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
     
-    @ObservedObject var network : OpenlcbLibrary
+    @ObservedObject var network : OpenlcbNetwork
     
     var nodes : [Node] = []
     
-    init (lib: OpenlcbLibrary) { // pass explicitly instead of relying on environment to avoid change loop
+    init (lib: OpenlcbNetwork) { // pass explicitly instead of relying on environment to avoid change loop
         self.network = lib
         nodes = lib.remoteNodeStore.nodes
         nodes.sort { $0.snip.userProvidedNodeName < $1.snip.userProvidedNodeName } // display in name order
@@ -59,7 +59,7 @@ struct NodeListNavigationView: View {
 }
 
 struct NodeListNavigation_Previews: PreviewProvider {
-    static let openlcblib = OpenlcbLibrary(sample: true)
+    static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {
         NodeListNavigationView(lib: openlcblib)
             .environmentObject(openlcblib)

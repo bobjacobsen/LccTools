@@ -289,7 +289,7 @@ struct LocoSelectionView : View {
 
 // Preview
 struct ThrottleView_Previews: PreviewProvider {
-    static let openlcblib = OpenlcbLibrary(sample: true)
+    static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {
         ThrottleView(throttleModel: ThrottleModel(CanLink(localNodeID: NodeID(0))))
             .environmentObject(openlcblib)

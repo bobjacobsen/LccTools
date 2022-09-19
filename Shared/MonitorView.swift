@@ -10,7 +10,7 @@ import OpenlcbLibrary
 
 /// Displayes the contents from the PrintingProcessor, e.g. the OpenLCB traffic monitor
 struct MonitorView: View {
-    // TODO: Is only showing messages from network, not ones we originate (see OpenlcbLibrary comment)
+    // TODO: Is only showing messages from network, not ones we originate (see OpenlcbNetwork comment)
     
     // single global observed object contains monitor info
     @ObservedObject var monitorModel:MonitorModel = MonitorModel.sharedInstance
