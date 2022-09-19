@@ -10,8 +10,7 @@ import TelnetListenerLib
 
 // Using @AppStorage to persist the IP_ADDRESS, see https://medium.com/swlh/introducing-appstorage-in-swiftui-470a56f5ba9e
 
-// TODO: needs to work with a model to display mDNS results
-// TODO: needs to default to mDNS if that's available
+// TODO: needs to work with a model to display and use mDNS results
 
 /// View for setting and storing user preferences for e.g. hub IP address and this node's ID
 ///
