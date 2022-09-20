@@ -26,7 +26,7 @@ struct OlcbToolsApp: App {
     
     @Environment(\.scenePhase) var scenePhase  // for .background, etc
         
-    var tcpConnectionModel = TcpConnectionModel()
+    @StateObject var tcpConnectionModel = TcpConnectionModel()
     
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
