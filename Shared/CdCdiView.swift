@@ -295,8 +295,9 @@ struct CdiIntMapView : View {
                     }
                 }.buttonStyle(BorderlessButtonStyle())
             }
-            Text(item.description).font(.footnote)
-            
+            if item.description != "" {
+                Text(item.description).font(.footnote)
+            }
         }
         .onAppear(){
             read()
@@ -325,22 +326,27 @@ struct CdiStringView : View {
     @State private var entryText : String = ""
     
     var body: some View {
-        HStack {
-            Text("\(item.name) ") // display name next to value
-            Spacer()
-            TextField("Enter \(item.name)", text : $entryText)
-
-            //Spacer()
-            RButtonView(address: self.item.startAddress, model: model){
-                read()
+        VStack {
+            HStack {
+                Text("\(item.name) ") // display name next to value
+                Spacer()
+                TextField("Enter \(item.name)", text : $entryText)
+                
+                //Spacer()
+                RButtonView(address: self.item.startAddress, model: model){
+                    read()
+                }
+                WButtonView(address: self.item.startAddress, model: model){
+                    model.writeString(value: self.entryText, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+                }
+            }.buttonStyle(BorderlessButtonStyle())
+            if item.description != "" {
+                Text(item.description).font(.footnote)
             }
-            WButtonView(address: self.item.startAddress, model: model){
-                model.writeString(value: self.entryText, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
-            }
-        }.buttonStyle(BorderlessButtonStyle())
-            .onAppear(){
-                read()
-            }
+        }
+        .onAppear(){
+            read()
+        }
     }
     
     func read() {
