@@ -31,7 +31,7 @@ struct ThrottleView: View {
         for index in 0...maxindex {
             // compute bar length from 0 to maxlength
             let length = CGFloat(ThrottleView.maxLength * pow(Double(maxindex - index) / Double(maxindex), 1.5))  // pow curves the progression
-            let setSpeed = Float16( length/ThrottleView.maxLength*maxSpeed)
+            let setSpeed = Float( length/ThrottleView.maxLength*maxSpeed)
             bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
         }
         
@@ -98,7 +98,7 @@ struct ThrottleView: View {
 
 // Show a vertical column of bars that represents the throttle position
 struct ThrottleSliderView : View {
-    @Binding var speed : Float16
+    @Binding var speed : Float
     var bars : [ThrottleBar]
     
     var body: some View {
@@ -113,7 +113,7 @@ struct ThrottleSliderView : View {
 // View a single bar in the ThrottleSliderView
 struct ThrottleBarView : View {
     let bar : ThrottleBar
-    @Binding var speed : Float16
+    @Binding var speed : Float
         
     var body: some View {
         HStack {
@@ -154,7 +154,7 @@ struct ThrottleBarView : View {
 // Local, not part of model, because these together represent the `speed` value
 struct ThrottleBar {
     let length: CGFloat
-    let setSpeed : Float16
+    let setSpeed : Float
     let id = UUID()
 }
 
