@@ -165,7 +165,7 @@ struct CdiEventView : View {
                     read()
                 }
                 WButtonView(address: self.item.startAddress, model: model){
-                    model.writeInt(value: Int(EventID(eventValue).eventID), at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+                    model.writeUInt64(value: EventID(eventValue).eventID, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                 }
             }.buttonStyle(BorderlessButtonStyle())
             if item.description != "" {
