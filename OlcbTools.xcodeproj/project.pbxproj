@@ -76,8 +76,8 @@
 		23008904285C949E000FB614 /* SampleCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCoreData.swift; sourceTree = "<group>"; };
 		23008905285C949E000FB614 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		23008906285C94A4000FB614 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2300890B285C94A4000FB614 /* OlcbTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OlcbTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		23008911285C94A4000FB614 /* OlcbTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OlcbTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2300890B285C94A4000FB614 /* LccTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LccTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		23008911285C94A4000FB614 /* LccTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LccTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23008913285C94A4000FB614 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		23008918285C94A4000FB614 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2300891C285C94A4000FB614 /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
@@ -182,8 +182,8 @@
 		2300890C285C94A4000FB614 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2300890B285C94A4000FB614 /* OlcbTools.app */,
-				23008911285C94A4000FB614 /* OlcbTools.app */,
+				2300890B285C94A4000FB614 /* LccTools.app */,
+				23008911285C94A4000FB614 /* LccTools.app */,
 				23008918285C94A4000FB614 /* Tests iOS.xctest */,
 				23008924285C94A4000FB614 /* Tests macOS.xctest */,
 			);
@@ -262,7 +262,7 @@
 				2334B5D9286F52F400C2A959 /* TelnetListenerLib */,
 			);
 			productName = "OlcbTools (iOS)";
-			productReference = 2300890B285C94A4000FB614 /* OlcbTools.app */;
+			productReference = 2300890B285C94A4000FB614 /* LccTools.app */;
 			productType = "com.apple.product-type.application";
 		};
 		23008910285C94A4000FB614 /* OlcbTools (macOS) */ = {
@@ -283,7 +283,7 @@
 				2334B5D7286F52E900C2A959 /* TelnetListenerLib */,
 			);
 			productName = "OlcbTools (macOS)";
-			productReference = 23008911285C94A4000FB614 /* OlcbTools.app */;
+			productReference = 23008911285C94A4000FB614 /* LccTools.app */;
 			productType = "com.apple.product-type.application";
 		};
 		23008917285C94A4000FB614 /* Tests iOS */ = {
@@ -626,7 +626,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = us.ardenwood.OlcbTools;
-				PRODUCT_NAME = OlcbTools;
+				PRODUCT_NAME = LccTools;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -665,7 +665,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = us.ardenwood.OlcbTools;
-				PRODUCT_NAME = OlcbTools;
+				PRODUCT_NAME = LccTools;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -702,7 +702,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = us.ardenwood.OlcbTools;
-				PRODUCT_NAME = OlcbTools;
+				PRODUCT_NAME = LccTools;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -734,7 +734,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = us.ardenwood.OlcbTools;
-				PRODUCT_NAME = OlcbTools;
+				PRODUCT_NAME = LccTools;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
