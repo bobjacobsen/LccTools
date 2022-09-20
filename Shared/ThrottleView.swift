@@ -212,6 +212,12 @@ struct LocoSelectionView : View {
  
     let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LocoSelectionView")
 
+#if targetEnvironment(macCatalyst)
+    let notice = "Select to close"
+#else
+    let notice = "Select or swipe down to close"
+#endif
+    
     var body: some View {
         // TODO: add a search component above the roster that narrows down the roster selection?
         VStack {
@@ -279,7 +285,7 @@ struct LocoSelectionView : View {
                 Spacer()
                 
             } // end bottom section for selecting by address
-            Text("Swipe down to close")
+            Text(notice)
         }
     }
 }
