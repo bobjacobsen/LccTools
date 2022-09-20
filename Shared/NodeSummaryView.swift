@@ -52,8 +52,8 @@ struct NodeSummaryView: View {
                     } //.navigationTitle("Events")
                 }
                 
-                if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION) {
-                    // && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL)  { // TODO: MustangPeak doesn't set this
+                if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION)
+                        && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL)  {
                     NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
                         VStack {
                             Image(systemName:"square.and.pencil")
