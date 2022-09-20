@@ -178,8 +178,8 @@ struct CdiEventView : View {
     }
     
     func read() {
-        model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: 8){
-            (readValue : Int) in
+        model.readEvent(from: self.item.startAddress, space: UInt8(self.item.space), length: 8){
+            (readValue : UInt64) in
             self.eventValue = EventID(UInt64(readValue)).description
         }
     }
