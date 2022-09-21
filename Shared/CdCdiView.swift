@@ -158,6 +158,8 @@ struct CdiEventView : View {
                         eventValue = item.currentStringValue
                     }
                     .onSubmit {
+                        // process into a proper event format
+                        eventValue = EventID(eventValue).description
                         item.currentStringValue = eventValue
                     }
                 Spacer()
