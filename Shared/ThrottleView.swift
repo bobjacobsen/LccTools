@@ -23,7 +23,7 @@ struct ThrottleView: View {
 
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area
 
-    let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
+    private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
     
     init(throttleModel : ThrottleModel) {
         self.model = throttleModel
@@ -36,7 +36,7 @@ struct ThrottleView: View {
         }
         
         self.model.reloadRoster()
-        logger.debug("init of ThrottleView")
+        ThrottleView.logger.debug("init of ThrottleView")
     }
     
     var body: some View {
@@ -210,13 +210,7 @@ struct LocoSelectionView : View {
     @State var addressForm  = 1
     @State private var selectedRosterAddress = "<None>"
  
-    let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LocoSelectionView")
-
-#if targetEnvironment(macCatalyst)
-    let notice = "Select to close"
-#else
-    let notice = "Select or swipe down to close"
-#endif
+    private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LocoSelectionView")
     
     var body: some View {
         // TODO: add a search component above the roster that narrows down the roster selection?
@@ -242,7 +236,7 @@ struct LocoSelectionView : View {
                 #endif
                 
                 StandardMomentaryButton(label: "Select", height: STANDARD_BUTTON_HEIGHT, font: .title){
-                    logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
+                    LocoSelectionView.logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
                     // search model.roster for matching entry to get nodeID
                     for rosterEntry in model.roster {
                         if rosterEntry.label == selectedRosterAddress {
@@ -277,7 +271,7 @@ struct LocoSelectionView : View {
                 //.horizontalRadioGroupLayout()     // macOS only
 
                 StandardMomentaryButton(label: "Select", height: STANDARD_BUTTON_HEIGHT, font: .title){
-                    logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
+                    LocoSelectionView.logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
                     let idNumber = UInt64(address) ?? 0
                     model.startSelection(address: idNumber, forceLongAddr: (addressForm == 1))
                 }.disabled(Int(address)==nil) // disable select if input can't be parsed

@@ -12,7 +12,7 @@ import os
 /// Display the list of known nodes, and provide address to `NodeSummaryView`.
 /// Needs access to the OLCB network to retrieve the node list.
 struct NodeListNavigationView: View {
-    let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
+    private static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
     
     @ObservedObject var network : OpenlcbNetwork
     
@@ -22,7 +22,7 @@ struct NodeListNavigationView: View {
         self.network = lib
         nodes = lib.remoteNodeStore.nodes
         nodes.sort { $0.snip.userProvidedNodeName < $1.snip.userProvidedNodeName } // display in name order
-        logger.info("init NodeListNavigationView")
+        NodeListNavigationView.logger.info("init NodeListNavigationView")
     }
 
     var body: some View {
