@@ -285,7 +285,13 @@ struct LocoSelectionView : View {
                 Spacer()
                 
             } // end bottom section for selecting by address
-            Text(notice)
+#if targetEnvironment(macCatalyst)
+            StandardMomentaryButton(label: "Dismiss", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
+                model.showingSelectSheet = false
+            }
+#else
+            Text("Select or swipe down to close")
+#endif
         }
     }
 }
