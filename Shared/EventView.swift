@@ -14,6 +14,16 @@ struct EventView: View {
     
     @EnvironmentObject var network : OpenlcbNetwork
     
+#if os(macOS)
+    let vertPadding : CGFloat = 0
+    let innnerHorizontalPadding : CGFloat = 0
+    let overallHorizontalPadding : CGFloat = 0.0
+#else
+    let vertPadding : CGFloat = -5
+    let innnerHorizontalPadding : CGFloat = -15.0
+    let overallHorizontalPadding : CGFloat = -10.0
+#endif
+    
     var body: some View {
         var produced = Array(displayNode.events.eventsProduced)
         produced.sort()
@@ -26,12 +36,13 @@ struct EventView: View {
                     Text("Produces").font(.title).frame(alignment: .leading)
                     ForEach(produced, id:\.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
-                            .padding(.vertical, -5)
+                            .padding(.vertical, vertPadding)
+                            .frame(height: STANDARD_BUTTON_HEIGHT)
                     }
 #if os(iOS)
                     .listRowSeparator(.hidden)  // TODO: first supported in macOS 13
 #endif
-                }.padding(.horizontal, -15.0)
+                }.padding(.horizontal, innnerHorizontalPadding)
                     .refreshable {
                         print ("refreshing produced events")
                         // TODO: Refresh the events produced by this node
@@ -41,18 +52,19 @@ struct EventView: View {
                     Text("Consumes").font(.title).frame(alignment: .trailing)
                     ForEach(consumed, id:\.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .leading)
-                            .padding(.vertical, -5)
+                            .padding(.vertical, vertPadding)
+                            .frame(height: STANDARD_BUTTON_HEIGHT)
                     }
 #if os(iOS)
                     .listRowSeparator(.hidden) // TODO: first supported in macOS 13
 #endif
-                }.padding(.horizontal, -15.0)
+                }.padding(.horizontal, innnerHorizontalPadding)
                     .refreshable {
                         print ("refreshing consumed events")
                         // TODO: Refresh the events consumed by this node
                         // Is this needed? Or does the model keep this up to date?
                     }
-            }.padding(.horizontal, -10.0)
+            }.padding(.horizontal, overallHorizontalPadding)
         }.navigationTitle("\(displayNode.name) Events")
     }
 }
@@ -62,14 +74,20 @@ struct EventViewOneEvent : View {
     
     let eventID : EventID
     
+#if os(macOS)
+    let horizPadding : CGFloat = 0
+#else
+    let horizPadding : CGFloat = -5
+#endif
+
     var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
-            let fontsize = Font.system(size: width / 12.5) // empirically derived
+            let fontsize = Font.system(size: width / 12.5 ) // empirically derived
             
             StandardMomentaryButton(label: "\(eventID.description)", height: STANDARD_BUTTON_HEIGHT, font: fontsize) {
                 openlcblib.produceEvent(eventID: eventID)
-            }.padding(.horizontal, -5.0)
+            } .padding(.horizontal, horizPadding)
         }
     }
 }

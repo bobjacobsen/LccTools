@@ -35,6 +35,8 @@ struct OlcbToolsApp: App {
     /// Only logging at creation time, see `startup()` for configuration
     init () {
         // log some info at creation time
+        let temp_this_service = selectedHubAddress   // avoid "capture of mutating self" compile error
+        logger.info("at startup, this program's default service is set to: \(temp_this_service)")
         let temp_this_node_ID = OlcbToolsApp.this_node_ID   // avoid "capture of mutating self" compile error
         logger.info("at startup, this program's default node ID is set to: \(temp_this_node_ID)")
         let temp_hub_ip_address = self.ip_address   // avoid "capture of mutating self" compile error
@@ -97,7 +99,7 @@ struct OlcbToolsApp: App {
                ClockView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Clocks", systemImage: "clock")
+                        Label("Clock", systemImage: "clock")
                     }.tag("Clock")
               
                 ConsistView(consistModel: openlcblib.consistModel0, selectionModel: openlcblib.throttleModel0)
@@ -110,7 +112,7 @@ struct OlcbToolsApp: App {
                 NodeListNavigationView(lib: openlcblib)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Configure", systemImage: "app.connected.to.app.below.fill")
+                        Label("Nodes", systemImage: "app.connected.to.app.below.fill")
                     }.tag("NodeListNavigation")
                     .environmentObject(openlcblib)
 
@@ -133,15 +135,17 @@ struct OlcbToolsApp: App {
             }   // TabView
                 .environmentObject(openlcblib)
                 .onAppear() {
+                    logger.debug("onAppear happens")
                     // start the connection once you have the display up to receive events
                     self.startup()   // this will only run once, sometimes .active occurs first
+                    tcpConnectionModel.start()
                 }
 
         } // WindowGroup
         .onChange(of: scenePhase) { newPhase in
-            
             switch (newPhase) {
             case .active:
+                // Scene does not change on macOS
                 logger.debug("Scene Active")
                 self.startup()  // this will only run once, sometimes onAppear occurs first
                 tcpConnectionModel.start() // TODO: This is not invoked on native macOS, have to start via settings

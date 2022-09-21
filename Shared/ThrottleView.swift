@@ -126,6 +126,7 @@ struct ThrottleBarView : View {
                     .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
             } // label
             ) // Button
+            .buttonStyle(.borderless)  // for macOS
             .padding(.vertical, 0)
             .padding(.leading, 8)
             .padding(.trailing, -5)
@@ -141,6 +142,7 @@ struct ThrottleBarView : View {
                     .opacity(0.2)
             } // label
             ) // Button
+            .buttonStyle(.borderless)  // for macOS
             .padding(.vertical, 0)
             .padding(.horizontal, 0)
             
@@ -199,6 +201,7 @@ struct FnButtonView : View {
                     .foregroundColor(.white)
             }
         }.padding(.vertical, 0) // 0 on iOS
+         .buttonStyle(.borderless)  // for macOS
     }
 }
 
@@ -279,7 +282,7 @@ struct LocoSelectionView : View {
                 Spacer()
                 
             } // end bottom section for selecting by address
-#if targetEnvironment(macCatalyst)
+#if targetEnvironment(macCatalyst) || os(macOS)
             StandardMomentaryButton(label: "Dismiss", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                 model.showingSelectSheet = false
             }

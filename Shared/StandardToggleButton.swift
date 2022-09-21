@@ -41,6 +41,7 @@ struct StandardToggleButton: View {
                 }
             } // label
         ) // Button
+        .buttonStyle(.borderless)  // for macOS
     }
 }
 
@@ -68,6 +69,7 @@ struct StandardMomentaryButton: View {
                 }
             } // label
         ) // Button
+        .buttonStyle(.borderless)  // for macOS
     }
 }
 

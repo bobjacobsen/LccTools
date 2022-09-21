@@ -54,6 +54,7 @@ struct ConsistView: View {
                     }
                 }
             }
+            
             Text("Swipe Left to Remove")
 
             StandardHDivider()
@@ -117,19 +118,19 @@ struct ConsistLocoView : View {
             VStack{
                 Toggle(isOn: $reverse) {
                     Label("Rev:", systemImage: "repeat")
-                }
+                }.toggleStyle(.switch)
                 .onChange(of: reverse) { value in
                     changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                 }
                 Toggle(isOn: $echoF0) {
                     Label("Link F0:", systemImage: "lightbulb")
-                }
+                }.toggleStyle(.switch)
                 .onChange(of: echoF0) { value in
                     changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                 }
                 Toggle(isOn: $echoFn) {
                     Label("Link Fn:", image: "lightbulb.2") // only available as systemimage in iOS 16, macOS 13
-                }
+                }.toggleStyle(.switch)
                 .onChange(of: echoFn) { value in
                     changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                 }

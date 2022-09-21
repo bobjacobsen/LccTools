@@ -16,11 +16,6 @@ struct NodeSummaryView: View {
     
     var body: some View {
 
-//#if os(macOS)
-//#warning("macOS navigation in NodeSummaryView has not been sorted out yet")
-// TODO: sort out iOS vs macOS here (and also matching bracket below)
-// NavigationView { // needed on macOS native to activate buttons; creates three column view; but re-pressing buttons still fails - need to navigate back somehow? But causes problems on Mac Catalyst
-//#endif
         VStack( /* alignment: .leading */) {
             List {
                 Text(displayNode.name).font(.title)
@@ -39,8 +34,22 @@ struct NodeSummaryView: View {
                     network.throttleModel0.reloadRoster()
                 }
             }
-
             HStack{
+
+                if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION)
+                    && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL)  {
+                    NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
+                        VStack {
+                            Image(systemName:"square.and.pencil")
+                            //.resizable().frame(width:50, height:50)
+                            Text("Configure")
+                                .font(.footnote)
+                        }
+                    }
+                }
+
+#if os(iOS)
+
                 if displayNode.pipSet.contains(.EVENT_EXCHANGE_PROTOCOL) {
                     NavigationLink(destination: EventView(displayNode: displayNode)) {
                         VStack {
@@ -49,20 +58,9 @@ struct NodeSummaryView: View {
                             Text("Events")
                                 .font(.footnote)
                         }
-                    } //.navigationTitle("Events")
+                    }
                 }
-                
-                if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION)
-                        && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL)  {
-                    NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
-                        VStack {
-                            Image(systemName:"square.and.pencil")
-                            //.resizable().frame(width:50, height:50)
-                            Text("Configure")
-                                .font(.footnote)
-                        }
-                    } //.navigationTitle("Configure")
-                }
+   
                 
                 NavigationLink(destination: PipView(displayNode: displayNode)) {
                     VStack {
@@ -71,19 +69,36 @@ struct NodeSummaryView: View {
                         Text("More Info")
                             .font(.footnote)
                     }
-                } //.navigationTitle("More Info")
+                }
+
+#else // macOS seems to require there be only two buttons/NavigationLinks
+
+                NavigationLink(destination: MacOSCombinedView(displayNode: displayNode)) {
+                    VStack {
+                        Image(systemName:"gear.badge.questionmark")
+                        //.resizable().frame(width:50, height:50)
+                        Text("More Info")
+                            .font(.footnote)
+                    }
+                }
+#endif
                 
             }.frame(minHeight: 75)
-            
         } .navigationTitle("\(displayNode.name) Summary")
-         
-//#if os(macOS)
-//x`}.navigationTitle("\(displayNode.name) Summary") // end of macOS-only Navigation view
-//#endif
-            
     }
 }
 
+struct MacOSCombinedView : View {
+    @ObservedObject var displayNode : Node
+
+    var body : some View {
+        VStack {
+            PipView(displayNode: displayNode)
+            StandardHDivider()
+            EventView(displayNode: displayNode)
+        }
+    }
+}
 struct FullNodeView_Previews: PreviewProvider {
     static let displayNode  = Node(NodeID(258),
                                    snip: SNIP(
