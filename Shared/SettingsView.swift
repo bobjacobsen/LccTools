@@ -26,6 +26,7 @@ struct SettingsView: View {
     @AppStorage("THIS_NODE_ID")   private var this_node_ID: String = "05.01.01.01.03.FF"
 
 
+    let versionNumber : String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "<Unknown>"
     let buildNumber : String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "<Unknown>"
 
     var body: some View {
@@ -35,7 +36,6 @@ struct SettingsView: View {
                 Picker("Visible Hubs", selection: $selectedHubAddress) {
                     ForEach(commModel.browserhandler.destinations, id: \.self.name) {
                         Text($0.name)
-                            .font(.title)
                     }
                 } // .pickerStyle(WheelPickerStyle())  // wheel takes up too much space on iOS
             }
@@ -46,13 +46,13 @@ struct SettingsView: View {
                 TextField("", text: $ip_address)
                     .multilineTextAlignment(.center)
 #if os(iOS)
-                    .keyboardType(.numbersAndPunctuation) // macOS 13
+                    .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
 #endif
                 Text("Enter your hub's port:")
                 TextField("", text: $ip_port)
                     .multilineTextAlignment(.center)
 #if os(iOS)
-                    .keyboardType(.numbersAndPunctuation) // macOS 13
+                    .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
 #endif
 
             }
@@ -64,7 +64,7 @@ struct SettingsView: View {
                 TextField("", text: $this_node_ID)
                     .multilineTextAlignment(.center)
 #if os(iOS)
-                    .keyboardType(.numbersAndPunctuation) // macOS 13
+                    .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
 #endif
             }
             
@@ -79,7 +79,7 @@ struct SettingsView: View {
 
             Spacer()
             
-            Text("Version number: \(buildNumber)")
+            Text("Version \(versionNumber) (\(buildNumber))")
 
         }
     }
