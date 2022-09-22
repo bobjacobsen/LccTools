@@ -40,7 +40,7 @@ struct EventView: View {
                             .frame(height: STANDARD_BUTTON_HEIGHT)
                     }
 #if os(iOS)
-                    .listRowSeparator(.hidden)  // TODO: first supported in macOS 13
+                    .listRowSeparator(.hidden)  // TODO: first supported in macOS 13, use #available
 #endif
                 }.padding(.horizontal, innnerHorizontalPadding)
                     .refreshable {
@@ -56,7 +56,7 @@ struct EventView: View {
                             .frame(height: STANDARD_BUTTON_HEIGHT)
                     }
 #if os(iOS)
-                    .listRowSeparator(.hidden) // TODO: first supported in macOS 13
+                    .listRowSeparator(.hidden) // TODO: first supported in macOS 13, use #available
 #endif
                 }.padding(.horizontal, innnerHorizontalPadding)
                     .refreshable {

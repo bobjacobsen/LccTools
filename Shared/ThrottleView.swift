@@ -170,7 +170,7 @@ struct FunctionsView : View {
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
                 #if os(iOS)
-                    .listRowSeparator(.hidden) // first supported in macOS 13
+                    .listRowSeparator(.hidden) //  TODO: first supported in macOS 13, use #available
                 #endif
             }
         }
@@ -261,7 +261,7 @@ struct LocoSelectionView : View {
                     .font(.title)
                     .fixedSize()  // limit size to something reasonable
 #if os(iOS)
-                    .keyboardType(.numbersAndPunctuation) // macOS 13
+                    .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
 #endif
                 
                 Picker(selection: $addressForm, label: Text("DCC Address Form:")) { // DCC long/short picker

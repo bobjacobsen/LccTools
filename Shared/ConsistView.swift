@@ -127,7 +127,7 @@ struct ConsistLocoView : View {
                     changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                 }
                 Toggle(isOn: $echoFn) {
-                    Label("Link Fn:", image: "lightbulb.2") // only available as systemimage in iOS 16, macOS 13
+                    Label("Link Fn:", image: "lightbulb.2") // only available as systemimage starting in iOS 16, macOS 13 so we provide local copy
                 }.toggleStyle(.switch)
                 .onChange(of: echoFn) { value in
                     changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
