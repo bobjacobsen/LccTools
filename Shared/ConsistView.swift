@@ -24,7 +24,6 @@ struct ConsistView: View {
             Picker("Roster Entries", selection: $selectedConsistAddress) {
                 ForEach(selectionModel.roster, id: \.self.label) {
                     Text($0.label)
-                        .font(.title)
                 }
             } // .pickerStyle(WheelPickerStyle())  // wheel takes up too much space on iOS
             .onChange(of: selectedConsistAddress) { value in
@@ -65,8 +64,7 @@ struct ConsistView: View {
                 Picker("Roster Entries", selection: $selectedAddAddress) {
                     ForEach(selectionModel.roster, id: \.self.label) {
                         Text($0.label)
-                            .font(.title)
-                    }
+                     }
                 } //.font(.title2) // .pickerStyle(WheelPickerStyle())
 
                 // This button should be smaller to match picker box

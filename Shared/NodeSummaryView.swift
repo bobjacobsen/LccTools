@@ -41,7 +41,6 @@ struct NodeSummaryView: View {
                     NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
                         VStack {
                             Image(systemName:"square.and.pencil")
-                            //.resizable().frame(width:50, height:50)
                             Text("Configure")
                                 .font(.footnote)
                         }
@@ -54,7 +53,6 @@ struct NodeSummaryView: View {
                     NavigationLink(destination: EventView(displayNode: displayNode)) {
                         VStack {
                             Image(systemName:"cpu")
-                            //.resizable().frame(width:50, height:50)
                             Text("Events")
                                 .font(.footnote)
                         }
@@ -65,7 +63,6 @@ struct NodeSummaryView: View {
                 NavigationLink(destination: PipView(displayNode: displayNode)) {
                     VStack {
                         Image(systemName:"gear.badge.questionmark")
-                        //.resizable().frame(width:50, height:50)
                         Text("More Info")
                             .font(.footnote)
                     }
@@ -76,7 +73,6 @@ struct NodeSummaryView: View {
                 NavigationLink(destination: MacOSCombinedView(displayNode: displayNode)) {
                     VStack {
                         Image(systemName:"gear.badge.questionmark")
-                        //.resizable().frame(width:50, height:50)
                         Text("More Info")
                             .font(.footnote)
                     }
