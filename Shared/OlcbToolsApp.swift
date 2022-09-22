@@ -55,7 +55,8 @@ struct OlcbToolsApp: App {
         OlcbToolsApp.doneStartup = true
         
         // if there's no host name, show settings
-        if self.ip_address == "" {
+        // This only works for iOS.  macOS has a separate preferences screen, shown in onAppear below.
+        if self.ip_address == "" && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
             self.selectedTab = "Settings"
         } else {
             self.selectedTab = "Throttle"
@@ -139,6 +140,17 @@ struct OlcbToolsApp: App {
                     // start the connection once you have the display up to receive events
                     self.startup()   // this will only run once, sometimes .active occurs first
                     tcpConnectionModel.start()
+                    
+#if os(macOS)
+                    // if no connection info, show the Preference (nee Settings) pane
+                    if self.ip_address == "" && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
+                        // delay a bit in hopes of putting this in front
+                        let deadlineTime = DispatchTime.now() + .milliseconds(500)
+                        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                            NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+                        }
+                    }
+#endif
                 }
 
         } // WindowGroup
