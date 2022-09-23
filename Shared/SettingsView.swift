@@ -8,10 +8,9 @@
 import Network
 import SwiftUI
 import TelnetListenerLib
+import os
 
 // Using @AppStorage to persist the IP_ADDRESS, see https://medium.com/swlh/introducing-appstorage-in-swiftui-470a56f5ba9e
-
-// TODO: needs to work with a model to display and use mDNS results
 
 /// View for setting and storing user preferences for e.g. hub IP address and this node's ID
 ///
@@ -25,7 +24,8 @@ struct SettingsView: View {
     @AppStorage("HUB_IP_PORT")    private var ip_port:      String = "12021"
     @AppStorage("THIS_NODE_ID")   private var this_node_ID: String = "05.01.01.01.03.FF"
 
-
+    private let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "SettingsView")
+    
     let versionNumber : String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "<Unknown>"
     let buildNumber : String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "<Unknown>"
 
@@ -72,6 +72,7 @@ struct SettingsView: View {
 
             Text(commModel.statusString)
             StandardMomentaryButton(label: commModel.started ? "Restart Connection" : "Start Connection", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT) {
+                resetServiceIfNotPresent()
                 commModel.retarget(serviceName: selectedHubAddress, hostName: ip_address, portNumber: UInt16(ip_port) ?? UInt16(12021) )
                 commModel.stop()
                 commModel.start()
@@ -83,6 +84,25 @@ struct SettingsView: View {
 
         }
     }
+    
+    // If a service name has been stored that's not available now, reconnecting will continue
+    // to fail.  To avoid that, reset the stored hub selection when "Start Connection" is
+    // pressed in that case.
+    func resetServiceIfNotPresent() {
+        if selectedHubAddress.isEmpty { return }
+        if selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
+            return
+        }
+        for element in commModel.browserhandler.destinations {
+            if element.name == selectedHubAddress {
+                return // found a match, so already shown
+            }
+        }
+        // didn't find matching element, force reset
+        logger.info("Resetting definition for missing service")
+        selectedHubAddress = ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected
+    }
+
 }
 
 struct SettingsView_Previews: PreviewProvider {
