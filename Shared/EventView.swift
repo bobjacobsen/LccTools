@@ -43,11 +43,7 @@ struct EventView: View {
                     .listRowSeparator(.hidden)  // TODO: first supported in macOS 13, use #available
 #endif
                 }.padding(.horizontal, innnerHorizontalPadding)
-                    .refreshable {
-                        print ("refreshing produced events")
-                        // TODO: Refresh the events produced by this node
-                        // Is this needed? Or does the model keep this up to date?
-                    }
+
                 List {
                     Text("Consumes").font(.title).frame(alignment: .trailing)
                     ForEach(consumed, id:\.eventID) { (event) in
@@ -59,11 +55,7 @@ struct EventView: View {
                     .listRowSeparator(.hidden) // TODO: first supported in macOS 13, use #available
 #endif
                 }.padding(.horizontal, innnerHorizontalPadding)
-                    .refreshable {
-                        print ("refreshing consumed events")
-                        // TODO: Refresh the events consumed by this node
-                        // Is this needed? Or does the model keep this up to date?
-                    }
+
             }.padding(.horizontal, overallHorizontalPadding)
         }.navigationTitle("\(displayNode.name) Events")
     }

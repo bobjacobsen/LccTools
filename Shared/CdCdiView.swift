@@ -11,7 +11,7 @@ import OpenlcbLibrary
 struct CdCdiView: View {
     
     // TODO: is not properly handling a read already in progress, i.e. if you start one, move away, and return. That results in two reads running in parallel.
-    // TODO: values are read as they are shown, repeatedly, instead of being cached
+    // TODO: values are read as they are shown, repeatedly, instead of being cached - is this OK?
 
     @ObservedObject var model : CdiModel
 
