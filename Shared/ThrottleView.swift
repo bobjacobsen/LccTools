@@ -196,9 +196,15 @@ struct FnButtonView : View {
                     .foregroundColor(!model.momentary && model.pressed ? .blue : .green) // TODO: blue while momentary pressed
                 //
                 
-                Text("FN \(model.label)")
-                    .font(STANDARD_BUTTON_FONT)
-                    .foregroundColor(.white)
+                if model.label.count <= 7 {
+                    Text(model.label)
+                        .font(STANDARD_BUTTON_FONT)
+                        .foregroundColor(.white)
+                } else {
+                    Text(model.label)
+                        .font(SMALL_BUTTON_FONT)
+                        .foregroundColor(.white)
+                }
             }
         }.padding(.vertical, 0) // 0 on iOS
          .buttonStyle(.borderless)  // for macOS
