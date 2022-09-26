@@ -37,11 +37,18 @@ struct NodeListNavigationView: View {
                         VStack {
                             if node.name != "" {
                                 Text(node.name)
-                                Text(node.snip.userProvidedDescription).font(.footnote)
+                                if node.snip.userProvidedDescription != "" {
+                                    Text(node.snip.userProvidedDescription).font(.footnote)
+                                }
+                                Text(node.id.description).font(.footnote)
+                            } else if node.snip.userProvidedDescription != "" {
+                                Text(node.snip.userProvidedDescription)
+                                Text(node.id.description).font(.footnote)
+                            } else if node.snip.modelName != "" {
+                                Text(node.snip.modelName)
                                 Text(node.id.description).font(.footnote)
                             } else {
                                 Text(node.id.description)
-                                Text(node.snip.userProvidedDescription).font(.footnote)
                             }
                             Divider()
                         }
