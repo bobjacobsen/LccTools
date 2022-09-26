@@ -160,7 +160,7 @@ struct OlcbToolsApp: App {
                 // Scene does not change on macOS
                 logger.debug("Scene Active")
                 self.startup()  // this will only run once, sometimes onAppear occurs first
-                tcpConnectionModel.start() // TODO: This is not invoked on native macOS, have to start via settings
+                tcpConnectionModel.start()
             case .inactive:
                 logger.debug("Scene Inactive")
             case .background:

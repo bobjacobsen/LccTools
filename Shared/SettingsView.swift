@@ -76,7 +76,7 @@ struct SettingsView: View {
                 commModel.retarget(serviceName: selectedHubAddress, hostName: ip_address, portNumber: UInt16(ip_port) ?? UInt16(12021) )
                 commModel.stop()
                 commModel.start()
-            }.disabled(false) // TODO: add disable on connection valid?
+            }.disabled(false)
 
             Spacer()
             
