@@ -181,6 +181,7 @@ struct FunctionsView : View {
 struct FnButtonView : View {
     
     @ObservedObject var model : ThrottleModel.FnModel
+    @State private var pressing = false
 
     var body: some View {
         Button(action:{
@@ -193,7 +194,7 @@ struct FnButtonView : View {
             ZStack {
                 RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
                     .frame(alignment: .center)
-                    .foregroundColor(!model.momentary && model.pressed ? .blue : .green) // TODO: blue while momentary pressed
+                    .foregroundColor( model.pressed ? .blue : .green)
                 //
                 
                 if model.label.count <= 7 {
@@ -207,7 +208,15 @@ struct FnButtonView : View {
                 }
             }
         }.padding(.vertical, 0) // 0 on iOS
+        // for momentary press
+            ._onButtonGesture { pressing in
+                self.pressing = pressing
+                if model.momentary {
+                    model.pressed = pressing
+                }
+            } perform: {}
          .buttonStyle(.borderless)  // for macOS
+        
     }
 }
 
