@@ -39,7 +39,7 @@ struct ClockView: View {
         GeometryReader { geometry in
             let width = geometry.size.width
             let height = geometry.size.height
-            let scale = min( width / 330.0, height / 90.0)
+            let scale = max(0.33, min( width / 330.0, height / 90.0))  // max prevents 0 value on Mac
             let fontsize = scale * 48.0
             let unitsize = scale * 75.0
             let offset = fontsize > 40.0 ? -18.0 : 0.0
@@ -60,6 +60,10 @@ struct ClockView: View {
                     Spacer()
                 }.frame(alignment: .center)
                 .onAppear {
+                    print("width: \(width)")
+                    print("height: \(height)")
+                    print("scale \(scale)")
+                    
                     let delay = 1.0/12.0  // 12fps for energy use compromise
                     timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
                         let date = openlcblib.clockModel0.getTime()
