@@ -59,11 +59,7 @@ struct ClockView: View {
                     StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue, size: unitsize)
                     Spacer()
                 }.frame(alignment: .center)
-                .onAppear {
-                    print("width: \(width)")
-                    print("height: \(height)")
-                    print("scale \(scale)")
-                    
+                .onAppear {                    
                     let delay = 1.0/12.0  // 12fps for energy use compromise
                     timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
                         let date = openlcblib.clockModel0.getTime()
