@@ -167,10 +167,11 @@ struct FunctionsView : View {
     var body: some View {
         List {
             ClockView() // add a clock view as the top bar
+                .frame(height: STANDARD_BUTTON_HEIGHT)
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
                 #if os(iOS)
-                    .listRowSeparator(.hidden) //  TODO: first supported in macOS 13, use #available
+                    .listRowSeparator(.hidden) //  TODO: first supported in macOS 13, but not really necessary
                 #endif
             }
         }
