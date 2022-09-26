@@ -188,8 +188,6 @@ struct FnButtonView : View {
             DispatchQueue.main.async{ // to avoid "publishing changes from within view updates is not allowed"
                 if (!model.momentary) { model.pressed = !model.pressed }
             }
-            // TODO: a momentary press down/up is not being handled for momentary buttons
-            // https://developer.apple.com/forums/thread/131715
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
