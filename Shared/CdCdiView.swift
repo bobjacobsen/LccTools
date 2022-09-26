@@ -26,7 +26,7 @@ struct CdCdiView: View {
         if displayNode.cdi == nil || !displayNode.cdi!.loaded {
             // No, create it and load it - we're doing this as early as possible
             displayNode.cdi = CdiModel(mservice: lib.mservice, nodeID: displayNode.id)
-            displayNode.cdi!.readModel(nodeID: displayNode.id)
+            displayNode.cdi!.readLengthAndModel(nodeID: displayNode.id)
         }
         model = displayNode.cdi!
     }
@@ -35,9 +35,9 @@ struct CdCdiView: View {
         VStack {
             if (model.loading) {
                 Text("\(model.nextReadAddress) bytes read")
-                if model.cdiLength > 0 {
+                if model.readLength > 0 {
                     // if we could retrieve the CDI length
-                    let progress = Double(model.nextReadAddress)/(Double(model.cdiLength)+1.0)
+                    let progress = Double(model.nextReadAddress)/(Double(model.readLength)+1.0)
                     ProgressView(value: min(1.0, progress))
                 } else {
                     // if couldn't retrieve length
