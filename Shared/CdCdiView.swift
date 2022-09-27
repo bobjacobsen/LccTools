@@ -7,6 +7,7 @@
 
 import SwiftUI
 import OpenlcbLibrary
+import os
 
 struct CdCdiView: View {
     
@@ -16,6 +17,8 @@ struct CdCdiView: View {
 
     var displayNode: Node
     let network : OpenlcbNetwork
+
+    internal static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "CdCdiView")
 
     init(displayNode: Node, lib: OpenlcbNetwork){
         self.displayNode = displayNode
@@ -75,6 +78,7 @@ func containedView(item : CdiXmlMemo, model: CdiModel) -> AnyView {
         if (item.properties.count == 0 ) { // no map
             return AnyView(CdiEventView(item: item, model: model))
         } else {
+            CdCdiView.logger.error("CdiEventMapView requested, but not yet implemented")
             return AnyView(CdiEventView(item: item, model: model)) // TODO: add CdiEventMapView here
         }
     case .INPUT_INT :
