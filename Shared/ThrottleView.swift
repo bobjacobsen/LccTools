@@ -171,7 +171,7 @@ struct FunctionsView : View {
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
                 #if os(iOS)
-                    .listRowSeparator(.hidden) //  TODO: first supported in macOS 13, but not really necessary
+                    .listRowSeparator(.hidden) //  TODO: first supported in macOS 13, but not really necessary on macOS
                 #endif
             }
         }
