@@ -152,12 +152,12 @@ struct CdiEventView : View {
             HStack {
                 Text("\(item.name) ") // display name next to value
                 
-                TextField("Enter \(item.name)", text: $eventValue) // TODO: needs custom formatter
+                TextField("Enter \(item.name)", text: $eventValue)
                     .onAppear {
                         eventValue = item.currentStringValue
                     }
                     .onSubmit {
-                        // process into a proper event format
+                        // process into a proper event format  // TODO: needs custom formatter? or hex keyboard?
                         eventValue = EventID(eventValue).description
                         item.currentStringValue = eventValue
                     }
