@@ -1,6 +1,5 @@
 //
 //  NodeSummaryView.swift
-//  OlcbLibDemo
 //
 //  Created by Bob Jacobsen on 6/15/22.
 //

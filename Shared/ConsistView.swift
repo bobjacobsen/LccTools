@@ -1,6 +1,5 @@
 //
 //  ConsistView.swift
-//  OlcbTools
 //
 //  Created by Bob Jacobsen on 8/1/22.
 //

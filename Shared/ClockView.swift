@@ -1,6 +1,5 @@
 //
 //  ClockView.swift
-//  OlcbTools
 //
 //  Created by Bob Jacobsen on 6/28/22.
 //

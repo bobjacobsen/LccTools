@@ -1,6 +1,5 @@
 //
 //  SettingsView.swift
-//  OlcbTools
 //
 //  Created by Bob Jacobsen on 6/18/22.
 //
