@@ -9,6 +9,9 @@ import SwiftUI
 import OpenlcbLibrary
 import os
 
+/// Display and allow editing of a locomotive consist.
+///
+/// Works through OpenlcbLibrary/ConsistModel
 struct ConsistView: View {
     @ObservedObject var consistModel: ConsistModel
     @ObservedObject var selectionModel: ThrottleModel

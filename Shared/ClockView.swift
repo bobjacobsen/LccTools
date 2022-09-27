@@ -11,6 +11,9 @@ import os
 
 // This works by timer-based periodic refresh of hours/minutes/seconds @State variables from the underlying Clock instance
 
+/// Display the LCC fast clock
+///
+/// Sizes itself to fill the given space.
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
 
@@ -21,8 +24,6 @@ struct ClockView: View {
             ClockView.logger.info("EnvironmentObject clockModel0 did change")
         }
     }
-    
-    let cutoff = 480.0 // min size for larger display, empirically determined from iPhone 12 Pro Max at 428
     
     @State private var isRunning = false // will be updated when we first hear from clock
     
@@ -117,7 +118,7 @@ struct StopwatchUnit: View {
     }
 }
 
-extension String {
+private extension String {  // private to avoid confusing parse errors on other file's uses of substring
     func substring(index: Int) -> String {
         let arrayString = Array(self)
         return String(arrayString[index])

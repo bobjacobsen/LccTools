@@ -9,6 +9,9 @@ import SwiftUI
 import OpenlcbLibrary
 import os
 
+/// DIsplays the CDI information and allows user editing.
+///
+/// Gets its information from OpenlcbLibrary/CdiModel
 struct CdCdiView: View {
     
     // TODO: values are read as they are shown, repeatedly, instead of being cached - is this OK?
