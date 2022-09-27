@@ -21,7 +21,7 @@ struct SettingsView: View {
     @AppStorage("HUB_SERVICE")    private var selectedHubAddress = ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected
     @AppStorage("HUB_IP_ADDRESS") private var ip_address:   String = ""
     @AppStorage("HUB_IP_PORT")    private var ip_port:      String = "12021"
-    @AppStorage("THIS_NODE_ID")   private var this_node_ID: String = "05.01.01.01.03.FF"
+    @AppStorage("THIS_NODE_ID")   private var this_node_ID: String = ""
 
     private let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "SettingsView")
     

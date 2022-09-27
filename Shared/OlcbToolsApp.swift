@@ -19,7 +19,7 @@ struct OlcbToolsApp: App {
     @AppStorage("HUB_SERVICE")    private var selectedHubAddress = ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected
     @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = ""
     @AppStorage("HUB_IP_PORT") private var ip_port: String = "12021"
-    @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = "05.01.01.01.03.FF"  // static for static openlcnlib
+    @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = ""  // static for static openlcnlib
 
     @StateObject var openlcblib = OpenlcbNetwork(defaultNodeID: NodeID(this_node_ID))
     
@@ -30,6 +30,17 @@ struct OlcbToolsApp: App {
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
     static var doneStartup = false  // static to avoid "self is immutable" issue
+
+    // create a NodeID using random numbers for low 16 bits and the DIY range for the top part
+    static func selectThisNodeID() -> String {
+        let intGroup0 = Int.random(in: 2...253) // range to avoid obvious end points
+        let intGroup1 = Int.random(in: 2...253) // range to avoid obvious end points
+        
+        let group0 = String(format: "%02X", intGroup0)
+        let group1 = String(format: "%02X", intGroup1)
+
+        return "08.01.00.0D.\(group1).\(group0)"
+    }
     
     /// Only logging at creation time, see `startup()` for configuration
     init () {
@@ -43,6 +54,10 @@ struct OlcbToolsApp: App {
         let temp_hub_ip_port = self.ip_port   // avoid "capture of mutating self" compile error
         logger.info("at startup, default hub port is set to: \(temp_hub_ip_port)")
         
+        if OlcbToolsApp.this_node_ID.isEmpty {
+            OlcbToolsApp.this_node_ID = OlcbToolsApp.selectThisNodeID()
+            logger.info("  updated default node id to \(OlcbToolsApp.this_node_ID)")
+        }
     }
     
     var canphysical = CanPhysicalLayerGridConnect()
