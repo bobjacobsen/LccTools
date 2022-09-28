@@ -8,7 +8,7 @@ import SwiftUI
 import OpenlcbLibrary
 import os
 
-// The complete throttle view, with both speed and function sections
+/// The complete throttle view, with both speed and function sections
 struct ThrottleView: View {
     
     @ObservedObject var model: ThrottleModel
@@ -20,7 +20,7 @@ struct ThrottleView: View {
     let maxindex = 50       // number of bars - set with maxSpeed, throttle curve to have low bars ~ 1mph
     let maxSpeed = 100.0    // MPH   // TODO: Decide how to handle max speed - configurable? 128?
 
-    static let maxLength : CGFloat = 150.0  // length of horizontal bar area
+    static let maxLength : CGFloat = 150.0  // length of horizontal bar area // TODO: make this scale to available space so it looks better on iPad and landscape iPhone
 
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
     
@@ -95,8 +95,9 @@ struct ThrottleView: View {
     } // body
 } // ThrottleView
 
-// Show a vertical column of bars that represents the throttle position
-struct ThrottleSliderView : View {
+// TODO: Throttle buttons should react to sliding over them, not just a press
+/// Show a vertical column of bars that represents the throttle position
+fileprivate struct ThrottleSliderView : View {
     @Binding var speed : Float
     var bars : [ThrottleBar]
     
@@ -109,7 +110,7 @@ struct ThrottleSliderView : View {
     } // body
 } // ThrottleSliderView
 
-// View a single bar in the ThrottleSliderView
+/// View a single bar in the ThrottleSliderView
 struct ThrottleBarView : View {
     let bar : ThrottleBar
     @Binding var speed : Float
@@ -151,16 +152,17 @@ struct ThrottleBarView : View {
     } // body
 } // Throttle Bar View
 
-// Data for a single bar
-// Local, not part of model, because these together represent the `speed` value
+/// Data for a single bar
+///
+/// Local, not part of model, because these together represent the `speed` value
 struct ThrottleBar {
     let length: CGFloat
     let setSpeed : Float
     let id = UUID()
 }
 
-// Display the set of functions
-struct FunctionsView : View {
+/// Display the set of functions
+fileprivate struct FunctionsView : View {
     var fnModels : [ThrottleModel.FnModel]
 
     var body: some View {
@@ -170,15 +172,15 @@ struct FunctionsView : View {
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
                 #if os(iOS)
-                    .listRowSeparator(.hidden) //  TODO: first supported in macOS 13, but not really necessary on macOS
+                    .listRowSeparator(.hidden) // first supported in macOS 13, but not really necessary on macOS
                 #endif
             }
         }
     }
 }
 
-// One function button itself
-struct FnButtonView : View {
+/// One function button itself
+fileprivate struct FnButtonView : View {
     
     @ObservedObject var model : ThrottleModel.FnModel
     @State private var pressing = false
@@ -218,7 +220,7 @@ struct FnButtonView : View {
     }
 }
 
-// View for selecting a locomotive, intended for a separate page
+/// View for selecting a locomotive, intended for a separate page
 struct LocoSelectionView : View {
     @ObservedObject var model : ThrottleModel
     
