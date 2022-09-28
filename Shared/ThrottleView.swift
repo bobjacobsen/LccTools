@@ -24,6 +24,8 @@ struct ThrottleView: View {
 
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
     
+    // TODO: How do throttles follow each other?
+    
     init(throttleModel : ThrottleModel) {
         self.model = throttleModel
         
