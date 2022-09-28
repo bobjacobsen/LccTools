@@ -21,7 +21,7 @@ struct MonitorView: View {
                     HStack {
                         Text(element.line)
                             .font(.callout)
-                        Spacer()
+                        Spacer()  // force alignment of text to left
                     }
                     Divider()
                 }

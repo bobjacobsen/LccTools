@@ -10,6 +10,8 @@ import os
 
 // This works by timer-based periodic refresh of hours/minutes/seconds @State variables from the underlying Clock instance
 
+// TODO: Do people want seconds on their fast clock?
+
 /// Display the LCC fast clock
 ///
 /// Sizes itself to fill the given space.
@@ -18,11 +20,7 @@ struct ClockView: View {
 
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
 
-    @EnvironmentObject var openlcblib : OpenlcbNetwork {
-        didSet(oldvalue) {
-            ClockView.logger.info("EnvironmentObject clockModel0 did change")
-        }
-    }
+    @EnvironmentObject var openlcblib : OpenlcbNetwork
     
     @State private var isRunning = false // will be updated when we first hear from clock
     

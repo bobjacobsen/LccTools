@@ -87,7 +87,7 @@ struct SettingsView: View {
     // If a service name has been stored that's not available now, reconnecting will continue
     // to fail.  To avoid that, reset the stored hub selection when "Start Connection" is
     // pressed in that case.
-    func resetServiceIfNotPresent() {
+    internal func resetServiceIfNotPresent() {
         if selectedHubAddress.isEmpty { return }
         if selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
             return

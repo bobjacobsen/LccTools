@@ -22,6 +22,7 @@ struct CdCdiView: View {
 
     internal static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "CdCdiView")
 
+    /// Loads the CDI from the LCC if it's not already present in a contained CdiModel
     init(displayNode: Node, lib: OpenlcbNetwork){
         self.displayNode = displayNode
         self.network = lib
@@ -38,14 +39,14 @@ struct CdCdiView: View {
     var body: some View {
         VStack {
             if (model.loading) {
-                Text("\(model.nextReadAddress) bytes read")
+                Text("\(model.nextReadAddress) bytes read") // dynamically updates
                 if model.readLength > 0 {
                     // if we could retrieve the CDI length
                     let progress = Double(model.nextReadAddress)/(Double(model.readLength)+1.0)
-                    ProgressView(value: min(1.0, progress))
+                    ProgressView(value: min(1.0, progress)) // sometimes overruns by a few in last read block, min(..) to avoid error message
                 } else {
                     // if couldn't retrieve length
-                    ProgressView()
+                    ProgressView()  // just the turning circle
                 }
             }
             List(model.tree, children: \.children) { row in  // "children" makes the nested list
@@ -55,7 +56,7 @@ struct CdCdiView: View {
     }
 }
 
-// decode each item (CdiXmlMemo node) and display for all types of nodes
+/// Decode each item (CdiXmlMemo node) and provide appropriate view
 func containedView(item : CdiXmlMemo, model: CdiModel) -> AnyView {
     switch item.type {
     case .SEGMENT :
@@ -103,7 +104,7 @@ func containedView(item : CdiXmlMemo, model: CdiModel) -> AnyView {
     }
 }
 
-// view for a read/refresh button
+/// View for a CD/CDI read/refresh button
 struct RButtonView : View {
     let address : Int
     let model : CdiModel
@@ -123,7 +124,7 @@ struct RButtonView : View {
     }
 }
 
-// view for a store button
+/// View for a CD/CDI write button
 struct WButtonView : View {
     let address : Int
     let model : CdiModel
@@ -143,7 +144,7 @@ struct WButtonView : View {
     }
 }
 
-// view for an eventID value entry
+// View for a CID eventID value entry
 struct CdiEventView : View {
     @State var eventValue : String = "00.00.00.00.00.00.00.00"
     var item : CdiXmlMemo
@@ -192,7 +193,7 @@ struct CdiEventView : View {
     }
 }
 
-// view for an int value entry
+// View for an int CDI value entry
 struct CdiIntView : View {
     @State var intValue : Int = -1 // -1 so we can see what it does here
     var formatter = NumberFormatter()
@@ -243,7 +244,7 @@ struct CdiIntView : View {
     }
 }
 
-// view for an int value map
+/// View for a CDI int value map
 struct CdiIntMapView : View {
     @State var intValue : Int = -1 // -1 so we can see what it does here
     @State var stringValue : String = "<initial internal content>" // so we can see what it does here
@@ -320,7 +321,7 @@ struct CdiIntMapView : View {
     }
 }
 
-// custom for String data entry fields
+/// Custom view for String data entry fields
 struct CdiStringView : View {
     var item : CdiXmlMemo
     let model : CdiModel

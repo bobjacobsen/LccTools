@@ -7,6 +7,7 @@
 import SwiftUI
 import OpenlcbLibrary
 
+/// Display the Events produced and consumed by a specific node as buttons that will produce the events.
 struct EventView: View {
     
     @ObservedObject var displayNode : Node

@@ -9,6 +9,7 @@ import OpenlcbLibrary
 import os
 
 /// Display the list of known nodes, and provide address to `NodeSummaryView`.
+/// 
 /// Needs access to the OLCB network to retrieve the node list.
 struct NodeListNavigationView: View {
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
@@ -20,12 +21,11 @@ struct NodeListNavigationView: View {
     init (lib: OpenlcbNetwork) { // pass explicitly instead of relying on environment to avoid change loop
         self.network = lib
         nodes = lib.remoteNodeStore.nodes
-        nodes.sort { $0.snip.userProvidedNodeName < $1.snip.userProvidedNodeName } // display in name order
+        nodes.sort { $0.snip.userProvidedNodeName < $1.snip.userProvidedNodeName } // display in name order // TODO: consider using the same smart sort as RosterEntry
         NodeListNavigationView.logger.info("init NodeListNavigationView")
     }
 
     var body: some View {
-        // print(Self._printChanges())
         return NavigationView {
             List { // of all the nodes
                 ForEach(nodes, id:\.id) { (node) in
