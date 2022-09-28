@@ -31,15 +31,17 @@ struct OlcbToolsApp: App {
     
     static var doneStartup = false  // static to avoid "self is immutable" issue
 
-    // create a NodeID using random numbers for low 16 bits and the DIY range for the top part
-    static func selectThisNodeID() -> String {
+    // create a NodeID using random numbers for low 20 bits and an allocated top 28 bits
+    static internal func selectThisNodeID() -> String {
         let intGroup0 = Int.random(in: 2...253) // range to avoid obvious end points
         let intGroup1 = Int.random(in: 2...253) // range to avoid obvious end points
-        
+        let intGroup2 = Int.random(in: 0...15)  // range to avoid obvious end points
+
         let group0 = String(format: "%02X", intGroup0)
         let group1 = String(format: "%02X", intGroup1)
+        let group2 = String(format:  "%1X", intGroup2)
 
-        return "08.01.00.0D.\(group1).\(group0)"
+        return "02.02.04.0\(group2).\(group1).\(group0)"
     }
     
     /// Only logging at creation time, see `startup()` for configuration
