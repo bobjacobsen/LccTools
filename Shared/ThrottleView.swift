@@ -132,7 +132,10 @@ struct ThrottleBarView : View {
             .padding(.vertical, 0)
             .padding(.leading, 8)
             .padding(.trailing, -5)
-            
+            ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
+                speed = bar.setSpeed
+            } perform: {}
+
             // add a transparent button to fill out rest of line
             Button(action:{
                 speed = bar.setSpeed
@@ -147,7 +150,10 @@ struct ThrottleBarView : View {
             .buttonStyle(.borderless)  // for macOS
             .padding(.vertical, 0)
             .padding(.horizontal, 0)
-            
+            ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
+                speed = bar.setSpeed
+            } perform: {}
+
             Spacer() // align to left
             
         } // HStack
