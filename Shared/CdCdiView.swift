@@ -168,6 +168,7 @@ struct CdiEventView : View {
                         eventValue = EventID(eventValue).description
                         item.currentStringValue = eventValue
                     }
+                    .textFieldStyle(.roundedBorder)
                 Spacer()
                 RButtonView(address: self.item.startAddress, model: model){
                     read()
@@ -219,6 +220,7 @@ struct CdiIntView : View {
                     .onSubmit {
                         item.currentIntValue = intValue
                     }
+                    .textFieldStyle(.roundedBorder)
                 Spacer()
                 RButtonView(address: self.item.startAddress, model: model){
                     read()
@@ -339,7 +341,7 @@ struct CdiStringView : View {
                 Text("\(item.name) ") // display name next to value
                 Spacer()
                 TextField("Enter \(item.name)", text : $entryText)
-                
+                    .textFieldStyle(.roundedBorder)
                 //Spacer()
                 RButtonView(address: self.item.startAddress, model: model){
                     read()
