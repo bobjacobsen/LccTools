@@ -99,6 +99,7 @@
 		2395165928AFDB8D00F3A872 /* StandardToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardToggleButton.swift; sourceTree = "<group>"; };
 		239ADD1E28C4F78000E13A32 /* OlcbTools (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OlcbTools (iOS).entitlements"; sourceTree = "<group>"; };
 		23A0D5472892F3D0009663EA /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
+		23B2EDA628E8CE450098666D /* OlcbTools (macOS)Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OlcbTools (macOS)Debug.entitlements"; sourceTree = "<group>"; };
 		23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexadecimalKeyboard.swift; sourceTree = "<group>"; };
 		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
 		23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "OlcbTools--iOS--Info.plist"; sourceTree = "<group>"; };
@@ -143,6 +144,7 @@
 		230088FB285C949E000FB614 = {
 			isa = PBXGroup;
 			children = (
+				23B2EDA628E8CE450098666D /* OlcbTools (macOS)Debug.entitlements */,
 				23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */,
 				239ADD1E28C4F78000E13A32 /* OlcbTools (iOS).entitlements */,
 				23D66405286F5269001CDBDD /* TelnetListenerLib */,
@@ -686,7 +688,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "OlcbTools (macOS)Debug.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
