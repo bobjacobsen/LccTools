@@ -206,6 +206,8 @@ struct CdiIntView : View {
         formatter.minimum = NSNumber(integerLiteral: item.minValue)
         formatter.maximum = NSNumber(integerLiteral: item.maxValue)
         formatter.maximumFractionDigits = 0
+        // print ("Init CdiIntView \(item.name) with min=\(String(describing: formatter.minimum) ) max=\(String(describing: formatter.maximum))")
+        // print ("                 minSet=\(String(describing: item.minSet) ) maxSet=\(String(describing: item.maxSet))")
     }
     
     var body : some View {
@@ -232,6 +234,9 @@ struct CdiIntView : View {
             if item.description != "" {
                 Text(item.description).font(.footnote)
             }
+            if item.maxSet || item.minSet {
+                MinMaxView(item: item)
+            }
         }
         .onAppear(){
             read()
@@ -243,6 +248,23 @@ struct CdiIntView : View {
             (readValue : Int) in
             self.intValue = readValue
         }
+    }
+}
+
+private struct MinMaxView : View {
+    let text : String
+    init(item : CdiXmlMemo) {
+        var viewText = ""
+        if item.minSet {
+            viewText += "Min = \(item.minValue) "
+        }
+        if item.maxSet {
+            viewText += "Max = \(item.maxValue) "
+        }
+        text = viewText
+    }
+    var body : some View {
+        Text(text).font(.footnote)
     }
 }
 
