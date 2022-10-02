@@ -177,6 +177,7 @@ fileprivate struct FunctionsView : View {
         List {
             ClockView() // add a clock view as the top bar
                 .frame(height: STANDARD_BUTTON_HEIGHT)
+            
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
 #if os(iOS)
