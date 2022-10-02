@@ -32,9 +32,9 @@ struct ConsistView: View {
                 consistModel.forLoco = selectionModel.getRosterEntryNodeID(from: selectedConsistAddress)
                 consistModel.fetchConsist()
             }
-
+            
             StandardHDivider()
-
+            
             List {
                 ForEach(consistModel.consist, id: \.self.id) { entry in
                     ConsistLocoView(
@@ -46,7 +46,7 @@ struct ConsistView: View {
                         echoFn: entry.echoFn
                     )
                     
-                      .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
                             () in self.deleteLoco(entry)
                         } label: {
@@ -57,18 +57,18 @@ struct ConsistView: View {
             }
             
             Text("Swipe Left to Remove")
-
+            
             StandardHDivider()
-
+            
             Text("Select Locomotive to Add")
-
+            
             HStack {
                 Picker("Roster Entries", selection: $selectedAddAddress) {
                     ForEach(selectionModel.roster, id: \.self.label) {
                         Text($0.label)
-                     }
+                    }
                 } //.font(.title2) // .pickerStyle(WheelPickerStyle())
-
+                
                 // This button should be smaller to match picker box
                 StandardMomentaryButton(label: "Add", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                     consistModel.addLocoToConsist(add: selectionModel.getRosterEntryNodeID(from: selectedAddAddress))
@@ -85,71 +85,66 @@ struct ConsistView: View {
     func disableAddButton() -> Bool {
         return selectedAddAddress == "<None>" || selectedConsistAddress == "<None>" || selectedAddAddress == selectedConsistAddress
     }
-}
-
-struct ConsistLocoView : View {
-    let consistModel : ConsistModel
-    let entry : ConsistModel.ConsistEntryModel
-    let name : String
-    @State private var reverse : Bool
-    @State private var echoF0  : Bool
-    @State private var echoFn  : Bool
     
-    init(consistModel : ConsistModel, entry : ConsistModel.ConsistEntryModel, name : String,
-         reverse : Bool, echoF0 : Bool, echoFn : Bool) {
-        self.consistModel = consistModel
-        self.entry = entry
-        self.name = name
-
-        self.reverse = reverse
-        self.echoF0 = echoF0
-        self.echoFn = echoFn
-    }
-    
-    var body: some View {
-        HStack {
+    struct ConsistLocoView : View {
+        let consistModel : ConsistModel
+        let entry : ConsistModel.ConsistEntryModel
+        let name : String
+        @State private var reverse : Bool
+        @State private var echoF0  : Bool
+        @State private var echoFn  : Bool
+        
+        init(consistModel : ConsistModel, entry : ConsistModel.ConsistEntryModel, name : String,
+             reverse : Bool, echoF0 : Bool, echoFn : Bool) {
+            self.consistModel = consistModel
+            self.entry = entry
+            self.name = name
             
-            Spacer() // force presentation to right side
-            
-            Text(name)
-                .frame(alignment: .center)
-                .font(.title2)
-            
-            VStack{
-                Toggle(isOn: $reverse) {
-                    Label("Rev:", systemImage: "repeat")
-                }.toggleStyle(.switch)
-                .onChange(of: reverse) { value in
-                    changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
-                }
-                Toggle(isOn: $echoF0) {
-                    Label("Link F0:", systemImage: "lightbulb")
-                }.toggleStyle(.switch)
-                .onChange(of: echoF0) { value in
-                    changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
-                }
-                Toggle(isOn: $echoFn) {
-                    Label("Link Fn:", image: "lightbulb.2") // only available as systemimage starting in iOS 16, macOS 13 so we provide local copy
-                }.toggleStyle(.switch)
-                .onChange(of: echoFn) { value in
-                    changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
-                }
-            }.frame(width: 80)
-                .labelStyle(.iconOnly)
+            self.reverse = reverse
+            self.echoF0 = echoF0
+            self.echoFn = echoFn
+        }
+        
+        var body: some View {
+            HStack {
+                
+                Spacer() // force presentation to right side
+                
+                Text(name)
+                    .frame(alignment: .center)
+                    .font(.title2)
+                
+                VStack{
+                    Toggle(isOn: $reverse) {
+                        Label("Rev:", systemImage: "repeat")
+                    }.toggleStyle(.switch)
+                        .onChange(of: reverse) { value in
+                            changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+                        }
+                    Toggle(isOn: $echoF0) {
+                        Label("Link F0:", systemImage: "lightbulb")
+                    }.toggleStyle(.switch)
+                        .onChange(of: echoF0) { value in
+                            changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+                        }
+                    Toggle(isOn: $echoFn) {
+                        Label("Link Fn:", image: "lightbulb.2") // only available as systemimage starting in iOS 16, macOS 13 so we provide local copy
+                    }.toggleStyle(.switch)
+                        .onChange(of: echoFn) { value in
+                            changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+                        }
+                }.frame(width: 80)
+                    .labelStyle(.iconOnly)
+            }
+        }
+        
+        func changingToggle(reverse : Bool, echoF0 : Bool, echoFn : Bool) {
+            consistModel.resetFlags(on: entry.childLoco, reverse: reverse, echoF0: echoF0, echoFn: echoFn)
         }
     }
-    
-    func changingToggle(reverse : Bool, echoF0 : Bool, echoFn : Bool) {
-        consistModel.resetFlags(on: entry.childLoco, reverse: reverse, echoF0: echoF0, echoFn: echoFn)
-    }
-    
-//    func deleteLoco(_ entry : ConsistModel.ConsistEntryModel ) {
-//        consistModel.removeLocoFromConsist(remove: entry.childLoco)
-//    }
-
 }
 
-struct ConsisteView_Previews: PreviewProvider {
+struct ConsistView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {
         let consistModel = ConsistModel(linkLayer : LinkLayer(NodeID(100)))

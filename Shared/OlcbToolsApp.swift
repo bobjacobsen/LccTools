@@ -27,7 +27,7 @@ struct OlcbToolsApp: App {
         
     @StateObject var tcpConnectionModel = TcpConnectionModel()
     
-    let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
+    private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
     
     static var doneStartup = false  // static to avoid "self is immutable" issue
 

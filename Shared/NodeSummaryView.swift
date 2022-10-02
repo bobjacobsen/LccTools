@@ -15,7 +15,7 @@ struct NodeSummaryView: View {
     let network : OpenlcbNetwork
     
     var body: some View {
-
+        
         VStack( /* alignment: .leading */) {
             List {
                 Text(displayNode.name).font(.title)
@@ -35,7 +35,7 @@ struct NodeSummaryView: View {
                 }
             }
             HStack{
-
+                
                 if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION)
                     && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL)  {
                     NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
@@ -46,9 +46,9 @@ struct NodeSummaryView: View {
                         }
                     }
                 }
-
-#if os(iOS)
-
+                
+#if os(iOS) // on iOS display two more icons for Events and PIP
+                
                 if displayNode.pipSet.contains(.EVENT_EXCHANGE_PROTOCOL) {
                     NavigationLink(destination: EventView(displayNode: displayNode)) {
                         VStack {
@@ -58,7 +58,7 @@ struct NodeSummaryView: View {
                         }
                     }
                 }
-   
+                
                 
                 NavigationLink(destination: PipView(displayNode: displayNode)) {
                     VStack {
@@ -67,9 +67,9 @@ struct NodeSummaryView: View {
                             .font(.footnote)
                     }
                 }
-
-#else // macOS seems to require there be only two buttons/NavigationLinks
-
+                
+#else // macOS seems to require there be only two buttons/NavigationLinks so use a combined View
+                
                 NavigationLink(destination: MacOSCombinedView(displayNode: displayNode)) {
                     VStack {
                         Image(systemName:"gear.badge.questionmark")
@@ -82,20 +82,25 @@ struct NodeSummaryView: View {
             }.frame(minHeight: 75)
         } .navigationTitle("\(displayNode.name) Summary")
     }
-}
-
-struct MacOSCombinedView : View {
-    @ObservedObject var displayNode : Node
-
-    var body : some View {
-        VStack {
-            PipView(displayNode: displayNode)
-            StandardHDivider()
-            EventView(displayNode: displayNode)
+    
+#if os(macOS)
+    /// macOS-specific view to show PIP and Events in a single View
+    struct MacOSCombinedView : View {
+        @ObservedObject var displayNode : Node
+        
+        var body : some View {
+            VStack {
+                PipView(displayNode: displayNode)
+                StandardHDivider()
+                EventView(displayNode: displayNode)
+            }
         }
     }
+#endif
 }
-struct FullNodeView_Previews: PreviewProvider {
+
+
+struct NodeSummaryView_Previews: PreviewProvider {
     static let displayNode  = Node(NodeID(258),
                                    snip: SNIP(
                                             "Manufacturer Name",

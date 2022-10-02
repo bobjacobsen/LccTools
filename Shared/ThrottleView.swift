@@ -15,7 +15,7 @@ struct ThrottleView: View {
  
     @State private var isEditing = false    // for Sliders
     
-    var bars : [ThrottleBar] = []
+    fileprivate var bars : [ThrottleBar] = []
 
     let maxindex = 50       // number of bars - set with maxSpeed, throttle curve to have low bars ~ 1mph
     let maxSpeed = 100.0    // MPH   // TODO: Decide how to handle max speed - configurable? 128?
@@ -110,60 +110,60 @@ fileprivate struct ThrottleSliderView : View {
             }
         }
     } // body
-} // ThrottleSliderView
-
-/// View a single bar in the ThrottleSliderView
-struct ThrottleBarView : View {
-    let bar : ThrottleBar
-    @Binding var speed : Float
+    
+    /// View a single bar in the ThrottleSliderView
+    struct ThrottleBarView : View {
+        fileprivate let bar : ThrottleBar
+        @Binding var speed : Float
         
-    var body: some View {
-        HStack {
-            Button(action:{
-                speed = bar.setSpeed
-            }, // Action
-                   label: {
-                RoundedRectangle(cornerRadius: 3.0)
-                    .frame(width: bar.length) // height is computed automatically
-                    .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
-            } // label
-            ) // Button
-            .buttonStyle(.borderless)  // for macOS
-            .padding(.vertical, 0)
-            .padding(.leading, 8)
-            .padding(.trailing, -5)
-            ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
-                speed = bar.setSpeed
-            } perform: {}
-
-            // add a transparent button to fill out rest of line
-            Button(action:{
-                speed = bar.setSpeed
-            }, // Action
-                   label: {
-                RoundedRectangle(cornerRadius: 2.0)
-                    .frame(width: ThrottleView.maxLength - bar.length)
-                    .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
-                    .opacity(0.2)
-            } // label
-            ) // Button
-            .buttonStyle(.borderless)  // for macOS
-            .padding(.vertical, 0)
-            .padding(.horizontal, 0)
-            ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
-                speed = bar.setSpeed
-            } perform: {}
-
-            Spacer() // align to left
-            
-        } // HStack
-    } // body
-} // Throttle Bar View
+        var body: some View {
+            HStack {
+                Button(action:{
+                    speed = bar.setSpeed
+                }, // Action
+                       label: {
+                    RoundedRectangle(cornerRadius: 3.0)
+                        .frame(width: bar.length) // height is computed automatically
+                        .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
+                } // label
+                ) // Button
+                .buttonStyle(.borderless)  // for macOS
+                .padding(.vertical, 0)
+                .padding(.leading, 8)
+                .padding(.trailing, -5)
+                ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
+                    speed = bar.setSpeed
+                } perform: {}
+                
+                // add a transparent button to fill out rest of line
+                Button(action:{
+                    speed = bar.setSpeed
+                }, // Action
+                       label: {
+                    RoundedRectangle(cornerRadius: 2.0)
+                        .frame(width: ThrottleView.maxLength - bar.length)
+                        .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
+                        .opacity(0.2)
+                } // label
+                ) // Button
+                .buttonStyle(.borderless)  // for macOS
+                .padding(.vertical, 0)
+                .padding(.horizontal, 0)
+                ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
+                    speed = bar.setSpeed
+                } perform: {}
+                
+                Spacer() // align to left
+                
+            } // HStack
+        } // body
+    } // Throttle Bar View
+} // ThrottleSliderView
 
 /// Data for a single bar
 ///
 /// Local, not part of model, because these together represent the `speed` value
-struct ThrottleBar {
+fileprivate struct ThrottleBar {
     let length: CGFloat
     let setSpeed : Float
     let id = UUID()
@@ -172,59 +172,60 @@ struct ThrottleBar {
 /// Display the set of functions
 fileprivate struct FunctionsView : View {
     var fnModels : [ThrottleModel.FnModel]
-
+    
     var body: some View {
         List {
             ClockView() // add a clock view as the top bar
                 .frame(height: STANDARD_BUTTON_HEIGHT)
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
-                #if os(iOS)
+#if os(iOS)
                     .listRowSeparator(.hidden) // first supported in macOS 13, but not really necessary on macOS
-                #endif
+#endif
             }
         }
     }
-}
-
-/// One function button itself
-fileprivate struct FnButtonView : View {
     
-    @ObservedObject var model : ThrottleModel.FnModel
-    @State private var pressing = false
-
-    var body: some View {
-        Button(action:{
-            DispatchQueue.main.async{ // to avoid "publishing changes from within view updates is not allowed"
-                if (!model.momentary) { model.pressed = !model.pressed }
-            }
-        }) {
-            ZStack {
-                RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
-                    .frame(alignment: .center)
-                    .foregroundColor( model.pressed ? .blue : .green)
-                //
-                
-                if model.label.count <= 7 {
-                    Text(model.label)
-                        .font(STANDARD_BUTTON_FONT)
-                        .foregroundColor(.white)
-                } else {
-                    Text(model.label)
-                        .font(SMALL_BUTTON_FONT)
-                        .foregroundColor(.white)
-                }
-            }
-        }.padding(.vertical, 0) // 0 on iOS
-        // for momentary press
-            ._onButtonGesture { pressing in
-                self.pressing = pressing
-                if model.momentary {
-                    model.pressed = pressing
-                }
-            } perform: {}
-         .buttonStyle(.borderless)  // for macOS
+    
+    /// One function button itself
+    struct FnButtonView : View {
         
+        @ObservedObject var model : ThrottleModel.FnModel
+        @State private var pressing = false
+        
+        var body: some View {
+            Button(action:{
+                DispatchQueue.main.async{ // to avoid "publishing changes from within view updates is not allowed"
+                    if (!model.momentary) { model.pressed = !model.pressed }
+                }
+            }) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
+                        .frame(alignment: .center)
+                        .foregroundColor( model.pressed ? .blue : .green)
+                    //
+                    
+                    if model.label.count <= 7 {
+                        Text(model.label)
+                            .font(STANDARD_BUTTON_FONT)
+                            .foregroundColor(.white)
+                    } else {
+                        Text(model.label)
+                            .font(SMALL_BUTTON_FONT)
+                            .foregroundColor(.white)
+                    }
+                }
+            }.padding(.vertical, 0) // 0 on iOS
+            // for momentary press
+                ._onButtonGesture { pressing in
+                    self.pressing = pressing
+                    if model.momentary {
+                        model.pressed = pressing
+                    }
+                } perform: {}
+                .buttonStyle(.borderless)  // for macOS
+            
+        }
     }
 }
 

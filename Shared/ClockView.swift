@@ -17,9 +17,9 @@ import os
 /// Sizes itself to fill the given space.
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
-
+    
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
-
+    
     @EnvironmentObject var openlcblib : OpenlcbNetwork
     
     @State private var isRunning = false // will be updated when we first hear from clock
@@ -29,7 +29,7 @@ struct ClockView: View {
     @State private var minutes : Int = 0
     
     @State private var seconds : Int = 0
-
+    
     /// Reload time values periodically
     @State private var timer: Timer?
     
@@ -57,59 +57,59 @@ struct ClockView: View {
                     StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue, size: unitsize)
                     Spacer()
                 }.frame(alignment: .center)
-                .onAppear {                    
-                    let delay = 1.0/12.0  // 12fps for energy use compromise
-                    timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
-                        let date = openlcblib.clockModel0.getTime()
-                        hours = openlcblib.clockModel0.getHour(date)
-                        minutes = openlcblib.clockModel0.getMinute(date)
-                        seconds = openlcblib.clockModel0.getSecond(date)
-                    })
-                }.onDisappear {
-                    timer?.invalidate()  // stop the timer when not displayed
-                }
+                    .onAppear {
+                        let delay = 1.0/12.0  // 12fps for energy use compromise
+                        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
+                            let date = openlcblib.clockModel0.getTime()
+                            hours = openlcblib.clockModel0.getHour(date)
+                            minutes = openlcblib.clockModel0.getMinute(date)
+                            seconds = openlcblib.clockModel0.getSecond(date)
+                        })
+                    }.onDisappear {
+                        timer?.invalidate()  // stop the timer when not displayed
+                    }
                 Spacer()
             }.frame(alignment: .center)
         } // end GeometryReader
     } // end body
-}
-
-// display one time unit field, i.e. hours. minutes or seconds
-struct StopwatchUnit: View {
     
-    var timeUnit: Int
-    var timeUnitText: String
-    var color: Color
-    var size: CGFloat
-    
-    /// Time unit expressed as String.
-    /// - Includes "0" as prefix if this is less than 10.
-    var timeUnitStr: String {
-        let timeUnitStr = String(timeUnit)
-        return timeUnit < 10 ? "0" + timeUnitStr : timeUnitStr
-    }
-    
-    var body: some View {
+    // display one time unit field, i.e. hours. minutes or seconds
+    struct StopwatchUnit: View {
         
-        VStack {
-            ZStack {
-                RoundedRectangle(cornerRadius: size / 5.0)
-                    .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                    .fill(color)
-                    .frame(width: size, height: size, alignment: .center)
-                
-                HStack(spacing: 2) {
-                    Text(timeUnitStr.substring(index: 0))
-                        .font(.system(size: 0.64*size))
-                        .frame(width: 0.38*size)
-                    Text(timeUnitStr.substring(index: 1))
-                        .font(.system(size: 0.64*size))
-                        .frame(width: 0.38*size)
+        var timeUnit: Int
+        var timeUnitText: String
+        var color: Color
+        var size: CGFloat
+        
+        /// Time unit expressed as String.
+        /// - Includes "0" as prefix if this is less than 10.
+        var timeUnitStr: String {
+            let timeUnitStr = String(timeUnit)
+            return timeUnit < 10 ? "0" + timeUnitStr : timeUnitStr
+        }
+        
+        var body: some View {
+            
+            VStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: size / 5.0)
+                        .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                        .fill(color)
+                        .frame(width: size, height: size, alignment: .center)
+                    
+                    HStack(spacing: 2) {
+                        Text(timeUnitStr.substring(index: 0))
+                            .font(.system(size: 0.64*size))
+                            .frame(width: 0.38*size)
+                        Text(timeUnitStr.substring(index: 1))
+                            .font(.system(size: 0.64*size))
+                            .frame(width: 0.38*size)
+                    }
                 }
-            }
-            if size > 40.0 {  // has to match offset computation above
-                Text(timeUnitText)
-                    .font(.system(size: 16))
+                if size > 40.0 {  // has to match offset computation above
+                    Text(timeUnitText)
+                        .font(.system(size: 16))
+                }
             }
         }
     }
