@@ -43,7 +43,7 @@ struct EventView: View {
                     .listRowSeparator(.hidden)  // first supported in macOS 13
 #endif
                 }.padding(.horizontal, innnerHorizontalPadding)
-
+                
                 List {
                     Text("Consumes").font(.title).frame(alignment: .trailing)
                     ForEach(consumed, id:\.eventID) { (event) in
@@ -55,31 +55,32 @@ struct EventView: View {
                     .listRowSeparator(.hidden) // first supported in macOS 13
 #endif
                 }.padding(.horizontal, innnerHorizontalPadding)
-
+                
             }.padding(.horizontal, overallHorizontalPadding)
         }.navigationTitle("\(displayNode.name) Events")
     }
-}
-
-struct EventViewOneEvent : View {
-    @EnvironmentObject var openlcblib : OpenlcbNetwork
     
-    let eventID : EventID
-    
+    /// Present one event as an active button
+    fileprivate struct EventViewOneEvent : View {
+        @EnvironmentObject var openlcblib : OpenlcbNetwork
+        
+        let eventID : EventID
+        
 #if os(macOS)
-    let horizPadding : CGFloat = 0
+        let horizPadding : CGFloat = 0
 #else
-    let horizPadding : CGFloat = -5
+        let horizPadding : CGFloat = -5
 #endif
-
-    var body: some View {
-        GeometryReader { geometry in
-            let width = geometry.size.width
-            let fontsize = Font.system(size: width / 12.5 ) // empirically derived
-            
-            StandardMomentaryButton(label: "\(eventID.description)", height: STANDARD_BUTTON_HEIGHT, font: fontsize) {
-                openlcblib.produceEvent(eventID: eventID)
-            } .padding(.horizontal, horizPadding)
+        
+        var body: some View {
+            GeometryReader { geometry in
+                let width = geometry.size.width
+                let fontsize = Font.system(size: width / 12.5 ) // empirically derived
+                
+                StandardMomentaryButton(label: "\(eventID.description)", height: STANDARD_BUTTON_HEIGHT, font: fontsize) {
+                    openlcblib.produceEvent(eventID: eventID)
+                } .padding(.horizontal, horizPadding)
+            }
         }
     }
 }
