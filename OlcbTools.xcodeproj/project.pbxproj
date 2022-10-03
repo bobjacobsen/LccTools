@@ -49,6 +49,8 @@
 		2395165B28AFDB8E00F3A872 /* StandardToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2395165928AFDB8D00F3A872 /* StandardToggleButton.swift */; };
 		23A0D5482892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
 		23A0D5492892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
+		23B2EDA828EB17510098666D /* TurnoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2EDA728EB17510098666D /* TurnoutView.swift */; };
+		23B2EDA928EB17510098666D /* TurnoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2EDA728EB17510098666D /* TurnoutView.swift */; };
 		23C40BBB28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */; };
 		23C40BBC28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */; };
 /* End PBXBuildFile section */
@@ -100,6 +102,7 @@
 		239ADD1E28C4F78000E13A32 /* OlcbTools (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OlcbTools (iOS).entitlements"; sourceTree = "<group>"; };
 		23A0D5472892F3D0009663EA /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		23B2EDA628E8CE450098666D /* OlcbTools (macOS)Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OlcbTools (macOS)Debug.entitlements"; sourceTree = "<group>"; };
+		23B2EDA728EB17510098666D /* TurnoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnoutView.swift; sourceTree = "<group>"; };
 		23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexadecimalKeyboard.swift; sourceTree = "<group>"; };
 		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
 		23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "OlcbTools--iOS--Info.plist"; sourceTree = "<group>"; };
@@ -177,6 +180,7 @@
 				2336064628CF6E6B00FCACAA /* Imports */,
 				23008906285C94A4000FB614 /* Assets.xcassets */,
 				23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */,
+				23B2EDA728EB17510098666D /* TurnoutView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -409,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23B2EDA828EB17510098666D /* TurnoutView.swift in Sources */,
 				235DFF4428C1017100B03999 /* ConsistView.swift in Sources */,
 				2300892C285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
 				23C40BBB28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */,
@@ -433,6 +438,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23B2EDA928EB17510098666D /* TurnoutView.swift in Sources */,
 				235DFF4528C1017100B03999 /* ConsistView.swift in Sources */,
 				2300892D285C94A4000FB614 /* OlcbTools.xcdatamodeld in Sources */,
 				23C40BBC28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */,
