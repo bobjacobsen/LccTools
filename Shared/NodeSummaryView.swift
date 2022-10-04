@@ -99,7 +99,7 @@ struct NodeSummaryView: View {
 #endif
 }
 
-
+/// XCode preview for the NodeSummaryView
 struct NodeSummaryView_Previews: PreviewProvider {
     static let displayNode  = Node(NodeID(258),
                                    snip: SNIP(

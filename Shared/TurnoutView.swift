@@ -55,6 +55,7 @@ struct TurnoutView: View {
     
 }
 
+/// XCode preview for the TurnoutView
 struct TurnoutView_Previews: PreviewProvider {
     static var previews: some View {
         TurnoutView(network: OpenlcbNetwork(sample: true))

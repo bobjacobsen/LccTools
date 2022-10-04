@@ -149,6 +149,7 @@ struct ConsistView: View {
     }
 }
 
+/// XCode preview for the ConsistView
 struct ConsistView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {

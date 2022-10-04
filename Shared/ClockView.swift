@@ -122,6 +122,7 @@ private extension String {  // private to avoid confusing parse errors on other 
     }
 }
 
+/// XCode preview for the ClockView
 struct ClockView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {

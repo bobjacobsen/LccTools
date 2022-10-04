@@ -85,6 +85,7 @@ struct EventView: View {
     }
 }
 
+/// XCode preview for the EventView
 struct EventView_Previews: PreviewProvider {
     static let displayNode = Node(NodeID(12))
     static var previews: some View {

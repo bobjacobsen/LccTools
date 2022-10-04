@@ -104,6 +104,7 @@ struct SettingsView: View {
 
 }
 
+/// XCode preview for the SettingsView
 struct SettingsView_Previews: PreviewProvider {
     @State static var commStatus = "status goes here"
     static var previews: some View {

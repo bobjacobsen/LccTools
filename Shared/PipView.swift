@@ -28,6 +28,7 @@ struct PipView: View {
     }
 }
 
+/// XCode preview for the PipView
 struct PipView_Previews: PreviewProvider {
     static var previews: some View {
         PipView(displayNode: Node(NodeID(0),

@@ -31,6 +31,7 @@ struct MonitorView: View {
     }
 }
 
+/// XCode preview for the MonitorView
 struct MonitorView_Previews: PreviewProvider {
     static var previews: some View {
         MonitorView()

@@ -66,6 +66,7 @@ struct NodeListNavigationView: View {
     }
 }
 
+/// XCode preview for the NodeListNavigationView
 struct NodeListNavigationView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {

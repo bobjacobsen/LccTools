@@ -255,8 +255,6 @@ struct LocoSelectionView : View {
                         Text($0.label)
                     }
                 }
-                // .pickerStyle(SegmentedPickerStyle())
-                // .pickerStyle(MenuPickerStyle())  // default seems to be menu style here
                 #if os(iOS)
                     .pickerStyle(WheelPickerStyle())
                 #endif
@@ -293,8 +291,6 @@ struct LocoSelectionView : View {
                 }
                 .font(.title)
                 .pickerStyle(SegmentedPickerStyle())
-                // .pickerStyle(.radioGroup)        // macOS only
-                //.horizontalRadioGroupLayout()     // macOS only
 
                 StandardMomentaryButton(label: "Select", height: STANDARD_BUTTON_HEIGHT, font: .title){
                     LocoSelectionView.logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
@@ -317,7 +313,7 @@ struct LocoSelectionView : View {
 }
 
 
-// Preview
+/// XCode preview for the ThrottleView
 struct ThrottleView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {
