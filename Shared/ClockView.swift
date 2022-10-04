@@ -98,10 +98,10 @@ struct ClockView: View {
                         .frame(width: size, height: size, alignment: .center)
                     
                     HStack(spacing: 2) {
-                        Text(timeUnitStr.substring(index: 0))
+                        Text(timeUnitStr.characterAt(index: 0))
                             .font(.system(size: 0.64*size))
                             .frame(width: 0.38*size)
-                        Text(timeUnitStr.substring(index: 1))
+                        Text(timeUnitStr.characterAt(index: 1))
                             .font(.system(size: 0.64*size))
                             .frame(width: 0.38*size)
                     }
@@ -115,8 +115,12 @@ struct ClockView: View {
     }
 }
 
-private extension String {  // private to avoid confusing parse errors on other file's uses of substring
-    func substring(index: Int) -> String {
+/// Provide a convenient, local single-character operation
+private extension String {  // private to avoid confusing parse errors on other files uses of String
+    /// Provide the character at a particular position
+    /// - Parameter index: 0-based index of the desired character
+    /// - Returns: String consisting of character at that index
+    func characterAt(index: Int) -> String {
         let arrayString = Array(self)
         return String(arrayString[index])
     }
