@@ -265,7 +265,7 @@ struct LocoSelectionView : View {
                     for rosterEntry in model.roster {
                         if rosterEntry.label == selectedRosterAddress {
                             model.startSelection(entry: rosterEntry)
-                            break
+                            break  // expect to always find this, don't do anything if not
                         }
                     }
                 }.disabled(selectedRosterAddress == "<None>")
