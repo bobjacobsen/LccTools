@@ -6,7 +6,6 @@
 
 import SwiftUI
 import OpenlcbLibrary
-import os
 
 /// Display and allow editing of a locomotive consist.
 ///
@@ -27,7 +26,7 @@ struct ConsistView: View {
                 ForEach(selectionModel.roster, id: \.self.label) {
                     Text($0.label)
                 }
-            } // .pickerStyle(WheelPickerStyle())  // wheel takes up too much space on iOS
+            }
             .onChange(of: selectedConsistAddress) { value in
                 consistModel.forLoco = selectionModel.getRosterEntryNodeID(from: selectedConsistAddress)
                 consistModel.fetchConsist()
@@ -43,7 +42,8 @@ struct ConsistView: View {
                         name: selectionModel.getRosterEntryName(from: entry.childLoco),
                         reverse: entry.reverse,
                         echoF0: entry.echoF0,
-                        echoFn: entry.echoFn
+                        echoFn: entry.echoFn,
+                        hidden: entry.hide
                     )
                     
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -53,6 +53,7 @@ struct ConsistView: View {
                             Text("Delete")
                         }
                     }
+                    
                 }
             }
             
@@ -67,7 +68,7 @@ struct ConsistView: View {
                     ForEach(selectionModel.roster, id: \.self.label) {
                         Text($0.label)
                     }
-                } //.font(.title2) // .pickerStyle(WheelPickerStyle())
+                }
                 
                 // This button should be smaller to match picker box
                 StandardMomentaryButton(label: "Add", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
@@ -93,9 +94,10 @@ struct ConsistView: View {
         @State private var reverse : Bool
         @State private var echoF0  : Bool
         @State private var echoFn  : Bool
+        @State private var hidden : Bool
         
         init(consistModel : ConsistModel, entry : ConsistModel.ConsistEntryModel, name : String,
-             reverse : Bool, echoF0 : Bool, echoFn : Bool) {
+             reverse : Bool, echoF0 : Bool, echoFn : Bool, hidden : Bool) {
             self.consistModel = consistModel
             self.entry = entry
             self.name = name
@@ -103,43 +105,46 @@ struct ConsistView: View {
             self.reverse = reverse
             self.echoF0 = echoF0
             self.echoFn = echoFn
+            self.hidden = hidden
         }
         
         var body: some View {
-            HStack {
-                
-                Spacer() // force presentation to right side
-                
-                Text(name)
-                    .frame(alignment: .center)
-                    .font(.title2)
-                
-                VStack{
-                    Toggle(isOn: $reverse) {
-                        Label("Rev:", systemImage: "repeat")
-                    }.toggleStyle(.switch)
-                        .onChange(of: reverse) { value in
-                            changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
-                        }
-                    Toggle(isOn: $echoF0) {
-                        Label("Link F0:", systemImage: "lightbulb")
-                    }.toggleStyle(.switch)
-                        .onChange(of: echoF0) { value in
-                            changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
-                        }
-                    Toggle(isOn: $echoFn) {
-                        Label("Link Fn:", image: "lightbulb.2") // only available as systemimage starting in iOS 16, macOS 13 so we provide local copy
-                    }.toggleStyle(.switch)
-                        .onChange(of: echoFn) { value in
-                            changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
-                        }
-                }.frame(width: 80)
-                    .labelStyle(.iconOnly)
+            if !hidden {  // don't display hidden consist entries
+                HStack {
+                    
+                    Spacer() // force presentation to right side
+                    
+                    Text(name)
+                        .frame(alignment: .center)
+                        .font(.title2)
+                    
+                    VStack{
+                        Toggle(isOn: $reverse) {
+                            Label("Rev:", systemImage: "repeat")
+                        }.toggleStyle(.switch)
+                            .onChange(of: reverse) { value in
+                                changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+                            }
+                        Toggle(isOn: $echoF0) {
+                            Label("Link F0:", systemImage: "lightbulb")
+                        }.toggleStyle(.switch)
+                            .onChange(of: echoF0) { value in
+                                changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+                            }
+                        Toggle(isOn: $echoFn) {
+                            Label("Link Fn:", image: "lightbulb.2") // only available as systemimage starting in iOS 16, macOS 13 so we provide local copy
+                        }.toggleStyle(.switch)
+                            .onChange(of: echoFn) { value in
+                                changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+                            }
+                    }.frame(width: 80)
+                        .labelStyle(.iconOnly)
+                }
             }
         }
         
         func changingToggle(reverse : Bool, echoF0 : Bool, echoFn : Bool) {
-            consistModel.resetFlags(on: entry.childLoco, reverse: reverse, echoF0: echoF0, echoFn: echoFn)
+            consistModel.resetFlags(on: entry.childLoco, reverse: reverse, echoF0: echoF0, echoFn: echoFn, hide: false) // `hide` always false if loco is visible
         }
     }
 }
