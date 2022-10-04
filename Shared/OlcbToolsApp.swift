@@ -116,15 +116,14 @@ struct OlcbToolsApp: App {
                ClockView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Clock", systemImage: "clock")
+                        Label("Clock", systemImage: "timer")
                     }.tag("Clock")
               
-                ConsistView(consistModel: openlcblib.consistModel0, selectionModel: openlcblib.throttleModel0)
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                TurnoutView(network: openlcblib)
                     .tabItem {
-                        Label("Consists", systemImage: "forward")
-                    }.tag("Consist")
-
+                        Label("Turnouts", systemImage: "arrow.triangle.branch")
+                    }.tag("Turnouts")
+                
                 // This has wierd nav issues if it comes from "More..." so keep it above that
                 NodeListNavigationView(lib: openlcblib)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
@@ -134,7 +133,13 @@ struct OlcbToolsApp: App {
                     .environmentObject(openlcblib)
 
                 // iPhone 12 goes to "More..." at this point
-
+                
+                ConsistView(consistModel: openlcblib.consistModel0, selectionModel: openlcblib.throttleModel0)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Consists", systemImage: "forward")
+                    }.tag("Consist")
+                
                 MonitorView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {

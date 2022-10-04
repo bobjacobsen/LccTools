@@ -176,11 +176,11 @@
 				230B6818285E071500C99298 /* SettingsView.swift */,
 				2395165928AFDB8D00F3A872 /* StandardToggleButton.swift */,
 				2392DE652861B2D200BD9391 /* ThrottleView.swift */,
+				23B2EDA728EB17510098666D /* TurnoutView.swift */,
 				2336064728CF6E9800FCACAA /* Examples */,
 				2336064628CF6E6B00FCACAA /* Imports */,
 				23008906285C94A4000FB614 /* Assets.xcassets */,
 				23008901285C949E000FB614 /* OlcbTools.xcdatamodeld */,
-				23B2EDA728EB17510098666D /* TurnoutView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";

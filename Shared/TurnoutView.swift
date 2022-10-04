@@ -18,7 +18,7 @@ struct TurnoutView: View {
         formatter.minimum = 1
         formatter.maximum = 2048
         formatter.maximumFractionDigits = 0
-        model = TurnoutModel(network: network)
+        model = network.turnoutModel0
     }
     
     var body: some View {
@@ -42,10 +42,10 @@ struct TurnoutView: View {
                         Spacer()
                         Text("\(String(item))")
                         StandardMomentaryButton(label: "T", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
-                            model.setThrown(dccAddress)
-                        }.frame(width: 80)
+                            model.setThrown(item)
+                        }.frame(width: 60)
                         StandardMomentaryButton(label: "C", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
-                            model.setClosed(dccAddress)
+                            model.setClosed(item)
                         }.frame(width: 80)
                    }
                 }
@@ -53,37 +53,6 @@ struct TurnoutView: View {
         }
     }
     
-}
-
-// TODO: move to separate file
-// TODO: Add tracking of turnout state, including when others throw
-import Foundation
-class TurnoutModel : ObservableObject {
-    @Published var addressArray : [Int] = []  // address-sorted form of addressSet
-    var addressSet = Set<Int>()
-    let network : OpenlcbNetwork
-    
-    init(network: OpenlcbNetwork) {
-        self.network = network
-    }
-    func setClosed(_ address : Int) {
-        processAddress(address)
-        let eventID : UInt64 = UInt64(0x01_01_02_00_00_FE_00_00+address)
-        network.produceEvent(eventID: EventID(eventID))
-    }
-    
-    func setThrown(_ address : Int) {
-        processAddress(address)
-        let eventID : UInt64 = UInt64(0x01_01_02_00_00_FF_00_00+address)
-        network.produceEvent(eventID: EventID(eventID))
-    }
-    func processAddress(_ address : Int) {
-        if !addressSet.contains(address) {
-            // only do this if needed to avoid unnecesary publishes
-            addressSet.insert(address)
-            addressArray = addressSet.sorted()
-        }
-    }
 }
 
 struct TurnoutView_Previews: PreviewProvider {
