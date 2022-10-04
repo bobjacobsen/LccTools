@@ -18,13 +18,11 @@ struct ThrottleView: View {
     fileprivate var bars : [ThrottleBar] = []
 
     let maxindex = 50       // number of bars - set with maxSpeed, throttle curve to have low bars ~ 1mph
-    let maxSpeed = 100.0    // MPH   // TODO: Decide how to handle max speed - configurable? 128?
+    let maxSpeed = 126.0    // MPH, but mapped to speed step in DCC world
 
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area // TODO: make this scale to available space so it looks better on iPad and landscape iPhone
 
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
-    
-    // TODO: How do throttles follow each other?
     
     init(throttleModel : ThrottleModel) {
         self.model = throttleModel
