@@ -74,8 +74,6 @@ struct OlcbToolsApp: App {
         // This only works for iOS.  macOS has a separate preferences screen, shown in onAppear below.
         if self.ip_address == "" && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
             self.selectedTab = "Settings"
-        } else {
-            self.selectedTab = "Throttle"
         }
         
         // create, but not yet connect, the Telnet connection to the hub (connection done on transition to Active state below)
