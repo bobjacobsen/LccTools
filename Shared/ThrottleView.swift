@@ -200,13 +200,13 @@ fileprivate struct FunctionsView : View {
             }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
-                        .frame(alignment: .center)
+                        .frame(height: 1.5*STANDARD_BUTTON_HEIGHT, alignment: .center) // bigger for fingers
                         .foregroundColor( model.pressed ? .blue : .green)
                     //
                     
                     if model.label.count <= 7 {
                         Text(model.label)
-                            .font(STANDARD_BUTTON_FONT)
+                            .font(SMALL_BUTTON_FONT)
                             .foregroundColor(.white)
                     } else {
                         Text(model.label)
