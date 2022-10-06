@@ -53,11 +53,20 @@ struct NodeListNavigationView: View {
                         }
                     }
                 }
+#if os(macOS)
+                HStack {
+                    Spacer()
+                    Button("Refresh") {
+                        network.refreshAllNodes()
+                    }
+                    Spacer()
+                }
+#endif
             }.navigationTitle("Remote Nodes")
-             .listStyle(SidebarListStyle())
-             .refreshable {
-                 network.refreshAllNodes()
-             }
+                .listStyle(SidebarListStyle())
+                .refreshable {
+                    network.refreshAllNodes()
+                }
             
             Text("No Selection Yet")  // second nav section
             

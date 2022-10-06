@@ -25,14 +25,7 @@ struct NodeSummaryView: View {
                 Text(displayNode.snip.manufacturerName)
                 Text("Hardware Version: \(displayNode.snip.hardwareVersion)\nSoftware Version: \(displayNode.snip.softwareVersion)")
             }.refreshable {
-                network.refreshNode(node: displayNode)
-                
-                // reloadRoster() here would happen too soon, network update hasn't happened yet
-                // so schedule for a second from now
-                let deadlineTime = DispatchTime.now() + .milliseconds(1000)
-                DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                    network.throttleModel0.reloadRoster()
-                }
+                refresh()
             }
             HStack{
                 
@@ -64,6 +57,13 @@ struct NodeSummaryView: View {
 #endif
                 
             }.frame(minHeight: 75)
+            
+#if os(macOS)
+            Button("Refresh"){
+                refresh()
+            }
+#endif
+            
         } .navigationTitle("\(displayNode.name) Summary")
     }
     
@@ -96,6 +96,17 @@ struct NodeSummaryView: View {
                 Text(label)
 #endif
             }
+        }
+    }
+    
+    func refresh() {
+        network.refreshNode(node: displayNode)
+        
+        // reloadRoster() here would happen too soon, network update hasn't happened yet
+        // so schedule for a short time from now
+        let deadlineTime = DispatchTime.now() + .milliseconds(500)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            network.throttleModel0.reloadRoster()
         }
     }
     
