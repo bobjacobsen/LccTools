@@ -61,7 +61,8 @@ struct NodeSummaryView: View {
 #if os(macOS)
             Button("Refresh"){
                 refresh()
-            }
+            }.padding(.bottom, 15)
+                .padding(.top, -15)
 #endif
             
         } .navigationTitle("\(displayNode.name) Summary")
@@ -82,6 +83,7 @@ struct NodeSummaryView: View {
     }
 #endif
     
+    /// iOS and macOS specific handling of the sub-view navigation buttons
     struct MoreButtonView : View {
         let label : String
         let symbol : String
@@ -92,7 +94,7 @@ struct NodeSummaryView: View {
                 Image(systemName:symbol)
                 Text(label)
                     .font(.footnote)
-#else
+#else   // macOS
                 Text(label)
 #endif
             }
