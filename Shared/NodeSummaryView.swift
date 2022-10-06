@@ -39,11 +39,7 @@ struct NodeSummaryView: View {
                 if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION)
                     && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL)  {
                     NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
-                        VStack {
-                            Image(systemName:"square.and.pencil")
-                            Text("Configure")
-                                .font(.footnote)
-                        }
+                        MoreButtonView(label: "Configure", symbol: "square.and.pencil")
                     }
                 }
                 
@@ -51,31 +47,19 @@ struct NodeSummaryView: View {
                 
                 if displayNode.pipSet.contains(.EVENT_EXCHANGE_PROTOCOL) {
                     NavigationLink(destination: EventView(displayNode: displayNode)) {
-                        VStack {
-                            Image(systemName:"cpu")
-                            Text("Events")
-                                .font(.footnote)
-                        }
+                        MoreButtonView(label: "Events", symbol: "cpu")
                     }
                 }
                 
                 
                 NavigationLink(destination: PipView(displayNode: displayNode)) {
-                    VStack {
-                        Image(systemName:"gear.badge.questionmark")
-                        Text("More Info")
-                            .font(.footnote)
-                    }
+                    MoreButtonView(label: "More Info", symbol: "gear.badge.questionmark")
                 }
                 
 #else // macOS seems to require there be only two buttons/NavigationLinks so use a combined View
                 
                 NavigationLink(destination: MacOSCombinedView(displayNode: displayNode)) {
-                    VStack {
-                        Image(systemName:"gear.badge.questionmark")
-                        Text("More Info")
-                            .font(.footnote)
-                    }
+                        MoreButtonView(label: "More Info", symbol: "gear.badge.questionmark")
                 }
 #endif
                 
@@ -97,6 +81,24 @@ struct NodeSummaryView: View {
         }
     }
 #endif
+    
+    struct MoreButtonView : View {
+        let label : String
+        let symbol : String
+        
+        var body : some View {
+            VStack {
+#if os(iOS)
+                Image(systemName:symbol)
+                Text(label)
+                    .font(.footnote)
+#else
+                Text(label)
+#endif
+            }
+        }
+    }
+    
 }
 
 /// XCode preview for the NodeSummaryView
