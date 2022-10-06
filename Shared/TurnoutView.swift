@@ -16,15 +16,21 @@ struct TurnoutView: View {
     
     init(network : OpenlcbNetwork) {
         formatter.minimum = 1
-        formatter.maximum = 2048
+        formatter.maximum = 2040
         formatter.maximumFractionDigits = 0
         model = network.turnoutModel0
     }
     
     var body: some View {
         VStack {
-            Text("Enter Turnout Number (1-2048):")
-            TextField("Turnout Number", value: $dccAddress, formatter: formatter)
+            HStack {
+                Spacer()
+                Text("Enter Turnout Number (1-2040):")
+                TextField("Number", value: $dccAddress, formatter: formatter)
+                    .textFieldStyle(.roundedBorder)
+                    .frame(width:80)
+                Spacer()
+            }
             HStack {
                 StandardMomentaryButton(label: "Throw", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                     model.setThrown(dccAddress)
