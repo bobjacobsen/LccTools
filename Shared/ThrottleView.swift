@@ -51,7 +51,7 @@ struct ThrottleView: View {
             
             Slider(
                 value: $model.speed,
-                in: 0...100,
+                in: 0...Float(maxSpeed),
                 onEditingChanged: { editing in
                     isEditing = editing
                 }
@@ -117,7 +117,7 @@ fileprivate struct ThrottleSliderView : View {
         var body: some View {
             HStack {
                 Button(action:{
-                    speed = bar.setSpeed
+                    speed = round(bar.setSpeed)
                 }, // Action
                        label: {
                     RoundedRectangle(cornerRadius: 3.0)
@@ -135,7 +135,7 @@ fileprivate struct ThrottleSliderView : View {
                 
                 // add a transparent button to fill out rest of line
                 Button(action:{
-                    speed = bar.setSpeed
+                    speed = round(bar.setSpeed)
                 }, // Action
                        label: {
                     RoundedRectangle(cornerRadius: 2.0)
