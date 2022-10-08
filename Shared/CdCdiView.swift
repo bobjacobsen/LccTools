@@ -111,16 +111,7 @@ struct CdCdiView: View {
         let action : () -> ()
         
         var body : some View {
-            ZStack { // formatted button for recognition
-                RoundedRectangle(cornerRadius: 10.0)
-                    .frame(width: 40, height: 30, alignment: .center)
-                    .foregroundColor(.green)
-                Button("R") {
-                    action()
-                }
-                .font(.body)
-                .foregroundColor(.white)
-            }
+            CommonButtonView(text: "R", address: address, model: model, action: action)
         }
     }
     
@@ -131,19 +122,35 @@ struct CdCdiView: View {
         let action : () -> ()
         
         var body : some View {
-            ZStack { // formatted button for recognition
-                RoundedRectangle(cornerRadius: 10.0)
-                    .frame(width: 40, height: 30, alignment: .center)
-                    .foregroundColor(.green)
-                Button("W") {
-                    action()
-                }
-                .font(.body)
-                .foregroundColor(.white)
-            }
+            CommonButtonView(text: "W", address: address, model: model, action: action)
         }
     }
     
+    /// Common section of R and W buttons
+    struct CommonButtonView : View {
+        let text: String
+        let address : Int
+        let model : CdiModel
+        let action : () -> ()
+
+        var body : some View {
+            Button(
+                action: action,
+                label: {
+                    ZStack { // formatted button for recognition
+                        RoundedRectangle(cornerRadius: 10.0)
+                            .frame(width: 30, height: 30, alignment: .center)
+                            .foregroundColor(.green)
+                        Text("R")
+                            .frame(width: 30, height: 30, alignment: .center)
+                            .font(.body)
+                            .foregroundColor(.white)
+                    }
+                }
+                ).buttonStyle(.borderless)  // for macOS
+        }
+    }
+
     /// View for a CID eventID value entry
     struct CdiEventView : View {
         @State var eventValue : String = "00.00.00.00.00.00.00.00"
@@ -176,6 +183,7 @@ struct CdCdiView: View {
                     WButtonView(address: self.item.startAddress, model: model){
                         model.writeEvent(value: EventID(eventValue).eventID, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
+                    Text(" ")  // space off side
                 }.buttonStyle(BorderlessButtonStyle())
                 if item.description != "" {
                     Text(item.description).font(.footnote)
@@ -230,6 +238,7 @@ struct CdCdiView: View {
                     WButtonView(address: self.item.startAddress, model: model){
                         model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
+                    Text(" ")  // space off side
                 }.buttonStyle(BorderlessButtonStyle())
                 if item.description != "" {
                     Text(item.description).font(.footnote)
@@ -326,6 +335,7 @@ struct CdCdiView: View {
                         WButtonView(address: self.item.startAddress, model: model){
                             model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                         }
+                        Text(" ")  // space off side
                     }.buttonStyle(BorderlessButtonStyle())
                 }
                 if item.description != "" {
@@ -372,6 +382,7 @@ struct CdCdiView: View {
                     WButtonView(address: self.item.startAddress, model: model){
                         model.writeString(value: self.entryText, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
+                    Text(" ")  // space off side
                 }.buttonStyle(BorderlessButtonStyle())
                 if item.description != "" {
                     Text(item.description).font(.footnote)
