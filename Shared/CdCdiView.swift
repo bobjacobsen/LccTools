@@ -141,7 +141,7 @@ struct CdCdiView: View {
                         RoundedRectangle(cornerRadius: 10.0)
                             .frame(width: 30, height: 30, alignment: .center)
                             .foregroundColor(.green)
-                        Text("R")
+                        Text(text)
                             .frame(width: 30, height: 30, alignment: .center)
                             .font(.body)
                             .foregroundColor(.white)
@@ -186,7 +186,9 @@ struct CdCdiView: View {
                     Text(" ")  // space off side
                 }.buttonStyle(BorderlessButtonStyle())
                 if item.description != "" {
-                    Text(item.description).font(.footnote)
+                    Text(item.description)
+                        .font(.footnote)
+                        .lineLimit(nil) // effectively unlimited
                 }
             }
             .onAppear(){
@@ -242,6 +244,7 @@ struct CdCdiView: View {
                 }.buttonStyle(BorderlessButtonStyle())
                 if item.description != "" {
                     Text(item.description).font(.footnote)
+                        .lineLimit(nil) // effectively unlimited
                 }
                 if item.maxSet || item.minSet {
                     MinMaxView(item: item)
@@ -340,6 +343,7 @@ struct CdCdiView: View {
                 }
                 if item.description != "" {
                     Text(item.description).font(.footnote)
+                        .lineLimit(nil) // effectively unlimited
                 }
             }
             .onAppear(){
@@ -386,6 +390,7 @@ struct CdCdiView: View {
                 }.buttonStyle(BorderlessButtonStyle())
                 if item.description != "" {
                     Text(item.description).font(.footnote)
+                        .lineLimit(nil) // effectively unlimited
                 }
             }
             .onAppear(){
