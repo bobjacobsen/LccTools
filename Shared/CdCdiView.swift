@@ -158,7 +158,7 @@ struct CdCdiView: View {
             if item.description != "" {
                 Text(item.description)
                     .font(.footnote)
-                    .fixedSize(horizontal: false, vertical: true) // TODO: check on iOS
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
     }
