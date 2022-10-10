@@ -151,6 +151,18 @@ struct CdCdiView: View {
         }
     }
 
+    private struct DescriptionView: View {
+        var item : CdiXmlMemo
+        
+        var body: some View {
+            if item.description != "" {
+                Text(item.description)
+                    .font(.footnote)
+                    .fixedSize(horizontal: false, vertical: true) // TODO: check on iOS
+            }
+        }
+    }
+
     /// View for a CID eventID value entry
     struct CdiEventView : View {
         @State var eventValue : String = "00.00.00.00.00.00.00.00"
@@ -185,11 +197,9 @@ struct CdCdiView: View {
                     }
                     Text(" ")  // space off side
                 }.buttonStyle(BorderlessButtonStyle())
-                if item.description != "" {
-                    Text(item.description)
-                        .font(.footnote)
-                        .lineLimit(nil) // effectively unlimited
-                }
+
+                DescriptionView(item: item)
+
             }
             .onAppear(){
                 read()
@@ -242,10 +252,9 @@ struct CdCdiView: View {
                     }
                     Text(" ")  // space off side
                 }.buttonStyle(BorderlessButtonStyle())
-                if item.description != "" {
-                    Text(item.description).font(.footnote)
-                        .lineLimit(nil) // effectively unlimited
-                }
+
+                DescriptionView(item: item)
+
                 if item.maxSet || item.minSet {
                     MinMaxView(item: item)
                 }
@@ -341,10 +350,9 @@ struct CdCdiView: View {
                         Text(" ")  // space off side
                     }.buttonStyle(BorderlessButtonStyle())
                 }
-                if item.description != "" {
-                    Text(item.description).font(.footnote)
-                        .lineLimit(nil) // effectively unlimited
-                }
+                
+                DescriptionView(item: item)
+                
             }
             .onAppear(){
                 read()
@@ -373,7 +381,7 @@ struct CdCdiView: View {
         @State private var entryText : String = ""
         
         var body: some View {
-            VStack {
+            VStack(alignment: .leading) {
                 HStack {
                     Text("\(item.name) ") // display name next to value
                     Spacer()
@@ -388,10 +396,9 @@ struct CdCdiView: View {
                     }
                     Text(" ")  // space off side
                 }.buttonStyle(BorderlessButtonStyle())
-                if item.description != "" {
-                    Text(item.description).font(.footnote)
-                        .lineLimit(nil) // effectively unlimited
-                }
+
+                DescriptionView(item: item)
+                
             }
             .onAppear(){
                 read()
