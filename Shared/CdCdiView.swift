@@ -156,13 +156,38 @@ struct CdCdiView: View {
         
         var body: some View {
             if item.description != "" {
-                Text(item.description)
-                    .font(.footnote)
-                    .fixedSize(horizontal: false, vertical: true)
+                HStack {
+                    Text(item.description)
+                        .font(.footnote)
+                        .fixedSize(horizontal: false, vertical: true)
+                    BeyondTheButtons()
+                }
             }
         }
     }
 
+    /// On macOS, provide some extra space past the buttons
+    struct BeyondTheButtons : View {
+        var body : some View {
+#if os(macOS)
+            Text(" ")  // space off side to solve overlap with window edge on macOS
+                .frame(minWidth: 30)
+#else
+            EmptyView() // iOS doesn't need extra space at end of line
+#endif
+        }
+    }
+    
+    /// On iOS, provide a spacer to push buttons to right
+    struct IosSpacer : View {
+        var body : some View {
+#if os(iOS)
+            Spacer()
+#else
+            EmptyView()
+#endif
+        }
+    }
     /// View for a CID eventID value entry
     struct CdiEventView : View {
         @State var eventValue : String = "00.00.00.00.00.00.00.00"
@@ -177,6 +202,7 @@ struct CdCdiView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(item.name) ") // display name next to value
+                        .fixedSize(horizontal: false, vertical: true)
                     
                     TextField("Enter \(item.name)", text: $eventValue)
                         .onAppear {
@@ -188,14 +214,14 @@ struct CdCdiView: View {
                             item.currentStringValue = eventValue
                         }
                         .textFieldStyle(.roundedBorder)
-                    Spacer()
+                    IosSpacer()
                     RButtonView(address: self.item.startAddress, model: model){
                         read()
                     }
                     WButtonView(address: self.item.startAddress, model: model){
                         model.writeEvent(value: EventID(eventValue).eventID, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
-                    Text(" ")  // space off side
+                    BeyondTheButtons()
                 }.buttonStyle(BorderlessButtonStyle())
 
                 DescriptionView(item: item)
@@ -234,6 +260,7 @@ struct CdCdiView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(item.name) ") // display name next to value
+                        .fixedSize(horizontal: false, vertical: true)
                     
                     TextField("Enter \(item.name)", value: $intValue,  formatter: formatter)
                         .onAppear {
@@ -243,14 +270,14 @@ struct CdCdiView: View {
                             item.currentIntValue = intValue
                         }
                         .textFieldStyle(.roundedBorder)
-                    Spacer()
+                    IosSpacer()
                     RButtonView(address: self.item.startAddress, model: model){
                         read()
                     }
                     WButtonView(address: self.item.startAddress, model: model){
                         model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
-                    Text(" ")  // space off side
+                    BeyondTheButtons()
                 }.buttonStyle(BorderlessButtonStyle())
 
                 DescriptionView(item: item)
@@ -339,7 +366,7 @@ struct CdCdiView: View {
                             item.currentIntValue = intValue
                         }
                     }
-                    Spacer()
+                    IosSpacer()
                     HStack {
                         RButtonView(address: self.item.startAddress, model: model){
                             read()
@@ -347,7 +374,7 @@ struct CdCdiView: View {
                         WButtonView(address: self.item.startAddress, model: model){
                             model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                         }
-                        Text(" ")  // space off side
+                        BeyondTheButtons()
                     }.buttonStyle(BorderlessButtonStyle())
                 }
                 
@@ -384,17 +411,18 @@ struct CdCdiView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(item.name) ") // display name next to value
-                    Spacer()
+                        .fixedSize(horizontal: false, vertical: true)
+                    //+ Spacer()
                     TextField("Enter \(item.name)", text : $entryText)
                         .textFieldStyle(.roundedBorder)
-                    //Spacer()
+                    IosSpacer()
                     RButtonView(address: self.item.startAddress, model: model){
                         read()
                     }
                     WButtonView(address: self.item.startAddress, model: model){
                         model.writeString(value: self.entryText, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
-                    Text(" ")  // space off side
+                    BeyondTheButtons()
                 }.buttonStyle(BorderlessButtonStyle())
 
                 DescriptionView(item: item)
