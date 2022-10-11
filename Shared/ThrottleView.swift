@@ -214,8 +214,9 @@ fileprivate struct FunctionsView : View {
                             .foregroundColor(.white)
                     }
                 }
-            }.padding(.vertical, 0) // 0 on iOS
-            // for momentary press
+            }.padding(.vertical, 0) // 0 for iOS
+            
+            // for momentary press  // TODO: does not work on macOS?
                 ._onButtonGesture { pressing in
                     self.pressing = pressing
                     if model.momentary {
@@ -223,7 +224,6 @@ fileprivate struct FunctionsView : View {
                     }
                 } perform: {}
                 .buttonStyle(.borderless)  // for macOS
-            
         }
     }
 }
