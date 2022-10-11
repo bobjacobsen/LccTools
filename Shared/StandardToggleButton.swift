@@ -46,6 +46,7 @@ struct StandardToggleButton: View {
 }
 
 /// Button that just goes down and up, calling an action
+// TODO: This doesn't _show_ the click on macOS (you can't see that you clicked it) - see Event and Turnout displays. Does show the down/up on iOS OK.
 struct StandardMomentaryButton: View {
     let label : String
     let height : CGFloat

@@ -130,6 +130,7 @@ fileprivate struct ThrottleSliderView : View {
                 .padding(.leading, 8)
                 .padding(.trailing, -5)
                 ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
+                    // TODO: on macOS, this waits for release
                     speed = bar.setSpeed
                 } perform: {}
                 
@@ -148,6 +149,7 @@ fileprivate struct ThrottleSliderView : View {
                 .padding(.vertical, 0)
                 .padding(.horizontal, 0)
                 ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
+                    // TODO: on macOS, this waits for release
                     speed = bar.setSpeed
                 } perform: {}
                 
