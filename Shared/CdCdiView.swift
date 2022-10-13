@@ -51,8 +51,9 @@ struct CdCdiView: View {
             }
             List(model.tree, children: \.children) { row in  // "children" makes the nested list
                 containedView(item: row, model: model)
-            }.padding(10).navigationTitle("\(displayNode.name) Configuration")
-        }
+            }.padding()
+                .navigationTitle("\(displayNode.name) Configuration")
+        } // end VStack
     }
     
     
