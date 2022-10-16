@@ -78,7 +78,7 @@ struct OlcbToolsApp: App {
         
         // create, but not yet connect, the Telnet connection to the hub (connection done on transition to Active state below)
         let port = UInt16(self.ip_port) ?? 12021
-        tcpConnectionModel.load(serviceName: selectedHubAddress, hostName: self.ip_address, portNumber: port, receivedDataCallback: canphysical.receiveString, startUpCallback: startUpCallback)
+        tcpConnectionModel.load(serviceName: selectedHubAddress, hostName: self.ip_address, portNumber: port, receivedDataCallback: canphysical.receiveString, startUpCallback: startUpCallback, restartCallback: restartCallback)
         
         // configure the OLCB processor -> telnet link
         canphysical.setCallBack(callback: tcpConnectionModel.send(string:))
@@ -89,13 +89,22 @@ struct OlcbToolsApp: App {
         
     }
     
-    // connection call back when link goes to 'ready' for first time, starts OpenLCB processing
+    /// Connection call back when link goes to 'ready' for first time, starts OpenLCB processing.
+    /// Note this is _only_ for the first time the link comes up.
     private func startUpCallback() {
         // start the OLCB layer
         logger.debug("starting OpenLCB layer")
         canphysical.physicalLayerUp()
     }
-    
+
+    /// Connection call back when link goes to 'ready' after the first time. Restarts OpenLCB processing.
+    /// Note this is _only_ after the first time the link comes up.
+    private func restartCallback() {
+        // restart the OLCB layer
+        logger.debug("restarting OpenLCB layer")
+        canphysical.physicalRestart()
+    }
+
     let persistenceController = PersistenceController.shared
 
     @State private var selectedTab : String = "Throttle"
