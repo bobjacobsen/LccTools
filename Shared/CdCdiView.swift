@@ -8,6 +8,8 @@ import SwiftUI
 import OpenlcbLibrary
 import os
 
+// TODO: Maybe add a refresh that reloads the CDI, to handle partial reads on drop?
+
 /// DIsplays the CDI information and allows user editing.
 ///
 /// Gets its information from OpenlcbLibrary/CdiModel
