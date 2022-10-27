@@ -215,7 +215,7 @@ fileprivate struct FunctionsView : View {
                             .font(SMALL_BUTTON_FONT)
                             .foregroundColor(.white)
                     }
-                }
+                } // .gesture here works on iOS, but not on macOS
             }.padding(.vertical, 0) // 0 for iOS
             
             // for momentary press  // TODO: does not work on macOS?
