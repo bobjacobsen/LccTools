@@ -102,7 +102,7 @@ struct OlcbToolsApp: App {
     private func restartCallback() {
         // restart the OLCB layer
         logger.debug("restarting OpenLCB layer")
-        canphysical.physicalRestart()
+        canphysical.physicalLayerRestart()
     }
 
     let persistenceController = PersistenceController.shared
@@ -191,11 +191,12 @@ struct OlcbToolsApp: App {
                 tcpConnectionModel.start()
             case .inactive:
                 logger.debug("Scene Inactive")
+                openlcblib.appInactive()
             case .background:
                 logger.debug("Scene Background")
                 tcpConnectionModel.stop()
             @unknown default:
-                logger.warning("Unexpected Scene phast enum")
+                logger.warning("Unexpected Scene phase enum")
             }
         }
 
