@@ -15,8 +15,6 @@ import os
 /// Gets its information from OpenlcbLibrary/CdiModel
 struct CdCdiView: View {
     
-    // TODO: values are read as they are shown, repeatedly, instead of being cached - is this OK?
-    
     @ObservedObject var model : CdiModel
     
     var displayNode: Node
@@ -212,7 +210,7 @@ struct CdCdiView: View {
                             eventValue = item.currentStringValue
                         }
                         .onSubmit {
-                            // process into a proper event format  // TODO: needs custom formatter? or hex keyboard?
+                            // process into a proper event format  // TODO: needs custom formatter? or just hex keyboard, adding dots automatically?
                             eventValue = EventID(eventValue).description
                             item.currentStringValue = eventValue
                         }
