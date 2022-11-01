@@ -92,7 +92,6 @@ struct StandardMomentaryButton: View {
 
     var body: some View {
         Button(action: {
-            print("action fired")
         }, label: {
             // TODO:  This has a large dead area when the actual text is.  Remove the .borderless below to see it outlined
             Text(label)
@@ -107,12 +106,10 @@ struct StandardMomentaryButton: View {
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
                 .onChanged({ _ in
-                    print("onChanged")
                     isPressed = true
                     down()
                 })
                 .onEnded({ _ in
-                    print("onEnded")
                     isPressed = false
                     up()
                 })
