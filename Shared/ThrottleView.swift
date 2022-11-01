@@ -71,7 +71,7 @@ struct ThrottleView: View {
                 }
 
                 HStack {
-                    StandardToggleButton(label: "Rev", height: STANDARD_BUTTON_HEIGHT, select: $model.reverse)
+                    StandardToggleButton(label: "Rev", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT, select: $model.reverse)
                     {
                         let oldReverse = model.reverse
                         model.forward = false
@@ -80,7 +80,7 @@ struct ThrottleView: View {
                             model.speed = 0.0
                         }
                     } // end Reverse Standard Button
-                    StandardToggleButton(label: "Fwd", height: STANDARD_BUTTON_HEIGHT, select: $model.forward)
+                    StandardToggleButton(label: "Fwd", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT, select: $model.forward)
                     {
                         let oldForward = model.forward
                         model.forward = true
@@ -182,6 +182,7 @@ fileprivate struct FunctionsView : View {
                 FnButtonView(model: fnModel)
 #if os(iOS)
                     .listRowSeparator(.hidden) // first supported in macOS 13, but not really necessary on macOS
+                    .padding(.vertical, -4)
 #endif
             }
         }
@@ -195,37 +196,31 @@ fileprivate struct FunctionsView : View {
         @State private var pressing = false
         
         var body: some View {
-            Button(action:{
-                DispatchQueue.main.async{ // to avoid "publishing changes from within view updates is not allowed"
-                    if (!model.momentary) { model.pressed = !model.pressed }
+#if os(iOS)
+            let font = model.label.count <= 10 ? (model.label.count <= 7 ? STANDARD_BUTTON_FONT : SMALL_BUTTON_FONT) : SMALLER_BUTTON_FONT
+#else // macOS
+            let font = STANDARD_BUTTON_FONT
+#endif
+            if !model.momentary {
+                // toggle button case
+                StandardToggleButton(label: model.label,
+                                     height: STANDARD_BUTTON_HEIGHT,
+                                     font: font,
+                                     select: $model.pressed)
+                {
+                    // on pressed
+                    model.pressed = !model.pressed
                 }
-            }) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
-                        .frame(height: 1.5*STANDARD_BUTTON_HEIGHT, alignment: .center) // bigger for fingers
-                        .foregroundColor( model.pressed ? .blue : .green)
-                    //
-                    
-                    if model.label.count <= 7 {
-                        Text(model.label)
-                            .font(SMALL_BUTTON_FONT)
-                            .foregroundColor(.white)
-                    } else {
-                        Text(model.label)
-                            .font(SMALL_BUTTON_FONT)
-                            .foregroundColor(.white)
-                    }
-                } // .gesture here works on iOS, but not on macOS
-            }.padding(.vertical, 0) // 0 for iOS
-            
-            // for momentary press  // TODO: does not work on macOS?
-                ._onButtonGesture { pressing in
-                    self.pressing = pressing
-                    if model.momentary {
-                        model.pressed = pressing
-                    }
-                } perform: {}
-                .buttonStyle(.borderless)  // for macOS
+            } else {
+                // momentary button case
+                StandardMomentaryButton(label: model.label,
+                                        height: STANDARD_BUTTON_HEIGHT,
+                                        font: font,
+                                        down: {model.pressed = true},
+                                        up: {model.pressed = false}
+                )
+
+            }
         }
     }
 }

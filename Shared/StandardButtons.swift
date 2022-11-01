@@ -9,16 +9,19 @@ import SwiftUI
 public let STANDARD_BUTTON_CORNER_RADIUS    = 15.0
 
 public let STANDARD_BUTTON_HEIGHT           = 35.0
-public let SMALL_BUTTON_HEIGHT              = 25.0
+public let STANDARD_BUTTON_FONT             = Font.title  // 28pt by default; make this numeric to match HEIGHT?
 
-public let STANDARD_BUTTON_FONT             = Font.title    // make this numeric to match HEIGHT?
-public let SMALL_BUTTON_FONT                = Font.title2   // make this numeric to match HEIGHT?
+public let SMALL_BUTTON_HEIGHT              = 25.0
+public let SMALL_BUTTON_FONT                = Font.title2 // 22pt by default; make this numeric to match HEIGHT?
+
+public let SMALLER_BUTTON_HEIGHT            = 20.0
+public let SMALLER_BUTTON_FONT              = Font.body   // 17pt by default; make this numeric to match HEIGHT?
 
 /// Button that toggles a state selected / not selected
 struct StandardToggleButton: View {
     let label : String
     let height : CGFloat
-    var font : Font = STANDARD_BUTTON_FONT
+    var font : Font
     @Binding var select : Bool
     let action : () -> Void
     
@@ -37,7 +40,7 @@ struct StandardToggleButton: View {
                         )
                     
                     Text(label)
-                        .font(height >= (STANDARD_BUTTON_HEIGHT+SMALL_BUTTON_HEIGHT)/2 ? STANDARD_BUTTON_FONT : SMALL_BUTTON_FONT)
+                        .font(font)
                         .foregroundColor(.white)
                 }
             } // label
@@ -80,7 +83,7 @@ struct StandardClickButton: View {
 struct StandardMomentaryButton: View {
     let label : String
     let height : CGFloat
-    var font : Font = STANDARD_BUTTON_FONT // c.f. STANDARD_BUTTON_FONT, SMALL_BUTTON_FONT
+    var font : Font
     let down : () -> Void
     let up : () -> Void
     
@@ -88,38 +91,36 @@ struct StandardMomentaryButton: View {
     @Environment(\.isEnabled) private var isEnabled
 
     var body: some View {
-        VStack {
-            
-            Button(action: {
-                
-            }, label: {
-                ZStack {
-                    
-                    RoundedRectangle(cornerRadius: STANDARD_BUTTON_CORNER_RADIUS)
-                        .frame(height: height, alignment: .center)
-                        .foregroundColor(
-                            isEnabled ?
-                            (!isPressed ? .green : .blue) : .gray
-                            )// made light blue by button itself
+        Button(action: {
+            print("action fired")
+        }, label: {
+            // TODO:  This has a large dead area when the actual text is.  Remove the .borderless below to see it outlined
+            Text(label)
+                .font(font)
+                .foregroundColor(.white)
+        })
+        .frame(height: height, alignment: .center)
+        .frame(maxWidth: .infinity)
+        .background(!isPressed ? .green : .blue)
+        .cornerRadius(STANDARD_BUTTON_CORNER_RADIUS)
 
-                    Text(label)
-                        .font(font)
-                        .foregroundColor(.white)
-                }
-            })
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged({ _ in
-                        isPressed = true
-                        down()
-                    })
-                    .onEnded({ _ in
-                        isPressed = false
-                        up()
-                    })
-            )
-        }
-    }
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged({ _ in
+                    print("onChanged")
+                    isPressed = true
+                    down()
+                })
+                .onEnded({ _ in
+                    print("onEnded")
+                    isPressed = false
+                    up()
+                })
+        )
+        
+        .buttonStyle(.borderless)  // for macOS
+        // end Button modifiers
+    } // body
 }
 
 /// This centralizes horizontal dividers.
@@ -157,6 +158,7 @@ struct StandardButton_PreviewsView : View {
             
             StandardToggleButton(label: "Toggle",
                                  height: STANDARD_BUTTON_HEIGHT,
+                                 font: STANDARD_BUTTON_FONT,
                                  select: $forToggle)
             {
                 // on pressed
@@ -165,6 +167,7 @@ struct StandardButton_PreviewsView : View {
             
             StandardToggleButton(label: "Toggle Disabled",
                                  height: STANDARD_BUTTON_HEIGHT,
+                                 font: STANDARD_BUTTON_FONT,
                                  select: $forToggle)
             {
                 // on pressed
@@ -180,6 +183,7 @@ struct StandardButton_PreviewsView : View {
             
             StandardToggleButton(label: "Small Toggle",
                                  height: SMALL_BUTTON_HEIGHT,
+                                 font: SMALL_BUTTON_FONT,
                                  select: $forToggle)
             {
                 // on pressed
@@ -188,12 +192,14 @@ struct StandardButton_PreviewsView : View {
             
             StandardMomentaryButton(label: "Momentary",
                                     height: STANDARD_BUTTON_HEIGHT,
+                                    font: SMALL_BUTTON_FONT,
                                     down: {momentaryIsPressed = true},
                                     up: {momentaryIsPressed = false}
             )
             
             StandardMomentaryButton(label: "Momentary Disabled",
                                     height: STANDARD_BUTTON_HEIGHT,
+                                    font: SMALL_BUTTON_FONT,
                                     down: {momentaryIsPressed = true},
                                     up: {momentaryIsPressed = false}
             )
