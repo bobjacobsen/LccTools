@@ -71,7 +71,7 @@ struct ConsistView: View {
                 }
                 
                 // This button should be smaller to match picker box
-                StandardMomentaryButton(label: "Add", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
+                StandardClickButton(label: "Add", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                     consistModel.addLocoToConsist(add: selectionModel.getRosterEntryNodeID(from: selectedAddAddress))
                 }.disabled(disableAddButton()).frame(width: 70)
                 

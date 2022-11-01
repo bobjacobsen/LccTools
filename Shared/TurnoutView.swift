@@ -32,10 +32,10 @@ struct TurnoutView: View {
                 Spacer()
             }
             HStack {
-                StandardMomentaryButton(label: "Throw", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
+                StandardClickButton(label: "Throw", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                     model.setThrown(dccAddress)
                 }
-                StandardMomentaryButton(label: "Close", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
+                StandardClickButton(label: "Close", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                     model.setClosed(dccAddress)
                 }
             }
@@ -47,10 +47,10 @@ struct TurnoutView: View {
                     HStack {
                         Spacer()
                         Text("\(String(item))")
-                        StandardMomentaryButton(label: "T", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
+                        StandardClickButton(label: "T", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                             model.setThrown(item)
                         }.frame(width: 60)
-                        StandardMomentaryButton(label: "C", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
+                        StandardClickButton(label: "C", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                             model.setClosed(item)
                         }.frame(width: 80)
                    }
