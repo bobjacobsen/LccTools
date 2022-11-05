@@ -91,14 +91,24 @@ struct StandardMomentaryButton: View {
     @Environment(\.isEnabled) private var isEnabled
 
     var body: some View {
-        Button(action: {
+        
+    // TODO: Is "Disable" giving the right gray color here?
+#if os(iOS)
+        let retval = Button(action: {
         }, label: {
-            // TODO:  This has a large dead area when the actual text is.  Remove the .borderless below to see it outlined
             Text(label)
                 .font(font)
                 .foregroundColor(.white)
         })
-        .frame(height: height, alignment: .center)
+#else
+        // on macOS, use a Text instead of a Button to get a completely clickable target
+        let retval = Text(label)
+            .font(font)
+            .foregroundColor(.white)
+#endif
+        
+        // apply modifiers and return
+        return retval.frame(height: height, alignment: .center)
         .frame(maxWidth: .infinity)
         .background(!isPressed ? .green : .blue)
         .cornerRadius(STANDARD_BUTTON_CORNER_RADIUS)
@@ -116,9 +126,10 @@ struct StandardMomentaryButton: View {
         )
         
         .buttonStyle(.borderless)  // for macOS
-        // end Button modifiers
+        // end modifiers
     } // body
 }
+
 
 /// This centralizes horizontal dividers.
 struct StandardHDivider : View {
