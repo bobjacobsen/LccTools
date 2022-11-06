@@ -49,7 +49,9 @@ struct NodeListNavigationView: View {
                             } else {
                                 Text(node.id.description)
                             }
-                            Divider()
+#if os(macOS)
+                            Divider()  // divider not needed on iOS
+#endif
                         }
                     }
                 }
