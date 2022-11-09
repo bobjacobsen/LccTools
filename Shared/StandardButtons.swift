@@ -20,8 +20,8 @@ public let SMALLER_BUTTON_FONT              = Font.body   // 17pt by default; ma
 /// Button that toggles a state selected / not selected
 struct StandardToggleButton: View {
     let label : String
-    let height : CGFloat
-    var font : Font
+    var height : CGFloat = STANDARD_BUTTON_HEIGHT
+    var font : Font = STANDARD_BUTTON_FONT
     @Binding var select : Bool
     let action : () -> Void
     
@@ -83,8 +83,8 @@ struct StandardClickButton: View {
 /// Button that notifies on both down and up transition
 struct StandardMomentaryButton: View {
     let label : String
-    let height : CGFloat
-    var font : Font
+    var height : CGFloat = STANDARD_BUTTON_HEIGHT
+    var font : Font = STANDARD_BUTTON_FONT
     let down : () -> Void
     let up : () -> Void
     
@@ -152,21 +152,15 @@ struct StandardButton_PreviewsView : View {
     @State private var momentaryIsPressed = false
     var body : some View {
         VStack {
-            StandardClickButton(label: "Click",
-                                height: STANDARD_BUTTON_HEIGHT,
-                                font: STANDARD_BUTTON_FONT){
+            StandardClickButton(label: "Click"){
                 // on pressed
             }
             
-            StandardClickButton(label: "Click Disabled",
-                                height: STANDARD_BUTTON_HEIGHT,
-                                font: STANDARD_BUTTON_FONT){
+            StandardClickButton(label: "Click Disabled"){
                 // on pressed
             }.disabled(true)
             
             StandardToggleButton(label: "Toggle",
-                                 height: STANDARD_BUTTON_HEIGHT,
-                                 font: STANDARD_BUTTON_FONT,
                                  select: $forToggle)
             {
                 // on pressed
@@ -174,8 +168,6 @@ struct StandardButton_PreviewsView : View {
             }
             
             StandardToggleButton(label: "Toggle Disabled",
-                                 height: STANDARD_BUTTON_HEIGHT,
-                                 font: STANDARD_BUTTON_FONT,
                                  select: $forToggle)
             {
                 // on pressed
@@ -199,15 +191,11 @@ struct StandardButton_PreviewsView : View {
             }
             
             StandardMomentaryButton(label: "Momentary",
-                                    height: STANDARD_BUTTON_HEIGHT,
-                                    font: SMALL_BUTTON_FONT,
                                     down: {momentaryIsPressed = true},
                                     up: {momentaryIsPressed = false}
             )
             
             StandardMomentaryButton(label: "Momentary Disabled",
-                                    height: STANDARD_BUTTON_HEIGHT,
-                                    font: SMALL_BUTTON_FONT,
                                     down: {momentaryIsPressed = true},
                                     up: {momentaryIsPressed = false}
             )

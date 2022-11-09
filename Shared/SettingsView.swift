@@ -70,7 +70,7 @@ struct SettingsView: View {
             StandardHDivider()
 
             Text(commModel.statusString)
-            StandardClickButton(label: commModel.started ? "Restart Connection" : "Start Connection", font: STANDARD_BUTTON_FONT) {
+            StandardClickButton(label: commModel.started ? "Restart Connection" : "Start Connection") {
                 resetServiceIfNotPresent()
                 commModel.retarget(serviceName: selectedHubAddress, hostName: ip_address, portNumber: UInt16(ip_port) ?? UInt16(12021) )
                 commModel.stop()

@@ -40,8 +40,7 @@ struct ThrottleView: View {
     
     var body: some View {
         return VStack {
-            StandardClickButton(label: model.selectedLoco,
-                                    font: STANDARD_BUTTON_FONT){
+            StandardClickButton(label: model.selectedLoco){
                 model.showingSelectSheet.toggle()
             }
             .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
@@ -65,13 +64,13 @@ struct ThrottleView: View {
             Spacer()
             
             HStack {
-                StandardClickButton(label: "Stop", font: STANDARD_BUTTON_FONT)
+                StandardClickButton(label: "Stop")
                 {
                     model.speed = 0.0
                 }
 
                 HStack {
-                    StandardToggleButton(label: "Rev", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT, select: $model.reverse)
+                    StandardToggleButton(label: "Rev", select: $model.reverse)
                     {
                         let oldReverse = model.reverse
                         model.forward = false
@@ -80,7 +79,7 @@ struct ThrottleView: View {
                             model.speed = 0.0
                         }
                     } // end Reverse Standard Button
-                    StandardToggleButton(label: "Fwd", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT, select: $model.forward)
+                    StandardToggleButton(label: "Fwd", select: $model.forward)
                     {
                         let oldForward = model.forward
                         model.forward = true
@@ -204,7 +203,6 @@ fileprivate struct FunctionsView : View {
             if !model.momentary {
                 // toggle button case
                 StandardToggleButton(label: model.label,
-                                     height: STANDARD_BUTTON_HEIGHT,
                                      font: font,
                                      select: $model.pressed)
                 {
@@ -214,7 +212,6 @@ fileprivate struct FunctionsView : View {
             } else {
                 // momentary button case
                 StandardMomentaryButton(label: model.label,
-                                        height: STANDARD_BUTTON_HEIGHT,
                                         font: font,
                                         down: {model.pressed = true},
                                         up: {model.pressed = false}
