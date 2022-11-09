@@ -128,6 +128,7 @@ struct CdCdiView: View {
     }
     
     /// Common section of R and W buttons
+    /// TODO: Should use standard button implementation
     struct CommonButtonView : View {
         let text: String
         let address : Int
