@@ -53,9 +53,10 @@ struct StandardToggleButton: View {
 // TODO: This doesn't _show_ the click on macOS (you can't see that you clicked it) - see Event and Turnout displays. Does show the down/up on iOS OK.
 struct StandardClickButton: View {
     let label : String
-    let height : CGFloat
-    var font : Font = STANDARD_BUTTON_FONT // c.f. STANDARD_BUTTON_FONT, SMALL_BUTTON_FONT
+    var height : CGFloat = STANDARD_BUTTON_HEIGHT
+    var font : Font = STANDARD_BUTTON_FONT
     let action : () -> Void
+    
     @Environment(\.isEnabled) private var isEnabled
 
     var body: some View {

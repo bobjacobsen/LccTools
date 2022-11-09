@@ -41,7 +41,7 @@ struct ThrottleView: View {
     var body: some View {
         return VStack {
             StandardClickButton(label: model.selectedLoco,
-                                    height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT){
+                                    font: STANDARD_BUTTON_FONT){
                 model.showingSelectSheet.toggle()
             }
             .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
@@ -65,7 +65,7 @@ struct ThrottleView: View {
             Spacer()
             
             HStack {
-                StandardClickButton(label: "Stop", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT)
+                StandardClickButton(label: "Stop", font: STANDARD_BUTTON_FONT)
                 {
                     model.speed = 0.0
                 }
@@ -256,7 +256,7 @@ struct LocoSelectionView : View {
                     .pickerStyle(WheelPickerStyle())
                 #endif
                 
-                StandardClickButton(label: "Select", height: STANDARD_BUTTON_HEIGHT, font: .title){
+                StandardClickButton(label: "Select", font: .title){
                     LocoSelectionView.logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
                     // search model.roster for matching entry to get nodeID
                     for rosterEntry in model.roster {
@@ -289,7 +289,7 @@ struct LocoSelectionView : View {
                 .font(.title)
                 .pickerStyle(SegmentedPickerStyle())
 
-                StandardClickButton(label: "Select", height: STANDARD_BUTTON_HEIGHT, font: .title){
+                StandardClickButton(label: "Select", font: .title){
                     LocoSelectionView.logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
                     let idNumber = UInt64(address) ?? 0
                     model.startSelection(address: idNumber, forceLongAddr: (addressForm == 1))
@@ -299,7 +299,7 @@ struct LocoSelectionView : View {
                 
             } // end bottom section for selecting by address
 #if targetEnvironment(macCatalyst) || os(macOS)
-            StandardClickButton(label: "Dismiss", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
+            StandardClickButton(label: "Dismiss", font: SMALL_BUTTON_FONT) {
                 model.showingSelectSheet = false
             }
 #else

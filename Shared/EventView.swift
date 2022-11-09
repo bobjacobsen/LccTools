@@ -77,7 +77,7 @@ struct EventView: View {
                 let width = geometry.size.width
                 let fontsize = Font.system(size: width / 12.5 ) // empirically derived
                 
-                StandardClickButton(label: "\(eventID.description)", height: STANDARD_BUTTON_HEIGHT, font: fontsize) {
+                StandardClickButton(label: "\(eventID.description)", font: fontsize) {
                     openlcblib.produceEvent(eventID: eventID)
                 } .padding(.horizontal, horizPadding)
             }
