@@ -92,7 +92,6 @@ struct StandardMomentaryButton: View {
 
     var body: some View {
         
-    // TODO: Is "Disable" giving the right gray color here?
 #if os(iOS)
         let retval = Button(action: {
         }, label: {
@@ -110,8 +109,9 @@ struct StandardMomentaryButton: View {
         // apply modifiers and return
         return retval.frame(height: height, alignment: .center)
         .frame(maxWidth: .infinity)
-        .background(!isPressed ? .green : .blue)
+        .background(isEnabled ? (!isPressed ? .green : .blue) : .gray)
         .cornerRadius(STANDARD_BUTTON_CORNER_RADIUS)
+        .buttonStyle(.borderless)  // for macOS
 
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
@@ -125,7 +125,6 @@ struct StandardMomentaryButton: View {
                 })
         )
         
-        .buttonStyle(.borderless)  // for macOS
         // end modifiers
     } // body
 }
