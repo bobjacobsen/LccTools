@@ -125,7 +125,7 @@ struct NodeSummaryView_Previews: PreviewProvider {
                                             "My Node Name",
                                             "And Description"))
     static var previews: some View {
-        let olcblibrary = OpenlcbNetwork(defaultNodeID: NodeID(258))
+        let olcblibrary = OpenlcbNetwork(localNodeID: NodeID(258))
         return NodeSummaryView(displayNode: displayNode, network: olcblibrary)
     }
 }

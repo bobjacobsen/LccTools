@@ -447,6 +447,6 @@ struct CdCdiView: View {
 /// XCode preview for the CdCdiView
 struct CdCdiView_Previews: PreviewProvider {
     static var previews: some View {
-        CdCdiView(displayNode: Node(NodeID(123)), lib: OpenlcbNetwork(defaultNodeID: NodeID(123)))
+        CdCdiView(displayNode: Node(NodeID(123)), lib: OpenlcbNetwork(localNodeID: NodeID(123)))
     }
 }
