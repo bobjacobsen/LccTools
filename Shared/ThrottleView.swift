@@ -18,7 +18,7 @@ struct ThrottleView: View {
     fileprivate var bars : [ThrottleBar] = []
 
     let maxindex = 50       // number of bars - set with maxSpeed, throttle curve to have low bars ~ 1mph
-    let maxSpeed = 126.0    // MPH, but mapped to speed step in DCC world
+    let maxSpeed = 126.0    // MPH, but mapped to speed step in DCC world; see Traction TN 4.1
 
     static let maxLength : CGFloat = 150.0  // length of horizontal bar area // TODO: make this scale to available space so it looks better on iPad and landscape iPhone
 
