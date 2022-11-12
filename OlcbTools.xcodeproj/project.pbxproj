@@ -96,6 +96,7 @@
 		23008957285CEA4A000FB614 /* NodeListNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeListNavigationView.swift; sourceTree = "<group>"; };
 		230B6818285E071500C99298 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		235DFF4328C1017100B03999 /* ConsistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsistView.swift; sourceTree = "<group>"; };
+		236B121D292020AE00F26707 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2392DE622861B26600BD9391 /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
 		2392DE652861B2D200BD9391 /* ThrottleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottleView.swift; sourceTree = "<group>"; };
 		2395165928AFDB8D00F3A872 /* StandardButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardButtons.swift; sourceTree = "<group>"; };
@@ -147,6 +148,7 @@
 		230088FB285C949E000FB614 = {
 			isa = PBXGroup;
 			children = (
+				236B121D292020AE00F26707 /* README.md */,
 				23B2EDA628E8CE450098666D /* OlcbTools (macOS)Debug.entitlements */,
 				23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */,
 				239ADD1E28C4F78000E13A32 /* OlcbTools (iOS).entitlements */,
