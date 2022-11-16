@@ -13,7 +13,7 @@ Provides:
 
 Full documentation is built in XCode once you've installed this package.
 
-To build from the command line (requires TelnetListenerLib and OpenlcbLibrary checked out):
+To build from the command line (requires [TelnetListenerLib[(https://github.com/bobjacobsen/TelnetListenerLib) and [OpenlcbLibrary](https://github.com/bobjacobsen/OpenlcbLibrary) checked out):
     xcodebuild -scheme OlcbTools\ \(macOS\) 
 or
     xcodebuild -scheme OlcbTools\ \(iOS\) 
