@@ -15,18 +15,26 @@ struct MonitorView: View {
     
     // TODO: Add some nice scrolling control so it stays at the bottom until user wants to stick on something
     var body: some View {
-        ScrollView {
-            VStack(spacing: 3) {
-                ForEach(monitorModel.printingProcessorContentArray, id: \.id) { element in
-                    HStack {
-                        Text(element.line)
-                            .font(.callout)
-                        Spacer()  // force alignment of text to left
+        VStack() {
+            ScrollView {
+                VStack(spacing: 3) {
+                    ForEach(monitorModel.printingProcessorContentArray, id: \.id) { element in
+                        HStack {
+                            Text(element.line)
+                                .font(.callout)
+                            Spacer()  // force alignment of text to left
+                        }
+                        Divider()
                     }
-                    Divider()
                 }
+                .navigationTitle("Monitor View")
             }
-            .navigationTitle("Monitor View")
+            Spacer()
+            StandardClickButton(label:"Clear",
+                                height: SMALL_BUTTON_HEIGHT,
+                                font: SMALL_BUTTON_FONT){
+                monitorModel.printingProcessorContentArray = []
+            }
         }
     }
 }
