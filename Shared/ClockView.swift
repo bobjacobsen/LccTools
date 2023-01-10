@@ -32,45 +32,56 @@ struct ClockView: View {
     
     /// Reload time values periodically
     @State private var timer: Timer?
-    
+        
     var body: some View {
-        GeometryReader { geometry in
-            let width = geometry.size.width
-            let height = geometry.size.height
-            let scale = max(0.33, min( width / 330.0, height / 90.0))  // max prevents 0 value on Mac
-            let fontsize = scale * 48.0
-            let unitsize = scale * 75.0
-            let offset = fontsize > 40.0 ? -18.0 : 0.0
-            let spacing = scale * 5.0
-            VStack {
-                Spacer()
-                HStack(spacing: spacing) {
+        VStack {
+            GeometryReader { geometry in
+                let width = geometry.size.width
+                let height = geometry.size.height
+                let scale = max(0.33, min( width / 330.0, height / 90.0))  // max prevents 0 value on Mac
+                let fontsize = scale * 48.0
+                let unitsize = scale * 75.0
+                let offset = fontsize > 40.0 ? -18.0 : 0.0
+                let spacing = scale * 5.0
+                VStack {
                     Spacer()
-                    StopwatchUnit(timeUnit: hours, timeUnitText: "HR", color: .blue, size: unitsize)
-                    Text(":")
-                        .font(.system(size: fontsize))
-                        .offset(y: offset)
-                    StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .blue, size: unitsize)
-                    Text(":")
-                        .font(.system(size: fontsize))
-                        .offset(y: offset)
-                    StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue, size: unitsize)
+                    HStack(spacing: spacing) {
+                        Spacer()
+                        StopwatchUnit(timeUnit: hours, timeUnitText: "HR", color: .blue, size: unitsize)
+                        Text(":")
+                            .font(.system(size: fontsize))
+                            .offset(y: offset)
+                        StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .blue, size: unitsize)
+                        Text(":")
+                            .font(.system(size: fontsize))
+                            .offset(y: offset)
+                        StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue, size: unitsize)
+                        Spacer()
+                    }.frame(alignment: .center)
+                        .onAppear {
+                            let delay = 1.0/12.0  // 12fps for energy use compromise
+                            timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
+                                let date = openlcblib.clockModel0.getTime()
+                                hours = openlcblib.clockModel0.getHour(date)
+                                minutes = openlcblib.clockModel0.getMinute(date)
+                                seconds = openlcblib.clockModel0.getSecond(date)
+                            })
+                        }.onDisappear {
+                            timer?.invalidate()  // stop the timer when not displayed
+                        }
                     Spacer()
                 }.frame(alignment: .center)
-                    .onAppear {
-                        let delay = 1.0/12.0  // 12fps for energy use compromise
-                        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
-                            let date = openlcblib.clockModel0.getTime()
-                            hours = openlcblib.clockModel0.getHour(date)
-                            minutes = openlcblib.clockModel0.getMinute(date)
-                            seconds = openlcblib.clockModel0.getSecond(date)
-                        })
-                    }.onDisappear {
-                        timer?.invalidate()  // stop the timer when not displayed
-                    }
-                Spacer()
-            }.frame(alignment: .center)
-        } // end GeometryReader
+            } // end GeometryReader
+            StandardClickButton(label: "Clock Controls",
+                                height: SMALL_BUTTON_HEIGHT,
+                                font: SMALL_BUTTON_FONT){
+                openlcblib.clockModel0.showingControlSheet.toggle()
+            }
+            .sheet(isPresented: $openlcblib.clockModel0.showingControlSheet) {  // show controls in a cover sheet
+                ClockControlsSheet(model: openlcblib.clockModel0) // shows full sheet
+                // .presentationDetents([.fraction(0.25)]) // iOS16 feature
+            }
+        }
     } // end body
     
     // display one time unit field, i.e. hours. minutes or seconds
@@ -123,6 +134,102 @@ private extension String {  // private to avoid confusing parse errors on other 
     func characterAt(index: Int) -> String {
         let arrayString = Array(self)
         return String(arrayString[index])
+    }
+}
+
+struct ClockControlsSheet: View {
+    
+    var model: ClockModel
+
+    @State var tempRunState : Bool = false
+
+    let rateArray = Array(stride(from: 0, through: 30, by: 0.25))
+    @State var tempSelectedRate = 1.0
+
+    @State var tempHours = "00"
+    @State var tempMinutes = "00"
+    // no seconds in fast clock itself
+    
+    var body: some View {
+        Text("Clock Controls")
+        Spacer()
+        HStack {
+            Spacer()
+            VStack {
+                HStack {
+                    Text("Running:")
+                    Toggle("", isOn: $tempRunState)
+                        .onAppear(){
+                            tempRunState = model.run
+                        }
+                        .onChange(of: tempRunState) { value in
+                            model.setRunStateInMaster(to: value)
+                        }
+                    Spacer(minLength: 50)
+                }
+                HStack {
+                    #if os(iOS)
+                    Text("Rate:")
+                    #endif
+                    Picker("Rate", selection: $tempSelectedRate) {
+                        ForEach(rateArray, id: \.self) {
+                            Text(String(format:"%.2f", $0))
+                        }
+                    } // TODO: need to call model.setRateInMaster
+                    #if os(iOS)
+                    .pickerStyle(WheelPickerStyle())
+                    #endif
+                    .onAppear(){
+                        tempSelectedRate = model.rate
+                    }
+                    .onChange(of: tempSelectedRate) { value in
+                        model.setRunRateInMaster(to: value)
+                    }
+                }.padding()
+
+                HStack {
+                    Text("Time:")
+                    TextField("", text: $tempHours)
+                        .fixedSize()
+                    Text(":")
+                    TextField("", text: $tempMinutes)
+                        .fixedSize()
+                    Spacer()
+                    StandardClickButton(label: "Set",
+                                        height: SMALL_BUTTON_HEIGHT,
+                                        font: SMALL_BUTTON_FONT){
+                        // Send changed time via model, using same date as now
+                        let currentDate = model.getTime()
+                        // create a new Date from components
+                        var dateComponents = DateComponents()
+                        dateComponents.year = model.getYear(currentDate)
+                        dateComponents.month = model.getMonth(currentDate)
+                        dateComponents.day = model.getDay(currentDate)
+                        // dateComponents.timeZone = currentDate.timeZone
+                        dateComponents.hour = Int(tempHours)
+                        dateComponents.minute = Int(tempMinutes)
+                        dateComponents.second = Int(0)
+                        let userCalendar = Calendar(identifier: .gregorian) // since the components above (like year 1980) are for Gregorian
+                        let newDate = userCalendar.date(from: dateComponents)
+                        model.setTimeInMaster(to: newDate!)
+
+                    }.onAppear() {
+                        tempHours = String(format:"%02d", model.getHour() )
+                        tempMinutes = String(format:"%02d", model.getMinute() )
+                    }
+                }
+            }
+            Spacer()
+        }
+        
+        Spacer()
+#if targetEnvironment(macCatalyst) || os(macOS)
+        StandardClickButton(label: "Dismiss", font: SMALL_BUTTON_FONT) {
+            model.showingControlSheet = false
+        }
+#else
+        Text("Swipe down to close")
+#endif
     }
 }
 
