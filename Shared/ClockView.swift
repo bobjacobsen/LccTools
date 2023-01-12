@@ -70,13 +70,15 @@ struct ClockView: View {
                             timer?.invalidate()  // stop the timer when not displayed
                         }
                     Spacer()
+                    if (height > 30) {
+                        StandardClickButton(label: "Clock Controls",
+                                        height: SMALL_BUTTON_HEIGHT,
+                                            font: SMALL_BUTTON_FONT){
+                            openlcblib.clockModel0.showingControlSheet.toggle()
+                        }
+                    }
                 }.frame(alignment: .center)
             } // end GeometryReader
-            StandardClickButton(label: "Clock Controls",
-                                height: SMALL_BUTTON_HEIGHT,
-                                font: SMALL_BUTTON_FONT){
-                openlcblib.clockModel0.showingControlSheet.toggle()
-            }
             .sheet(isPresented: $openlcblib.clockModel0.showingControlSheet) {  // show controls in a cover sheet
                 ClockControlsSheet(model: openlcblib.clockModel0) // shows full sheet
                 // .presentationDetents([.fraction(0.25)]) // iOS16 feature
@@ -216,7 +218,7 @@ struct ClockControlsSheet: View {
                     }.onAppear() {
                         tempHours = String(format:"%02d", model.getHour() )
                         tempMinutes = String(format:"%02d", model.getMinute() )
-                    }
+                    }.frame(width: 100)
                 }
             }
             Spacer()
