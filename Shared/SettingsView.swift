@@ -92,10 +92,8 @@ struct SettingsView: View {
         if selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
             return
         }
-        for element in commModel.browserhandler.destinations {
-            if element.name == selectedHubAddress {
-                return // found a match, so already shown
-            }
+        for element in commModel.browserhandler.destinations where element.name == selectedHubAddress {
+            return // found a match, so already shown
         }
         // didn't find matching element, force reset
         logger.info("Resetting definition for missing service")

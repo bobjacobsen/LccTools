@@ -252,11 +252,9 @@ struct LocoSelectionView: View {
                 StandardClickButton(label: "Select", font: .title) {
                     LocoSelectionView.logger.debug("upper select with \(selectedRosterAddress, privacy: .public)")
                     // search model.roster for matching entry to get nodeID
-                    for rosterEntry in model.roster {
-                        if rosterEntry.label == selectedRosterAddress {
-                            model.startSelection(entry: rosterEntry)
-                            break  // expect to always find this, don't do anything if not
-                        }
+                    for rosterEntry in model.roster where rosterEntry.label == selectedRosterAddress {
+                        model.startSelection(entry: rosterEntry)
+                        break  // expect to always find this, don't do anything if not
                     }
                 }.disabled(selectedRosterAddress == "<None>")
             } // end top section to select from roster

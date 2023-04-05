@@ -104,54 +104,6 @@ struct CdCdiView: View {
         }
     }
     
-    /// View for a CD/CDI read/refresh button
-    struct RButtonView: View {
-        let address: Int
-        let model: CdiModel
-        let action: () -> Void
-        
-        var body: some View {
-            CommonButtonView(text: "R", address: address, model: model, action: action)
-        }
-    }
-    
-    /// View for a CD/CDI write button
-    struct WButtonView: View {
-        let address: Int
-        let model: CdiModel
-        let action: () -> Void
-        
-        var body: some View {
-            CommonButtonView(text: "W", address: address, model: model, action: action)
-        }
-    }
-    
-    /// Common section of R and W buttons
-    /// TODO: Should use standard button implementation
-    struct CommonButtonView: View {
-        let text: String
-        let address: Int
-        let model: CdiModel
-        let action: () -> Void
-
-        var body: some View {
-            Button(
-                action: action,
-                label: {
-                    ZStack { // formatted button for recognition
-                        RoundedRectangle(cornerRadius: 10.0)
-                            .frame(width: 30, height: 30, alignment: .center)
-                            .foregroundColor(.green)
-                        Text(text)
-                            .frame(width: 30, height: 30, alignment: .center)
-                            .font(.body)
-                            .foregroundColor(.white)
-                    }
-                }
-                ).buttonStyle(.borderless)  // for macOS
-        }
-    }
-
     private struct DescriptionView: View {
         var item: CdiXmlMemo
         
@@ -167,28 +119,6 @@ struct CdCdiView: View {
         }
     }
 
-    /// On macOS, provide some extra space past the buttons
-    struct BeyondTheButtons: View {
-        var body: some View {
-#if os(macOS)
-            Text(" ")  // space off side to solve overlap with window edge on macOS
-                .frame(minWidth: 30)
-#else
-            EmptyView() // iOS doesn't need extra space at end of line
-#endif
-        }
-    }
-    
-    /// On iOS, provide a spacer to push buttons to right
-    struct IosSpacer: View {
-        var body: some View {
-#if os(iOS)
-            Spacer()
-#else
-            EmptyView()
-#endif
-        }
-    }
     /// View for a CID eventID value entry
     struct CdiEventView: View {
         @State var eventValue: String = "00.00.00.00.00.00.00.00"
@@ -229,9 +159,7 @@ struct CdCdiView: View {
                 DescriptionView(item: item)
 
             }
-            .onAppear {
-                read()
-            }
+            .onAppear { read() }
         }
 
         func read() {
@@ -250,8 +178,8 @@ struct CdCdiView: View {
         init(item: CdiXmlMemo, model: CdiModel) {
             self.item = item
             self.model = model
-            formatter.minimum = NSNumber(integerLiteral: item.minValue)
-            formatter.maximum = NSNumber(integerLiteral: item.maxValue)
+            formatter.minimum = item.minValue as NSNumber
+            formatter.maximum = item.maxValue as NSNumber
             formatter.maximumFractionDigits = 0
             // print ("Init CdiIntView \(item.name) with min=\(String(describing: formatter.minimum) ) max=\(String(describing: formatter.maximum))")
             // print ("                 minSet=\(String(describing: item.minSet) ) maxSet=\(String(describing: item.maxSet))")
@@ -288,9 +216,7 @@ struct CdCdiView: View {
                     MinMaxView(item: item)
                 }
             }
-            .onAppear {
-                read()
-            }
+            .onAppear { read() }
         }
         
         func read() {
@@ -383,9 +309,7 @@ struct CdCdiView: View {
                 DescriptionView(item: item)
                 
             }
-            .onAppear {
-                read()
-            }
+            .onAppear { read() }
         }
         
         func read() {
@@ -429,9 +353,7 @@ struct CdCdiView: View {
                 DescriptionView(item: item)
                 
             }
-            .onAppear {
-                read()
-            }
+            .onAppear { read() }
         }
         
         func read() {
@@ -439,6 +361,77 @@ struct CdCdiView: View {
                 self.entryText = readValue
             }
         }
+    }
+}
+
+/// On macOS, provide some extra space past the buttons
+private struct BeyondTheButtons: View {
+    var body: some View {
+#if os(macOS)
+        Text(" ")  // space off side to solve overlap with window edge on macOS
+            .frame(minWidth: 30)
+#else
+        EmptyView() // iOS doesn't need extra space at end of line
+#endif
+    }
+}
+
+/// On iOS, provide a spacer to push buttons to right
+private struct IosSpacer: View {
+    var body: some View {
+#if os(iOS)
+        Spacer()
+#else
+        EmptyView()
+#endif
+    }
+}
+
+/// View for a CD/CDI read/refresh button
+private struct RButtonView: View {
+    let address: Int
+    let model: CdiModel
+    let action: () -> Void
+    
+    var body: some View {
+        CommonButtonView(text: "R", address: address, model: model, action: action)
+    }
+}
+
+/// View for a CD/CDI write button
+private struct WButtonView: View {
+    let address: Int
+    let model: CdiModel
+    let action: () -> Void
+    
+    var body: some View {
+        CommonButtonView(text: "W", address: address, model: model, action: action)
+    }
+}
+
+/// Common section of R and W buttons
+/// TODO: Should use standard button implementation
+private struct CommonButtonView: View {
+    let text: String
+    let address: Int
+    let model: CdiModel
+    let action: () -> Void
+    
+    var body: some View {
+        Button(
+            action: action,
+            label: {
+                ZStack { // formatted button for recognition
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .frame(width: 30, height: 30, alignment: .center)
+                        .foregroundColor(.green)
+                    Text(text)
+                        .frame(width: 30, height: 30, alignment: .center)
+                        .font(.body)
+                        .foregroundColor(.white)
+                }
+            }
+        ).buttonStyle(.borderless)  // for macOS
     }
 }
 
