@@ -51,6 +51,8 @@
 		23A0D5492892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
 		23B2EDA828EB17510098666D /* TurnoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2EDA728EB17510098666D /* TurnoutView.swift */; };
 		23B2EDA928EB17510098666D /* TurnoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2EDA728EB17510098666D /* TurnoutView.swift */; };
+		23BC4B2029C7E1F300382B78 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 23BC4B1F29C7E1F300382B78 /* .swiftlint.yml */; };
+		23BC4B2129C7E1F300382B78 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 23BC4B1F29C7E1F300382B78 /* .swiftlint.yml */; };
 		23C40BBB28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */; };
 		23C40BBC28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */; };
 /* End PBXBuildFile section */
@@ -104,6 +106,9 @@
 		23A0D5472892F3D0009663EA /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		23B2EDA628E8CE450098666D /* OlcbTools (macOS)Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OlcbTools (macOS)Debug.entitlements"; sourceTree = "<group>"; };
 		23B2EDA728EB17510098666D /* TurnoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnoutView.swift; sourceTree = "<group>"; };
+		23BC4B1F29C7E1F300382B78 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = Shared/.swiftlint.yml; sourceTree = SOURCE_ROOT; };
+		23BC4B2229C7EF5B00382B78 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		23BC4B2329C7EF7E00382B78 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexadecimalKeyboard.swift; sourceTree = "<group>"; };
 		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
 		23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "OlcbTools--iOS--Info.plist"; sourceTree = "<group>"; };
@@ -166,6 +171,7 @@
 		23008900285C949E000FB614 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				23BC4B1F29C7E1F300382B78 /* .swiftlint.yml */,
 				23008903285C949E000FB614 /* OlcbToolsApp.swift */,
 				23A0D5472892F3D0009663EA /* ClockView.swift */,
 				235DFF4328C1017100B03999 /* ConsistView.swift */,
@@ -209,6 +215,7 @@
 		2300891B285C94A4000FB614 /* Tests iOS */ = {
 			isa = PBXGroup;
 			children = (
+				23BC4B2229C7EF5B00382B78 /* .swiftlint.yml */,
 				2300891C285C94A4000FB614 /* Tests_iOS.swift */,
 				2300891E285C94A4000FB614 /* Tests_iOSLaunchTests.swift */,
 			);
@@ -218,6 +225,7 @@
 		23008927285C94A4000FB614 /* Tests macOS */ = {
 			isa = PBXGroup;
 			children = (
+				23BC4B2329C7EF7E00382B78 /* .swiftlint.yml */,
 				23008928285C94A4000FB614 /* Tests_macOS.swift */,
 				2300892A285C94A4000FB614 /* Tests_macOSLaunchTests.swift */,
 			);
@@ -259,6 +267,7 @@
 				23008907285C94A4000FB614 /* Sources */,
 				23008908285C94A4000FB614 /* Frameworks */,
 				23008909285C94A4000FB614 /* Resources */,
+				23BC4B1E29C7DF3500382B78 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -382,6 +391,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23BC4B2029C7E1F300382B78 /* .swiftlint.yml in Resources */,
 				23008934285C94A4000FB614 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -390,6 +400,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23BC4B2129C7E1F300382B78 /* .swiftlint.yml in Resources */,
 				23008935285C94A4000FB614 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,6 +420,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		23BC4B1E29C7DF3500382B78 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		23008907285C94A4000FB614 /* Sources */ = {
