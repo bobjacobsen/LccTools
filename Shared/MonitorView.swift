@@ -13,7 +13,7 @@ class ScrollToModel: ObservableObject {
         case end
         case top
     }
-    @Published var direction: Action? = nil
+    @Published var direction: Action?
 }
 
 /// Displayes the contents from the PrintingProcessor, e.g. the OpenLCB traffic monitor
@@ -21,7 +21,7 @@ struct MonitorView: View {
     @StateObject var vm = ScrollToModel()
 
     // single global observed object contains monitor info
-    @ObservedObject var monitorModel:MonitorModel = MonitorModel.sharedInstance
+    @ObservedObject var monitorModel: MonitorModel = MonitorModel.sharedInstance
     
     // TODO: Add some nice scrolling control so it stays at the bottom until user wants to stick on something
     var body: some View {
@@ -55,19 +55,19 @@ struct MonitorView: View {
             }
             Spacer()
             HStack {
-                StandardClickButton(label:"Start",
+                StandardClickButton(label: "Start",
                                     height: SMALL_BUTTON_HEIGHT,
-                                    font: SMALL_BUTTON_FONT){
+                                    font: SMALL_BUTTON_FONT) {
                     vm.direction = .top
                 }
-                StandardClickButton(label:"Clear",
+                StandardClickButton(label: "Clear",
                                     height: SMALL_BUTTON_HEIGHT,
-                                    font: SMALL_BUTTON_FONT){
+                                    font: SMALL_BUTTON_FONT) {
                     monitorModel.printingProcessorContentArray = []
                 }
-                StandardClickButton(label:"End",
+                StandardClickButton(label: "End",
                                     height: SMALL_BUTTON_HEIGHT,
-                                    font: SMALL_BUTTON_FONT){
+                                    font: SMALL_BUTTON_FONT) {
                     vm.direction = .end
                 }
             }

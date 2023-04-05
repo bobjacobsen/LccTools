@@ -39,7 +39,7 @@ struct OlcbToolsApp: App {
 
         let group0 = String(format: "%02X", intGroup0)
         let group1 = String(format: "%02X", intGroup1)
-        let group2 = String(format:  "%1X", intGroup2)
+        let group2 = String(format: "%1X", intGroup2)
 
         return "02.02.04.0\(group2).\(group1).\(group0)"
     }
@@ -72,20 +72,22 @@ struct OlcbToolsApp: App {
         
         // if there's no host name, show settings
         // This only works for iOS.  macOS has a separate preferences screen, shown in onAppear below.
-        if self.ip_address == "" && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
+        if self.ip_address.isEmpty && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
             self.selectedTab = "Settings"
         }
         
         // create, but not yet connect, the Telnet connection to the hub (connection done on transition to Active state below)
         let port = UInt16(self.ip_port) ?? 12021
-        tcpConnectionModel.load(serviceName: selectedHubAddress, hostName: self.ip_address, portNumber: port, receivedDataCallback: canphysical.receiveString, startUpCallback: startUpCallback, restartCallback: restartCallback)
+        tcpConnectionModel.load(serviceName: selectedHubAddress, hostName: self.ip_address,
+                                portNumber: port, receivedDataCallback: canphysical.receiveString,
+                                startUpCallback: startUpCallback, restartCallback: restartCallback)
         
         // configure the OLCB processor -> telnet link
         canphysical.setCallBack(callback: tcpConnectionModel.send(string:))
         
         openlcblib.configureCanTelnet(canphysical)
         
-        //OlcbToolsApp.openlcblib.createSampleData()  // commented out when real hardware is available and connected
+        // OlcbToolsApp.openlcblib.createSampleData()  // commented out when real hardware is available and connected
         
     }
     
@@ -107,7 +109,7 @@ struct OlcbToolsApp: App {
 
     let persistenceController = PersistenceController.shared
 
-    @State private var selectedTab : String = "Throttle"
+    @State private var selectedTab: String = "Throttle"
     
     var body: some Scene {
         // iOS on iPhone has four spots available in the navigation bar at the bottom
@@ -163,7 +165,7 @@ struct OlcbToolsApp: App {
                 
             }   // TabView
                 .environmentObject(openlcblib)
-                .onAppear() {
+                .onAppear {
                     logger.debug("onAppear happens")
                     // start the connection once you have the display up to receive events
                     self.startup()   // this will only run once, sometimes .active occurs first
@@ -171,7 +173,7 @@ struct OlcbToolsApp: App {
                     
 #if os(macOS)
                     // if no connection info, show the Preference (nee Settings) pane
-                    if self.ip_address == "" && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
+                    if self.ipAddress.isEmpty && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
                         // delay a bit in hopes of putting this in front
                         let deadlineTime = DispatchTime.now() + .milliseconds(500)
                         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
@@ -183,7 +185,7 @@ struct OlcbToolsApp: App {
 
         } // WindowGroup
         .onChange(of: scenePhase) { newPhase in
-            switch (newPhase) {
+            switch newPhase {
             case .active:
                 // Scene does not change on macOS
                 logger.debug("Scene Active")
@@ -207,7 +209,5 @@ struct OlcbToolsApp: App {
         }
 #endif
 
-
     }
 }
-

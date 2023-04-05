@@ -10,11 +10,11 @@ import SwiftUI
 
 /// Show and allow control of  DCC turnouts
 struct TurnoutView: View {
-    @State var dccAddress : Int = 1
-    @ObservedObject var model : TurnoutModel
+    @State var dccAddress: Int = 1
+    @ObservedObject var model: TurnoutModel
     var formatter = NumberFormatter()
     
-    init(network : OpenlcbNetwork) {
+    init(network: OpenlcbNetwork) {
         formatter.minimum = 1
         formatter.maximum = 2040
         formatter.maximumFractionDigits = 0
@@ -28,7 +28,7 @@ struct TurnoutView: View {
                 Text("Enter Turnout Number (1-2040):")
                 TextField("Number", value: $dccAddress, formatter: formatter)
                     .textFieldStyle(.roundedBorder)
-                    .frame(width:80)
+                    .frame(width: 80)
                 Spacer()
             }
             HStack {
@@ -42,7 +42,7 @@ struct TurnoutView: View {
             StandardHDivider()
             
             // list of previous items
-            List() {
+            List {
                 ForEach(model.addressArray, id: \.self) { item in
                     HStack {
                         Spacer()

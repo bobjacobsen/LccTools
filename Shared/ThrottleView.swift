@@ -15,16 +15,17 @@ struct ThrottleView: View {
  
     @State private var isEditing = false    // for Sliders
     
-    fileprivate var bars : [ThrottleBar] = []
+    fileprivate var bars: [ThrottleBar] = []
 
     let maxindex = 50       // number of bars - set with maxSpeed, throttle curve to have low bars ~ 1mph
     let maxSpeed = 126.0    // MPH, but mapped to speed step in DCC world; see Traction TN 4.1
 
-    static let maxLength : CGFloat = 150.0  // length of horizontal bar area // TODO: make this scale to available space so it looks better on iPad and landscape iPhone
+    static let maxLength: CGFloat = 150.0  // length of horizontal bar area
+    // TODO: make this scale to available space so it looks better on iPad and landscape iPhone
 
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
     
-    init(throttleModel : ThrottleModel) {
+    init(throttleModel: ThrottleModel) {
         self.model = throttleModel
         
         for index in 0...maxindex {
@@ -40,7 +41,7 @@ struct ThrottleView: View {
     
     var body: some View {
         return VStack {
-            StandardClickButton(label: model.selectedLoco){
+            StandardClickButton(label: model.selectedLoco) {
                 model.showingSelectSheet.toggle()
             }
             .sheet(isPresented: $model.showingSelectSheet) {  // show selection in a cover sheet
@@ -64,27 +65,24 @@ struct ThrottleView: View {
             Spacer()
             
             HStack {
-                StandardClickButton(label: "Stop")
-                {
+                StandardClickButton(label: "Stop") {
                     model.speed = 0.0
                 }
 
                 HStack {
-                    StandardToggleButton(label: "Rev", select: $model.reverse)
-                    {
+                    StandardToggleButton(label: "Rev", select: $model.reverse) {
                         let oldReverse = model.reverse
                         model.forward = false
                         model.reverse = true
-                        if (!oldReverse) {
+                        if !oldReverse {
                             model.speed = 0.0
                         }
                     } // end Reverse Standard Button
-                    StandardToggleButton(label: "Fwd", select: $model.forward)
-                    {
+                    StandardToggleButton(label: "Fwd", select: $model.forward) {
                         let oldForward = model.forward
                         model.forward = true
                         model.reverse = false
-                        if (!oldForward) {
+                        if !oldForward {
                             model.speed = 0.0
                         }
                     } // end Forward Standard Button
@@ -96,26 +94,26 @@ struct ThrottleView: View {
 
 // TODO: Throttle buttons should react to sliding over them, not just a press
 /// Show a vertical column of bars that represents the throttle position
-fileprivate struct ThrottleSliderView : View {
-    @Binding var speed : Float
-    var bars : [ThrottleBar]
+private struct ThrottleSliderView: View {
+    @Binding var speed: Float
+    var bars: [ThrottleBar]
     
     var body: some View {
         VStack(spacing: 0) {
             ForEach(bars, id: \.id) { bar in
-                ThrottleBarView(bar : bar, speed: $speed)
+                ThrottleBarView(bar: bar, speed: $speed)
             }
         }
     } // body
     
     /// View a single bar in the ThrottleSliderView
-    struct ThrottleBarView : View {
-        fileprivate let bar : ThrottleBar
-        @Binding var speed : Float
+    struct ThrottleBarView: View {
+        fileprivate let bar: ThrottleBar
+        @Binding var speed: Float
         
         var body: some View {
             HStack {
-                Button(action:{
+                Button(action: {
                     speed = round(bar.setSpeed)
                 }, // Action
                        label: {
@@ -128,13 +126,13 @@ fileprivate struct ThrottleSliderView : View {
                 .padding(.vertical, 0)
                 .padding(.leading, 8)
                 .padding(.trailing, -5)
-                ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
+                ._onButtonGesture { _ in // set the speed when first pressed, without waiting for a pull press & release
                     // TODO: on macOS, this waits for release
                     speed = bar.setSpeed
                 } perform: {}
                 
                 // add a transparent button to fill out rest of line
-                Button(action:{
+                Button(action: {
                     speed = round(bar.setSpeed)
                 }, // Action
                        label: {
@@ -147,7 +145,7 @@ fileprivate struct ThrottleSliderView : View {
                 .buttonStyle(.borderless)  // for macOS
                 .padding(.vertical, 0)
                 .padding(.horizontal, 0)
-                ._onButtonGesture { pressing in // set the speed when first pressed, without waiting for a pull press & release
+                ._onButtonGesture { _ in // set the speed when first pressed, without waiting for a pull press & release
                     // TODO: on macOS, this waits for release
                     speed = bar.setSpeed
                 } perform: {}
@@ -162,15 +160,15 @@ fileprivate struct ThrottleSliderView : View {
 /// Data for a single bar
 ///
 /// Local, not part of model, because these together represent the `speed` value
-fileprivate struct ThrottleBar {
+private struct ThrottleBar {
     let length: CGFloat
-    let setSpeed : Float
+    let setSpeed: Float
     let id = UUID()
 }
 
 /// Display the set of functions
-fileprivate struct FunctionsView : View {
-    var fnModels : [ThrottleModel.FnModel]
+private struct FunctionsView: View {
+    var fnModels: [ThrottleModel.FnModel]
     
     var body: some View {
         List {
@@ -187,11 +185,10 @@ fileprivate struct FunctionsView : View {
         }
     }
     
-    
     /// One function button itself
-    struct FnButtonView : View {
+    struct FnButtonView: View {
         
-        @ObservedObject var model : ThrottleModel.FnModel
+        @ObservedObject var model: ThrottleModel.FnModel
         @State private var pressing = false
         
         var body: some View {
@@ -204,8 +201,7 @@ fileprivate struct FunctionsView : View {
                 // toggle button case
                 StandardToggleButton(label: model.label,
                                      font: font,
-                                     select: $model.pressed)
-                {
+                                     select: $model.pressed) {
                     // on pressed
                     model.pressed = !model.pressed
                 }
@@ -223,8 +219,8 @@ fileprivate struct FunctionsView : View {
 }
 
 /// View for selecting a locomotive, intended for a separate page
-struct LocoSelectionView : View {
-    @ObservedObject var model : ThrottleModel
+struct LocoSelectionView: View {
+    @ObservedObject var model: ThrottleModel
     
     @State var address  = ""
     @State var addressForm  = 1
@@ -253,8 +249,8 @@ struct LocoSelectionView : View {
                     .pickerStyle(WheelPickerStyle())
                 #endif
                 
-                StandardClickButton(label: "Select", font: .title){
-                    LocoSelectionView.logger.debug("upper select with \(selectedRosterAddress, privacy:.public)")
+                StandardClickButton(label: "Select", font: .title) {
+                    LocoSelectionView.logger.debug("upper select with \(selectedRosterAddress, privacy: .public)")
                     // search model.roster for matching entry to get nodeID
                     for rosterEntry in model.roster {
                         if rosterEntry.label == selectedRosterAddress {
@@ -286,8 +282,8 @@ struct LocoSelectionView : View {
                 .font(.title)
                 .pickerStyle(SegmentedPickerStyle())
 
-                StandardClickButton(label: "Select", font: .title){
-                    LocoSelectionView.logger.debug("lower select with \(address, privacy:.public) form: \(addressForm, privacy: .public)")
+                StandardClickButton(label: "Select", font: .title) {
+                    LocoSelectionView.logger.debug("lower select with \(address, privacy: .public) form: \(addressForm, privacy: .public)")
                     let idNumber = UInt64(address) ?? 0
                     model.startSelection(address: idNumber, forceLongAddr: (addressForm == 1))
                 }.disabled(Int(address)==nil) // disable select if input can't be parsed
@@ -305,7 +301,6 @@ struct LocoSelectionView : View {
         }
     }
 }
-
 
 /// XCode preview for the ThrottleView
 struct ThrottleView_Previews: PreviewProvider {

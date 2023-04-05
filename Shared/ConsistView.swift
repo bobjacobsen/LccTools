@@ -27,7 +27,7 @@ struct ConsistView: View {
                     Text($0.label)
                 }
             }
-            .onChange(of: selectedConsistAddress) { value in
+            .onChange(of: selectedConsistAddress) { _ in
                 consistModel.forLoco = selectionModel.getRosterEntryNodeID(from: selectedConsistAddress)
                 consistModel.fetchConsist()
             }
@@ -79,7 +79,7 @@ struct ConsistView: View {
         }
     }
     
-    func deleteLoco(_ entry : ConsistModel.ConsistEntryModel ) {
+    func deleteLoco(_ entry: ConsistModel.ConsistEntryModel ) {
         consistModel.removeLocoFromConsist(remove: entry.childLoco)
     }
     
@@ -87,17 +87,17 @@ struct ConsistView: View {
         return selectedAddAddress == "<None>" || selectedConsistAddress == "<None>" || selectedAddAddress == selectedConsistAddress
     }
     
-    struct ConsistLocoView : View {
-        let consistModel : ConsistModel
-        let entry : ConsistModel.ConsistEntryModel
-        let name : String
-        @State private var reverse : Bool
-        @State private var echoF0  : Bool
-        @State private var echoFn  : Bool
-        @State private var hidden : Bool
+    struct ConsistLocoView: View {
+        let consistModel: ConsistModel
+        let entry: ConsistModel.ConsistEntryModel
+        let name: String
+        @State private var reverse: Bool
+        @State private var echoF0: Bool
+        @State private var echoFn: Bool
+        @State private var hidden: Bool
         
-        init(consistModel : ConsistModel, entry : ConsistModel.ConsistEntryModel, name : String,
-             reverse : Bool, echoF0 : Bool, echoFn : Bool, hidden : Bool) {
+        init(consistModel: ConsistModel, entry: ConsistModel.ConsistEntryModel, name: String,
+             reverse: Bool, echoF0: Bool, echoFn: Bool, hidden: Bool) {
             self.consistModel = consistModel
             self.entry = entry
             self.name = name
@@ -118,23 +118,25 @@ struct ConsistView: View {
                         .frame(alignment: .center)
                         .font(.title2)
                     
-                    VStack{
+                    VStack {
                         Toggle(isOn: $reverse) {
                             Label("Rev:", systemImage: "repeat")
                         }.toggleStyle(.switch)
-                            .onChange(of: reverse) { value in
+                            .onChange(of: reverse) { _ in
                                 changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                             }
                         Toggle(isOn: $echoF0) {
                             Label("Link F0:", systemImage: "lightbulb")
                         }.toggleStyle(.switch)
-                            .onChange(of: echoF0) { value in
+                            .onChange(of: echoF0) { _ in
                                 changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                             }
                         Toggle(isOn: $echoFn) {
-                            Label("Link Fn:", image: "lightbulb.2") // only available as systemimage starting in iOS 16, macOS 13 so we provide local copy
+                            Label("Link Fn:", image: "lightbulb.2") // only available as systemimage
+                                                                    // starting in iOS 16, macOS 13
+                                                                    // so we provide local copy
                         }.toggleStyle(.switch)
-                            .onChange(of: echoFn) { value in
+                            .onChange(of: echoFn) { _ in
                                 changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                             }
                     }.frame(width: 80)
@@ -143,8 +145,10 @@ struct ConsistView: View {
             }
         }
         
-        func changingToggle(reverse : Bool, echoF0 : Bool, echoFn : Bool) {
-            consistModel.resetFlags(on: entry.childLoco, reverse: reverse, echoF0: echoF0, echoFn: echoFn, hide: false) // `hide` always false if loco is visible
+        func changingToggle(reverse: Bool, echoF0: Bool, echoFn: Bool) {
+            consistModel.resetFlags(on: entry.childLoco, reverse: reverse,
+                                    echoF0: echoF0, echoFn: echoFn, hide: false)
+                                    // `hide` always false if loco is visible
         }
     }
 }
@@ -153,7 +157,7 @@ struct ConsistView: View {
 struct ConsistView_Previews: PreviewProvider {
     static let openlcblib = OpenlcbNetwork(sample: true)
     static var previews: some View {
-        let consistModel = ConsistModel(linkLayer : LinkLayer(NodeID(100)))
+        let consistModel = ConsistModel(linkLayer: LinkLayer(NodeID(100)))
         consistModel.forLoco = NodeID(200)
         consistModel.consist.append(ConsistModel.ConsistEntryModel(childLoco: NodeID(201)))
         consistModel.consist.append(ConsistModel.ConsistEntryModel(childLoco: NodeID(202)))

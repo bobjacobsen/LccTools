@@ -20,15 +20,15 @@ struct ClockView: View {
     
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
     
-    @EnvironmentObject var openlcblib : OpenlcbNetwork
+    @EnvironmentObject var openlcblib: OpenlcbNetwork
     
     @State private var isRunning = false // will be updated when we first hear from clock
     
-    @State private var hours : Int = 0
+    @State private var hours: Int = 0
     
-    @State private var minutes : Int = 0
+    @State private var minutes: Int = 0
     
-    @State private var seconds : Int = 0
+    @State private var seconds: Int = 0
     
     /// Reload time values periodically
     @State private var timer: Timer?
@@ -70,10 +70,10 @@ struct ClockView: View {
                             timer?.invalidate()  // stop the timer when not displayed
                         }
                     Spacer()
-                    if (height > 30) {
+                    if height > 30 {
                         StandardClickButton(label: "Clock Controls",
                                         height: SMALL_BUTTON_HEIGHT,
-                                            font: SMALL_BUTTON_FONT){
+                                            font: SMALL_BUTTON_FONT) {
                             openlcblib.clockModel0.showingControlSheet.toggle()
                         }
                     }
@@ -143,7 +143,7 @@ struct ClockControlsSheet: View {
     
     var model: ClockModel
 
-    @State var tempRunState : Bool = false
+    @State var tempRunState: Bool = false
 
     let rateArray = Array(stride(from: 0, through: 30, by: 0.25))
     @State var tempSelectedRate = 1.0
@@ -161,7 +161,7 @@ struct ClockControlsSheet: View {
                 HStack {
                     Text("Running:")
                     Toggle("", isOn: $tempRunState)
-                        .onAppear(){
+                        .onAppear {
                             tempRunState = model.run
                         }
                         .onChange(of: tempRunState) { value in
@@ -175,13 +175,13 @@ struct ClockControlsSheet: View {
                     #endif
                     Picker("Rate", selection: $tempSelectedRate) {
                         ForEach(rateArray, id: \.self) {
-                            Text(String(format:"%.2f", $0))
+                            Text(String(format: "%.2f", $0))
                         }
                     } // TODO: need to call model.setRateInMaster
                     #if os(iOS)
                     .pickerStyle(WheelPickerStyle())
                     #endif
-                    .onAppear(){
+                    .onAppear {
                         tempSelectedRate = model.rate
                     }
                     .onChange(of: tempSelectedRate) { value in
@@ -199,7 +199,7 @@ struct ClockControlsSheet: View {
                     Spacer()
                     StandardClickButton(label: "Set",
                                         height: SMALL_BUTTON_HEIGHT,
-                                        font: SMALL_BUTTON_FONT){
+                                        font: SMALL_BUTTON_FONT) {
                         // Send changed time via model, using same date as now
                         let currentDate = model.getTime()
                         // create a new Date from components
@@ -215,9 +215,9 @@ struct ClockControlsSheet: View {
                         let newDate = userCalendar.date(from: dateComponents)
                         model.setTimeInMaster(to: newDate!)
 
-                    }.onAppear() {
-                        tempHours = String(format:"%02d", model.getHour() )
-                        tempMinutes = String(format:"%02d", model.getMinute() )
+                    }.onAppear {
+                        tempHours = String(format: "%02d", model.getHour() )
+                        tempMinutes = String(format: "%02d", model.getMinute() )
                     }.frame(width: 100)
                 }
             }

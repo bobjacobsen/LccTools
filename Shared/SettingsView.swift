@@ -19,17 +19,17 @@ struct SettingsView: View {
     @ObservedObject var commModel: TcpConnectionModel
 
     @AppStorage("HUB_SERVICE")    private var selectedHubAddress = ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected
-    @AppStorage("HUB_IP_ADDRESS") private var ip_address:   String = ""
-    @AppStorage("HUB_IP_PORT")    private var ip_port:      String = "12021"
-    @AppStorage("THIS_NODE_ID")   private var this_node_ID: String = ""
+    @AppStorage("HUB_IP_ADDRESS") private var ipAddress: String = ""
+    @AppStorage("HUB_IP_PORT")    private var ipPort: String = "12021"
+    @AppStorage("THIS_NODE_ID")   private var thisNodeID: String = ""
 
     private let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "SettingsView")
     
-    let versionNumber : String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "<Unknown>"
-    let buildNumber : String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "<Unknown>"
+    let versionNumber: String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "<Unknown>"
+    let buildNumber: String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "<Unknown>"
 
     var body: some View {
-        VStack() {
+        VStack {
             VStack {
                 Text("Select a Hub:")
                 Picker("Visible Hubs", selection: $selectedHubAddress) {
@@ -42,13 +42,13 @@ struct SettingsView: View {
             
             VStack {
                 Text("Or enter your hub's address below:")
-                TextField("", text: $ip_address)
+                TextField("", text: $ipAddress)
                     .multilineTextAlignment(.center)
 #if os(iOS)
                     .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
 #endif
                 Text("Enter your hub's port:")
-                TextField("", text: $ip_port)
+                TextField("", text: $ipPort)
                     .multilineTextAlignment(.center)
 #if os(iOS)
                     .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
@@ -60,7 +60,7 @@ struct SettingsView: View {
 
             VStack {
                 Text("Enter a node ID for this program:")
-                TextField("", text: $this_node_ID)
+                TextField("", text: $thisNodeID)
                     .multilineTextAlignment(.center)
 #if os(iOS)
                     .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
@@ -72,7 +72,7 @@ struct SettingsView: View {
             Text(commModel.statusString)
             StandardClickButton(label: commModel.started ? "Restart Connection" : "Start Connection") {
                 resetServiceIfNotPresent()
-                commModel.retarget(serviceName: selectedHubAddress, hostName: ip_address, portNumber: UInt16(ip_port) ?? UInt16(12021) )
+                commModel.retarget(serviceName: selectedHubAddress, hostName: ipAddress, portNumber: UInt16(ipPort) ?? UInt16(12021) )
                 commModel.stop()
                 commModel.start()
             }.disabled(false)

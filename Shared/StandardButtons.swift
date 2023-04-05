@@ -19,11 +19,11 @@ public let SMALLER_BUTTON_FONT              = Font.body   // 17pt by default; ma
 
 /// Button that toggles a state selected / not selected
 struct StandardToggleButton: View {
-    let label : String
-    var height : CGFloat = STANDARD_BUTTON_HEIGHT
-    var font : Font = STANDARD_BUTTON_FONT
-    @Binding var select : Bool
-    let action : () -> Void
+    let label: String
+    var height: CGFloat = STANDARD_BUTTON_HEIGHT
+    var font: Font = STANDARD_BUTTON_FONT
+    @Binding var select: Bool
+    let action: () -> Void
     
     @Environment(\.isEnabled) private var isEnabled
 
@@ -49,13 +49,13 @@ struct StandardToggleButton: View {
     }
 }
 
-/// Button that just goes down and up, calling an action
+// Button that just goes down and up, calling an action
 // TODO: This doesn't _show_ the click on macOS (you can't see that you clicked it) - see Event and Turnout displays. Does show the down/up on iOS OK.
 struct StandardClickButton: View {
-    let label : String
-    var height : CGFloat = STANDARD_BUTTON_HEIGHT
-    var font : Font = STANDARD_BUTTON_FONT
-    let action : () -> Void
+    let label: String
+    var height: CGFloat = STANDARD_BUTTON_HEIGHT
+    var font: Font = STANDARD_BUTTON_FONT
+    let action: () -> Void
     
     @Environment(\.isEnabled) private var isEnabled
 
@@ -82,11 +82,11 @@ struct StandardClickButton: View {
 // See: https://serialcoder.dev/text-tutorials/swiftui/handle-press-and-release-events-in-swiftui/
 /// Button that notifies on both down and up transition
 struct StandardMomentaryButton: View {
-    let label : String
-    var height : CGFloat = STANDARD_BUTTON_HEIGHT
-    var font : Font = STANDARD_BUTTON_FONT
-    let down : () -> Void
-    let up : () -> Void
+    let label: String
+    var height: CGFloat = STANDARD_BUTTON_HEIGHT
+    var font: Font = STANDARD_BUTTON_FONT
+    let down: () -> Void
+    let up: () -> Void
     
     @State private var isPressed = false
     @Environment(\.isEnabled) private var isEnabled
@@ -130,10 +130,9 @@ struct StandardMomentaryButton: View {
     } // body
 }
 
-
 /// This centralizes horizontal dividers.
-struct StandardHDivider : View {
-    var body : some View {
+struct StandardHDivider: View {
+    var body: some View {
         Divider()
             .frame(height: 1)
             .overlay(.gray)
@@ -147,45 +146,41 @@ struct StandardButton_Previews: PreviewProvider {
 }
 
 // This is a separate struct to provide addedd to a @State variable in scope
-struct StandardButton_PreviewsView : View {
+struct StandardButton_PreviewsView: View {
     @State var forToggle = false
     @State private var momentaryIsPressed = false
-    var body : some View {
+    var body: some View {
         VStack {
-            StandardClickButton(label: "Click"){
+            StandardClickButton(label: "Click") {
                 // on pressed
             }
             
-            StandardClickButton(label: "Click Disabled"){
+            StandardClickButton(label: "Click Disabled") {
                 // on pressed
             }.disabled(true)
             
             StandardToggleButton(label: "Toggle",
-                                 select: $forToggle)
-            {
+                                 select: $forToggle) {
                 // on pressed
                 forToggle = !forToggle
             }
             
             StandardToggleButton(label: "Toggle Disabled",
-                                 select: $forToggle)
-            {
+                                 select: $forToggle) {
                 // on pressed
                 forToggle = !forToggle
             }.disabled(true)
             
             StandardClickButton(label: "Small Click",
                                 height: SMALL_BUTTON_HEIGHT,
-                                font: SMALL_BUTTON_FONT)
-            {
+                                font: SMALL_BUTTON_FONT) {
                 // on pressed
             }
             
             StandardToggleButton(label: "Small Toggle",
                                  height: SMALL_BUTTON_HEIGHT,
                                  font: SMALL_BUTTON_FONT,
-                                 select: $forToggle)
-            {
+                                 select: $forToggle) {
                 // on pressed
                 forToggle = !forToggle
             }

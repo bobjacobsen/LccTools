@@ -11,12 +11,12 @@ import OpenlcbLibrary
 /// 
 /// Invoked from e.g. NodeListNavigationView
 struct NodeSummaryView: View {
-    @ObservedObject var displayNode : Node
-    let network : OpenlcbNetwork
+    @ObservedObject var displayNode: Node
+    let network: OpenlcbNetwork
     
     var body: some View {
         
-        VStack( /* alignment: .leading */) {
+        VStack {
             List {
                 Text(displayNode.name).font(.title)
                 Text(displayNode.snip.userProvidedDescription)
@@ -27,10 +27,10 @@ struct NodeSummaryView: View {
             }.refreshable {
                 refresh()
             }
-            HStack{
+            HStack {
                 
                 if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION)
-                    && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL)  {
+                    && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL) {
                     NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
                         MoreButtonView(label: "Configure", symbol: "square.and.pencil")
                     }
@@ -43,7 +43,6 @@ struct NodeSummaryView: View {
                         MoreButtonView(label: "Events", symbol: "cpu")
                     }
                 }
-                
                 
                 NavigationLink(destination: PipView(displayNode: displayNode)) {
                     MoreButtonView(label: "More Info", symbol: "gear.badge.questionmark")
@@ -59,7 +58,7 @@ struct NodeSummaryView: View {
             }.frame(minHeight: 75)
             
 #if os(macOS)
-            Button("Refresh"){
+            Button("Refresh") {
                 refresh()
             }.padding(.bottom, 15)
                 .padding(.top, -15)
@@ -70,10 +69,10 @@ struct NodeSummaryView: View {
     
 #if os(macOS)
     /// macOS-specific view to show PIP and Events in a single View
-    struct MacOSCombinedView : View {
-        @ObservedObject var displayNode : Node
+    struct MacOSCombinedView: View {
+        @ObservedObject var displayNode: Node
         
-        var body : some View {
+        var body: some View {
             VStack {
                 PipView(displayNode: displayNode)
                 StandardHDivider()
@@ -84,14 +83,14 @@ struct NodeSummaryView: View {
 #endif
     
     /// iOS and macOS specific handling of the sub-view navigation buttons
-    struct MoreButtonView : View {
-        let label : String
-        let symbol : String
+    struct MoreButtonView: View {
+        let label: String
+        let symbol: String
         
-        var body : some View {
+        var body: some View {
             VStack {
 #if os(iOS)
-                Image(systemName:symbol)
+                Image(systemName: symbol)
                 Text(label)
                     .font(.footnote)
 #else   // macOS

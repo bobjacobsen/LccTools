@@ -14,16 +14,16 @@ import os
 ///
 /// Gets its information from OpenlcbLibrary/CdiModel
 struct CdCdiView: View {
-    
-    @ObservedObject var model : CdiModel
+
+    @ObservedObject var model: CdiModel
     
     var displayNode: Node
-    let network : OpenlcbNetwork
+    let network: OpenlcbNetwork
     
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "CdCdiView")
     
     /// Loads the CDI from the LCC if it's not already present in a contained CdiModel
-    init(displayNode: Node, lib: OpenlcbNetwork){
+    init(displayNode: Node, lib: OpenlcbNetwork) {
         self.displayNode = displayNode
         self.network = lib
         
@@ -38,7 +38,7 @@ struct CdCdiView: View {
     
     var body: some View {
         VStack {
-            if (model.loading) {
+            if model.loading {
                 Text("\(model.nextReadAddress) bytes read") // dynamically updates
                 if model.readLength > 0 {
                     // if we could retrieve the CDI length
@@ -56,12 +56,11 @@ struct CdCdiView: View {
         } // end VStack
     }
     
-    
     /// Decode each item (CdiXmlMemo node) and provide appropriate view
-    func containedView(item : CdiXmlMemo, model: CdiModel) -> AnyView {
+    func containedView(item: CdiXmlMemo, model: CdiModel) -> AnyView {
         switch item.type {
-        case .SEGMENT :
-            if item.description != "" {
+        case .SEGMENT:
+            if !item.description.isEmpty {
                 return AnyView(VStack(alignment: .leading) {
                     Text(item.name).font(.title)
                     Text(item.description).font(.footnote)
@@ -69,8 +68,8 @@ struct CdCdiView: View {
             } else {
                 return AnyView(Text(item.name).font(.title))
             }
-        case .GROUP :
-            if item.description != "" {
+        case .GROUP:
+            if !item.description.isEmpty {
                 return AnyView(VStack(alignment: .leading) {
                     Text(item.name).font(.title2)
                     Text(item.description).font(.footnote)
@@ -78,23 +77,23 @@ struct CdCdiView: View {
             } else {
                 return AnyView(Text(item.name).font(.title2))
             }
-        case .INPUT_EVENTID :
-            if (item.properties.count == 0 ) { // no map
+        case .INPUT_EVENTID:
+            if item.properties.isEmpty { // no map
                 return AnyView(CdiEventView(item: item, model: model))
             } else {
                 CdCdiView.logger.error("CdiEventMapView requested, but not yet implemented")
                 return AnyView(CdiEventView(item: item, model: model)) // TODO: add CdiEventMapView here
             }
-        case .INPUT_INT :
-            if (item.properties.count == 0 ) { // no map
+        case .INPUT_INT:
+            if item.properties.isEmpty { // no map
                 return AnyView(CdiIntView(item: item, model: model))
             } else {
                 return AnyView(CdiIntMapView(item: item, model: model))
             }
-        case .INPUT_STRING :
+        case .INPUT_STRING:
             return AnyView(CdiStringView(item: item, model: model))
-        default :
-            if item.description != "" {
+        default:
+            if !item.description.isEmpty {
                 return AnyView(VStack(alignment: .leading) {
                     Text(item.name)
                     Text(item.description).font(.footnote)
@@ -106,36 +105,36 @@ struct CdCdiView: View {
     }
     
     /// View for a CD/CDI read/refresh button
-    struct RButtonView : View {
-        let address : Int
-        let model : CdiModel
-        let action : () -> ()
+    struct RButtonView: View {
+        let address: Int
+        let model: CdiModel
+        let action: () -> Void
         
-        var body : some View {
+        var body: some View {
             CommonButtonView(text: "R", address: address, model: model, action: action)
         }
     }
     
     /// View for a CD/CDI write button
-    struct WButtonView : View {
-        let address : Int
-        let model : CdiModel
-        let action : () -> ()
+    struct WButtonView: View {
+        let address: Int
+        let model: CdiModel
+        let action: () -> Void
         
-        var body : some View {
+        var body: some View {
             CommonButtonView(text: "W", address: address, model: model, action: action)
         }
     }
     
     /// Common section of R and W buttons
     /// TODO: Should use standard button implementation
-    struct CommonButtonView : View {
+    struct CommonButtonView: View {
         let text: String
-        let address : Int
-        let model : CdiModel
-        let action : () -> ()
+        let address: Int
+        let model: CdiModel
+        let action: () -> Void
 
-        var body : some View {
+        var body: some View {
             Button(
                 action: action,
                 label: {
@@ -154,10 +153,10 @@ struct CdCdiView: View {
     }
 
     private struct DescriptionView: View {
-        var item : CdiXmlMemo
+        var item: CdiXmlMemo
         
         var body: some View {
-            if item.description != "" {
+            if !item.description.isEmpty {
                 HStack {
                     Text(item.description)
                         .font(.footnote)
@@ -169,8 +168,8 @@ struct CdCdiView: View {
     }
 
     /// On macOS, provide some extra space past the buttons
-    struct BeyondTheButtons : View {
-        var body : some View {
+    struct BeyondTheButtons: View {
+        var body: some View {
 #if os(macOS)
             Text(" ")  // space off side to solve overlap with window edge on macOS
                 .frame(minWidth: 30)
@@ -181,8 +180,8 @@ struct CdCdiView: View {
     }
     
     /// On iOS, provide a spacer to push buttons to right
-    struct IosSpacer : View {
-        var body : some View {
+    struct IosSpacer: View {
+        var body: some View {
 #if os(iOS)
             Spacer()
 #else
@@ -191,16 +190,16 @@ struct CdCdiView: View {
         }
     }
     /// View for a CID eventID value entry
-    struct CdiEventView : View {
-        @State var eventValue : String = "00.00.00.00.00.00.00.00"
-        var item : CdiXmlMemo
-        let model : CdiModel
-        init(item : CdiXmlMemo, model : CdiModel) {
+    struct CdiEventView: View {
+        @State var eventValue: String = "00.00.00.00.00.00.00.00"
+        var item: CdiXmlMemo
+        let model: CdiModel
+        init(item: CdiXmlMemo, model: CdiModel) {
             self.item = item
             self.model = model
         }
         
-        var body : some View {
+        var body: some View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(item.name) ") // display name next to value
@@ -217,11 +216,12 @@ struct CdCdiView: View {
                         }
                         .textFieldStyle(.roundedBorder)
                     IosSpacer()
-                    RButtonView(address: self.item.startAddress, model: model){
+                    RButtonView(address: self.item.startAddress, model: model) {
                         read()
                     }
-                    WButtonView(address: self.item.startAddress, model: model){
-                        model.writeEvent(value: EventID(eventValue).eventID, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+                    WButtonView(address: self.item.startAddress, model: model) {
+                        model.writeEvent(value: EventID(eventValue).eventID, at: self.item.startAddress,
+                                         space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
                     BeyondTheButtons()
                 }.buttonStyle(BorderlessButtonStyle())
@@ -229,26 +229,25 @@ struct CdCdiView: View {
                 DescriptionView(item: item)
 
             }
-            .onAppear(){
+            .onAppear {
                 read()
             }
         }
-        
+
         func read() {
-            model.readEvent(from: self.item.startAddress, space: UInt8(self.item.space), length: 8){
-                (readValue : UInt64) in
+            model.readEvent(from: self.item.startAddress, space: UInt8(self.item.space), length: 8) { (readValue: UInt64) in
                 self.eventValue = EventID(UInt64(readValue)).description
             }
         }
     }
-    
+
     /// View for an Int CDI value entry
-    struct CdiIntView : View {
-        @State var intValue : Int = -1 // -1 so we can see what it does here
+    struct CdiIntView: View {
+        @State var intValue: Int = -1 // -1 so we can see what it does here
         var formatter = NumberFormatter()
-        var item : CdiXmlMemo
-        let model : CdiModel
-        init(item : CdiXmlMemo, model: CdiModel) {
+        var item: CdiXmlMemo
+        let model: CdiModel
+        init(item: CdiXmlMemo, model: CdiModel) {
             self.item = item
             self.model = model
             formatter.minimum = NSNumber(integerLiteral: item.minValue)
@@ -258,13 +257,13 @@ struct CdCdiView: View {
             // print ("                 minSet=\(String(describing: item.minSet) ) maxSet=\(String(describing: item.maxSet))")
         }
         
-        var body : some View {
+        var body: some View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(item.name) ") // display name next to value
                         .fixedSize(horizontal: false, vertical: true)
                     
-                    TextField("Enter \(item.name)", value: $intValue,  formatter: formatter)
+                    TextField("Enter \(item.name)", value: $intValue, formatter: formatter)
                         .onAppear {
                             intValue = item.currentIntValue
                         }
@@ -273,11 +272,12 @@ struct CdCdiView: View {
                         }
                         .textFieldStyle(.roundedBorder)
                     IosSpacer()
-                    RButtonView(address: self.item.startAddress, model: model){
+                    RButtonView(address: self.item.startAddress, model: model) {
                         read()
                     }
-                    WButtonView(address: self.item.startAddress, model: model){
-                        model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+                    WButtonView(address: self.item.startAddress, model: model) {
+                        model.writeInt(value: self.intValue, at: self.item.startAddress,
+                                       space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
                     BeyondTheButtons()
                 }.buttonStyle(BorderlessButtonStyle())
@@ -288,23 +288,22 @@ struct CdCdiView: View {
                     MinMaxView(item: item)
                 }
             }
-            .onAppear(){
+            .onAppear {
                 read()
             }
         }
         
         func read() {
-            model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
-                (readValue : Int) in
+            model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)) { (readValue: Int) in
                 self.intValue = readValue
             }
         }
     }
     
     /// Show the minimum and/or maximum values for an Int variable
-    private struct MinMaxView : View {
-        let text : String
-        init(item : CdiXmlMemo) {
+    private struct MinMaxView: View {
+        let text: String
+        init(item: CdiXmlMemo) {
             var viewText = ""
             if item.minSet {
                 viewText += "Min = \(item.minValue) "
@@ -314,42 +313,42 @@ struct CdCdiView: View {
             }
             text = viewText
         }
-        var body : some View {
+        var body: some View {
             Text(text).font(.footnote)
         }
     }
     
     /// View for a CDI int value map
-    struct CdiIntMapView : View {
-        @State var intValue : Int = -1 // -1 so we can see what it does here
-        @State var stringValue : String = "<initial internal content>" // so we can see what it does here
+    struct CdiIntMapView: View {
+        @State var intValue: Int = -1 // -1 so we can see what it does here
+        @State var stringValue: String = "<initial internal content>" // so we can see what it does here
         
-        var item : CdiXmlMemo
-        let model : CdiModel
+        var item: CdiXmlMemo
+        let model: CdiModel
         var startUpIgnoreReceive = true // true while onReceive should be ignored until first onAppear
         
-        init(item : CdiXmlMemo, model: CdiModel) {
+        init(item: CdiXmlMemo, model: CdiModel) {
             self.item = item
             self.model = model
             intValue = item.currentIntValue
             stringValue = propertyToValue(property: intValue)
         }
         
-        func valueToProperty(value : String ) -> Int {
+        func valueToProperty(value: String ) -> Int {
             // find index of matching value
             let index = self.item.values.firstIndex(of: value) ?? 0  // really supposed to match
             return Int(self.item.properties[index]) ?? 0 // 0 if process fails
         }
-        func propertyToValue(property : Int ) -> String {
+        func propertyToValue(property: Int ) -> String {
             // find index of matching property
             let index = self.item.properties.firstIndex(of: String(property)) ?? 0  // really supposed to match
             return self.item.values[index]
         }
         
-        var body : some View {
+        var body: some View {
             VStack(alignment: .leading) {
                 HStack {
-                    HStack{
+                    HStack {
                         Picker("\(item.name)", selection: $stringValue) {
                             ForEach(item.values, id: \.self) { valueName in
                                 Text(valueName)
@@ -360,8 +359,8 @@ struct CdCdiView: View {
                             intValue = item.currentIntValue
                             stringValue = propertyToValue(property: intValue)
                         }
-                        .onReceive([self.stringValue].publisher.first()) { (value) in  // store back to model
-                            if (stringValue == "<initial internal content>") {
+                        .onReceive([self.stringValue].publisher.first()) { (_) in  // store back to model
+                            if stringValue == "<initial internal content>" {
                                 return
                             }
                             intValue = valueToProperty(value: stringValue)
@@ -370,11 +369,12 @@ struct CdCdiView: View {
                     }
                     IosSpacer()
                     HStack {
-                        RButtonView(address: self.item.startAddress, model: model){
+                        RButtonView(address: self.item.startAddress, model: model) {
                             read()
                         }
-                        WButtonView(address: self.item.startAddress, model: model){
-                            model.writeInt(value: self.intValue, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+                        WButtonView(address: self.item.startAddress, model: model) {
+                            model.writeInt(value: self.intValue, at: self.item.startAddress,
+                                           space: UInt8(self.item.space), length: UInt8(self.item.length))
                         }
                         BeyondTheButtons()
                     }.buttonStyle(BorderlessButtonStyle())
@@ -383,14 +383,13 @@ struct CdCdiView: View {
                 DescriptionView(item: item)
                 
             }
-            .onAppear(){
+            .onAppear {
                 read()
             }
         }
         
         func read() {
-            model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
-                (readValue : Int) in
+            model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)) { (readValue: Int) in
                 self.intValue = readValue
                 self.stringValue = propertyToValue(property: self.intValue)
             }
@@ -398,31 +397,31 @@ struct CdCdiView: View {
     }
     
     /// Custom view for String data entry fields
-    struct CdiStringView : View {
-        var item : CdiXmlMemo
-        let model : CdiModel
+    struct CdiStringView: View {
+        var item: CdiXmlMemo
+        let model: CdiModel
         
-        init(item : CdiXmlMemo, model: CdiModel) {
+        init(item: CdiXmlMemo, model: CdiModel) {
             self.item = item
             self.model = model
         }
         
-        @State private var entryText : String = ""
+        @State private var entryText: String = ""
         
         var body: some View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(item.name) ") // display name next to value
                         .fixedSize(horizontal: false, vertical: true)
-                    //+ Spacer()
-                    TextField("Enter \(item.name)", text : $entryText)
+                    TextField("Enter \(item.name)", text: $entryText)
                         .textFieldStyle(.roundedBorder)
                     IosSpacer()
-                    RButtonView(address: self.item.startAddress, model: model){
+                    RButtonView(address: self.item.startAddress, model: model) {
                         read()
                     }
-                    WButtonView(address: self.item.startAddress, model: model){
-                        model.writeString(value: self.entryText, at: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length))
+                    WButtonView(address: self.item.startAddress, model: model) {
+                        model.writeString(value: self.entryText, at: self.item.startAddress,
+                                          space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
                     BeyondTheButtons()
                 }.buttonStyle(BorderlessButtonStyle())
@@ -430,14 +429,13 @@ struct CdCdiView: View {
                 DescriptionView(item: item)
                 
             }
-            .onAppear(){
+            .onAppear {
                 read()
             }
         }
         
         func read() {
-            model.readString(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)){
-                (readValue : String) in
+            model.readString(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)) { (readValue: String) in
                 self.entryText = readValue
             }
         }

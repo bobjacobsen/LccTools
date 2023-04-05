@@ -10,10 +10,10 @@ import OpenlcbLibrary
 /// Display the PIP info from a node in human-readable format
 struct PipView: View {
     
-    var elements :  [String]
-    let displayNode : Node
+    var elements: [String]
+    let displayNode: Node
 
-    init(displayNode : Node) {
+    init(displayNode: Node) {
         self.displayNode = displayNode
         elements = Array(PIP.contentsNames(displayNode.pipSet))
         elements.sort() // put PIP contents in alphabetic order

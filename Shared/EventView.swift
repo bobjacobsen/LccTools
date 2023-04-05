@@ -10,18 +10,18 @@ import OpenlcbLibrary
 /// Display the Events produced and consumed by a specific node as buttons that will produce the events.
 struct EventView: View {
     
-    @ObservedObject var displayNode : Node
+    @ObservedObject var displayNode: Node
     
-    @EnvironmentObject var network : OpenlcbNetwork
+    @EnvironmentObject var network: OpenlcbNetwork
     
 #if os(macOS)
-    let vertPadding : CGFloat = 0
-    let innnerHorizontalPadding : CGFloat = 0
-    let overallHorizontalPadding : CGFloat = 0.0
+    let vertPadding: CGFloat = 0
+    let innnerHorizontalPadding: CGFloat = 0
+    let overallHorizontalPadding: CGFloat = 0.0
 #else
-    let vertPadding : CGFloat = -5
-    let innnerHorizontalPadding : CGFloat = -15.0
-    let overallHorizontalPadding : CGFloat = -10.0
+    let vertPadding: CGFloat = -5
+    let innnerHorizontalPadding: CGFloat = -15.0
+    let overallHorizontalPadding: CGFloat = -10.0
 #endif
     
     var body: some View {
@@ -34,7 +34,7 @@ struct EventView: View {
             HStack {
                 List {
                     Text("Produces").font(.title).frame(alignment: .leading)
-                    ForEach(produced, id:\.eventID) { (event) in
+                    ForEach(produced, id: \.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .trailing)
                             .padding(.vertical, vertPadding)
                             .frame(height: STANDARD_BUTTON_HEIGHT)
@@ -46,7 +46,7 @@ struct EventView: View {
                 
                 List {
                     Text("Consumes").font(.title).frame(alignment: .trailing)
-                    ForEach(consumed, id:\.eventID) { (event) in
+                    ForEach(consumed, id: \.eventID) { (event) in
                         EventViewOneEvent(eventID: event).frame(alignment: .leading)
                             .padding(.vertical, vertPadding)
                             .frame(height: STANDARD_BUTTON_HEIGHT)
@@ -61,15 +61,15 @@ struct EventView: View {
     }
     
     /// Present one event as an active button
-    fileprivate struct EventViewOneEvent : View {
-        @EnvironmentObject var openlcblib : OpenlcbNetwork
+    fileprivate struct EventViewOneEvent: View {
+        @EnvironmentObject var openlcblib: OpenlcbNetwork
         
-        let eventID : EventID
+        let eventID: EventID
         
 #if os(macOS)
-        let horizPadding : CGFloat = 0
+        let horizPadding: CGFloat = 0
 #else
-        let horizPadding : CGFloat = -5
+        let horizPadding: CGFloat = -5
 #endif
         
         var body: some View {
@@ -95,7 +95,6 @@ struct EventView_Previews: PreviewProvider {
         displayNode.events.eventsProduced.insert(EventID("1.2.3.4.5.6.7.9"))
         displayNode.events.eventsProduced.insert(EventID("1.2.3.4.5.6.7.7"))
         
-        return EventView(displayNode : displayNode)
-        //.previewInterfaceOrientation(.landscapeLeft)
+        return EventView(displayNode: displayNode)
     }
 }
