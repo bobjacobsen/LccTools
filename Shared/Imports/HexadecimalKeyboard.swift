@@ -21,10 +21,10 @@ class HexButton: UIButton {
 }
 
 class HexadecimalKeyboard: UIView {
-    weak var target   : UIKeyInput?
-    weak var delegate : RemoveKeyboardDelegate?
+    weak var target: UIKeyInput?
+    weak var delegate: RemoveKeyboardDelegate?
     
-    var hexadecimalButtons: [HexButton] = ["0","7","8","9","4","5","6","1","2","3","A","B","C","D","E","F"].map {
+    var hexadecimalButtons: [HexButton] = ["0", "7", "8", "9", "4", "5", "6", "1", "2", "3", "A", "B", "C", "D", "E", "F"].map {
         let button = HexButton(type: .system)
         button.hexCharacter = $0
         button.setTitle("\($0)", for: .normal)
@@ -75,7 +75,6 @@ class HexadecimalKeyboard: UIView {
     }
 }
 
-
 // MARK: - Actions
 
 extension HexadecimalKeyboard {
@@ -92,7 +91,6 @@ extension HexadecimalKeyboard {
     }
 }
 
-
 // MARK: - Private initial configuration methods
 
 private extension HexadecimalKeyboard {
@@ -103,18 +101,17 @@ private extension HexadecimalKeyboard {
     }
     
     func buildKeyboard() {
-        //MARK: - Add main stackview to keyboard
+        // MARK: - Add main stackview to keyboard
         mainStack.frame = bounds
         addSubview(mainStack)
         
-        //MARK: - Create stackviews
+        // MARK: - Create stackviews
         let panel1         = createStackView(axis: .vertical)
         let panel2         = createStackView(axis: .vertical)
         let panel2Group    = createStackView(axis: .vertical)
-        let panel2Controls = createStackView(axis: .horizontal, distribution : .fillProportionally)
+        let panel2Controls = createStackView(axis: .horizontal, distribution: .fillProportionally)
         
-        
-        //MARK: - Create multiple stackviews for numbers
+        // MARK: - Create multiple stackviews for numbers
         for row in 0 ..< 3 {
             let panel1Numbers = createStackView(axis: .horizontal)
             panel1.addArrangedSubview(panel1Numbers)
@@ -124,7 +121,7 @@ private extension HexadecimalKeyboard {
             }
         }
         
-        //MARK: - Create multiple stackviews for letters
+        // MARK: - Create multiple stackviews for letters
         for row in 0 ..< 2 {
             let panel2Letters = createStackView(axis: .horizontal)
             panel2Group.addArrangedSubview(panel2Letters)
@@ -134,7 +131,7 @@ private extension HexadecimalKeyboard {
             }
         }
         
-        //MARK: - Nest stackviews
+        // MARK: - Nest stackviews
         mainStack.addArrangedSubview(panel1)
         panel1.addArrangedSubview(hexadecimalButtons[0])
         mainStack.addArrangedSubview(panel2)
@@ -143,15 +140,15 @@ private extension HexadecimalKeyboard {
         panel2Controls.addArrangedSubview(deleteButton)
         panel2Controls.addArrangedSubview(okButton)
         
-        //MARK: - Constraint - sets okButton width to two times the width of the deleteButton plus 10 points for the space
+        // MARK: - Constraint - sets okButton width to two times the width of the deleteButton plus 10 points for the space
         panel2Controls.addConstraint(NSLayoutConstraint(
-            item       : okButton,
-            attribute  : .width,
-            relatedBy  : .equal,
-            toItem     : deleteButton,
-            attribute  : .width,
-            multiplier : 2,
-            constant   : 10))
+            item: okButton,
+            attribute: .width,
+            relatedBy: .equal,
+            toItem: deleteButton,
+            attribute: .width,
+            multiplier: 2,
+            constant: 10))
     }
     
     func createStackView(axis: NSLayoutConstraint.Axis, distribution: UIStackView.Distribution = .fillEqually) -> UIStackView {

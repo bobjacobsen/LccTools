@@ -9,7 +9,7 @@ import SwiftUI
 import os
 import OpenlcbLibrary
 
-/// Not currently used
+// Not currently used
 // TODO: Eventually remove this file as not used; now is an example of detecting iPad for e.g. ThrottleView
 struct ContentView: View {
 
@@ -17,7 +17,7 @@ struct ContentView: View {
     // macOS and iPad have two
     
     #if os(iOS) // to check for iPhone v iPad
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass : UserInterfaceSizeClass?
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
     #endif
     
     var body: some View {
