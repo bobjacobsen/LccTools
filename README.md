@@ -1,6 +1,7 @@
-#  OlcbTools
+#  LccTools
 
 [<img src="http://bobjacobsen.github.io/ardenwood/lcctools/IconInRectangle.png" height="128" width="128" align="right" />](http://bobjacobsen.github.io/ardenwood/lcctools/index.shtml) A basic application, based on TelnetListenerLib and OpenlcbLibrary, for controlling LCC nodes on a model railroad.
+
 Provides:
  - A throttle
  - A fast clock
@@ -21,4 +22,4 @@ or
 
     xcodebuild -scheme OlcbTools\ \(iOS\)
 
-
+Note that the Swift XCode project is named `OlcbTools` instead of `LccTools` for historical reasons.
