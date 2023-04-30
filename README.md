@@ -14,12 +14,6 @@ Released under the GPL2 license. We're serious about its terms.
 
 Full documentation is [available on the web](https://bobjacobsen.github.io/LccTools/documentation/lcctools/) and is built in XCode once you've installed this package.
 
-To build from the command line (requires [TelnetListenerLib](https://github.com/bobjacobsen/TelnetListenerLib) and [OpenlcbLibrary](https://github.com/bobjacobsen/OpenlcbLibrary) checked out):
-
-    xcodebuild -scheme OlcbTools\ \(macOS\)
-
-or
-
-    xcodebuild -scheme OlcbTools\ \(iOS\)
+To build (requires [TelnetListenerLib](https://github.com/bobjacobsen/TelnetListenerLib) and [OpenlcbLibrary](https://github.com/bobjacobsen/OpenlcbLibrary) checked out) use Xcode and open the LccTools/OlcbTools.xcodeproj file.
 
 Note that the Swift XCode project is named `OlcbTools` instead of `LccTools` for historical reasons.
