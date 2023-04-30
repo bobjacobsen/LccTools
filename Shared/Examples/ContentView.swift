@@ -11,7 +11,7 @@ import OpenlcbLibrary
 
 // Not currently used
 // TODO: Eventually remove this file as not used; now is an example of detecting iPad for e.g. ThrottleView
-struct ContentView: View {
+private struct ContentView: View {
 
     // iphone is one selector window
     // macOS and iPad have two
@@ -35,7 +35,7 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+private struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }

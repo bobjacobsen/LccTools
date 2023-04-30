@@ -9,10 +9,9 @@ import OpenlcbLibrary
 import os
 
 // This works by timer-based periodic refresh of hours/minutes/seconds @State variables from the underlying Clock instance
+// TODO: Do people really want seconds on their fast clock?
 
-// TODO: Do people want seconds on their fast clock?
-
-/// Display the LCC fast clock
+/// Display the LCC fast clock.
 ///
 /// Sizes itself to fill the given space.
 struct ClockView: View {
@@ -86,8 +85,8 @@ struct ClockView: View {
         }
     } // end body
     
-    // display one time unit field, i.e. hours. minutes or seconds
-    struct StopwatchUnit: View {
+    /// Display one time unit field, i.e. hours. minutes or seconds
+    private struct StopwatchUnit: View {
         
         var timeUnit: Int
         var timeUnitText: String
@@ -139,7 +138,7 @@ private extension String {  // private to avoid confusing parse errors on other 
     }
 }
 
-struct ClockControlsSheet: View {
+private struct ClockControlsSheet: View {
     
     var model: ClockModel
 

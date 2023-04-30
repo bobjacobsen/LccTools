@@ -7,16 +7,7 @@
 import SwiftUI
 import OpenlcbLibrary
 
-// Internal helper class for moving to top/bottom
-class ScrollToModel: ObservableObject {
-    enum Action {
-        case end
-        case top
-    }
-    @Published var direction: Action?
-}
-
-/// Displayes the contents from the PrintingProcessor, e.g. the OpenLCB traffic monitor
+/// Display the contents from the PrintingProcessor, e.g. the OpenLCB traffic monitor
 struct MonitorView: View {
     @StateObject var vm = ScrollToModel()
 
@@ -72,6 +63,17 @@ struct MonitorView: View {
                 }
             }
         }
+    }
+
+    // Internal helper class for moving to top/bottom.
+    class ScrollToModel: ObservableObject {
+        @Published var direction: MoveAction?
+    }
+    
+    // Internal enum denoting direction to hold on screen.
+    enum MoveAction {
+        case end
+        case top
     }
 }
 

@@ -9,7 +9,7 @@ import OpenlcbLibrary
 
 /// Display and allow editing of a locomotive consist.
 ///
-/// Works through OpenlcbLibrary/ConsistModel
+/// Works through OpenlcbLibrary/ConsistModel.
 struct ConsistView: View {
     @ObservedObject var consistModel: ConsistModel
     @ObservedObject var selectionModel: ThrottleModel

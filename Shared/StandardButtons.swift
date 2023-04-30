@@ -49,9 +49,9 @@ struct StandardToggleButton: View {
     }
 }
 
-// Button that just goes down and up, calling an action
-// TODO: This doesn't _show_ the click on macOS (you can't see that you clicked it) - see Event and Turnout displays. Does show the down/up on iOS OK.
+/// Button that just goes down and up, calling an action
 struct StandardClickButton: View {
+    // TODO: This doesn't _show_ the click on macOS (you can't see that you clicked it) - see Event and Turnout displays. Does show the down/up on iOS OK.
     let label: String
     var height: CGFloat = STANDARD_BUTTON_HEIGHT
     var font: Font = STANDARD_BUTTON_FONT
@@ -145,8 +145,8 @@ struct StandardButton_Previews: PreviewProvider {
     }
 }
 
-// This is a separate struct to provide addedd to a @State variable in scope
-struct StandardButton_PreviewsView: View {
+// This is a separate struct to provide added to a @State variable in scope
+private struct StandardButton_PreviewsView: View {
     @State var forToggle = false
     @State private var momentaryIsPressed = false
     var body: some View {

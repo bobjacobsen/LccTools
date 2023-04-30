@@ -8,7 +8,7 @@ import SwiftUI
 import OpenlcbLibrary
 import os
 
-/// The complete throttle view, with both speed and function sections
+/// The complete Throttle view, with both speed and function sections.
 struct ThrottleView: View {
     
     @ObservedObject var model: ThrottleModel

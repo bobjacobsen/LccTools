@@ -12,15 +12,16 @@ import Foundation
 
 import UIKit
 
-protocol RemoveKeyboardDelegate: AnyObject {
+private protocol RemoveKeyboardDelegate: AnyObject {
     func removeKeyboard()
 }
 
-class HexButton: UIButton {
+private class HexButton: UIButton {
     var hexCharacter: String = ""
 }
 
-class HexadecimalKeyboard: UIView {
+// 'private' until this is working and can be published
+private class HexadecimalKeyboard: UIView {
     weak var target: UIKeyInput?
     weak var delegate: RemoveKeyboardDelegate?
     

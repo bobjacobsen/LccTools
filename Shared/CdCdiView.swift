@@ -10,7 +10,7 @@ import os
 
 // TODO: Maybe add a refresh that reloads the CDI, to handle partial reads on drop?
 
-/// DIsplays the CDI information and allows user editing.
+/// DIsplay the CDI information and allow user editing.
 ///
 /// Gets its information from OpenlcbLibrary/CdiModel
 struct CdCdiView: View {

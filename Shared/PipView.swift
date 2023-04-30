@@ -7,7 +7,7 @@
 import SwiftUI
 import OpenlcbLibrary
 
-/// Display the PIP info from a node in human-readable format
+/// Display the PIP info from a node in human-readable format.
 struct PipView: View {
     
     var elements: [String]

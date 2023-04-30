@@ -8,7 +8,7 @@
 import OpenlcbLibrary
 import SwiftUI
 
-/// Show and allow control of  DCC turnouts
+/// Show and allow control of  DCC turnouts.
 struct TurnoutView: View {
     @State var dccAddress: Int = 1
     @ObservedObject var model: TurnoutModel
