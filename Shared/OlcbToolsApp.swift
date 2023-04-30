@@ -173,7 +173,7 @@ struct OlcbToolsApp: App {
                     
 #if os(macOS)
                     // if no connection info, show the Preference (nee Settings) pane
-                    if self.ipAddress.isEmpty && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
+                    if self.ip_address.isEmpty && self.selectedHubAddress == ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected {
                         // delay a bit in hopes of putting this in front
                         let deadlineTime = DispatchTime.now() + .milliseconds(500)
                         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
