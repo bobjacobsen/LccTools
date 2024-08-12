@@ -54,7 +54,7 @@ struct MonitorView: View {
                 StandardClickButton(label: "Clear",
                                     height: SMALL_BUTTON_HEIGHT,
                                     font: SMALL_BUTTON_FONT) {
-                    monitorModel.printingProcessorContentArray = []
+                    monitorModel.clear()
                 }
                 StandardClickButton(label: "End",
                                     height: SMALL_BUTTON_HEIGHT,
