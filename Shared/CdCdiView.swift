@@ -59,6 +59,9 @@ struct CdCdiView: View {
     /// Decode each item (CdiXmlMemo node) and provide appropriate view
     func containedView(item: CdiXmlMemo, model: CdiModel) -> AnyView {
         switch item.type {
+        case .TOPLEVEL:
+            return AnyView(Text(item.name))
+            // return AnyView(Text("Top Level").font(.title))
         case .SEGMENT:
             if !item.description.isEmpty {
                 return AnyView(VStack(alignment: .leading) {
@@ -92,15 +95,18 @@ struct CdCdiView: View {
             }
         case .INPUT_STRING:
             return AnyView(CdiStringView(item: item, model: model))
+        case .UNKNOWN_SIZED:
+            // this is a future expansion item - we don't show it
+            return AnyView(VStack(alignment: .leading) {
+                Text(item.name)
+                Text(item.description).font(.footnote)
+            })
         default:
-            if !item.description.isEmpty {
-                return AnyView(VStack(alignment: .leading) {
-                    Text(item.name)
-                    Text(item.description).font(.footnote)
-                })
-            } else {
-                return AnyView(Text(item.name))
-            }
+            // this includes a lot of elements: .UNKNOWN_UNSIZED, identification, etc
+            return AnyView(VStack(alignment: .leading) {
+                Text(item.name)
+                Text(item.description).font(.footnote)
+            })
         }
     }
     
@@ -120,6 +126,9 @@ struct CdCdiView: View {
     }
 
     /// View for a CID eventID value entry
+    /// 
+    ///  This crashes if you open a section that
+    ///  reads for initialization
     struct CdiEventView: View {
         @State var eventValue: String = "00.00.00.00.00.00.00.00"
         var item: CdiXmlMemo
@@ -438,6 +447,13 @@ private struct CommonButtonView: View {
 /// XCode preview for the CdCdiView
 struct CdCdiView_Previews: PreviewProvider {
     static var previews: some View {
-        CdCdiView(displayNode: Node(NodeID(123)), lib: OpenlcbNetwork(localNodeID: NodeID(123)))
+        let network = OpenlcbNetwork(localNodeID: NodeID(123))
+        let displayNode = Node(NodeID(321))
+        let cdiModel = CdiModel(mservice: network.mservice, nodeID: NodeID(321))
+        cdiModel.setTree(newTree: CdiSampleDataAccess.sampleCdiXmlData())
+        //  load test CDI string to displayNode.cdi
+        displayNode.cdi = cdiModel
+        
+        return CdCdiView(displayNode: displayNode, lib: network)
     }
 }
