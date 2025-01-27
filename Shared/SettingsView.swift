@@ -38,6 +38,9 @@ struct SettingsView: View {
                     }
                 } // .pickerStyle(WheelPickerStyle())  // wheel takes up too much space on iOS
             }
+            StandardClickButton(label: "Scan for Hubs", height: STANDARD_BUTTON_HEIGHT, font: STANDARD_BUTTON_FONT) {
+                commModel.rescan()
+            }
             StandardHDivider()
             
             VStack {
