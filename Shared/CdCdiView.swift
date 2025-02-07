@@ -89,7 +89,11 @@ struct CdCdiView: View {
             }
         case .INPUT_INT:
             if item.properties.isEmpty { // no map
-                return AnyView(CdiIntView(item: item, model: model))
+                if item.isSlider {
+                    return AnyView(CdiIntSliderView(item: item, model: model))
+                } else {
+                    return AnyView(CdiIntView(item: item, model: model))
+                }
             } else {
                 return AnyView(CdiIntMapView(item: item, model: model))
             }
@@ -107,21 +111,6 @@ struct CdCdiView: View {
                 Text(item.name)
                 Text(item.description).font(.footnote)
             })
-        }
-    }
-    
-    private struct DescriptionView: View {
-        var item: CdiXmlMemo
-        
-        var body: some View {
-            if !item.description.isEmpty {
-                HStack {
-                    Text(item.description)
-                        .font(.footnote)
-                        .fixedSize(horizontal: false, vertical: true)
-                    BeyondTheButtons()
-                }
-            }
         }
     }
 
@@ -218,9 +207,9 @@ struct CdCdiView: View {
                     }
                     BeyondTheButtons()
                 }.buttonStyle(BorderlessButtonStyle())
-
+                
                 DescriptionView(item: item)
-
+                
                 if item.maxSet || item.minSet {
                     MinMaxView(item: item)
                 }
@@ -232,24 +221,6 @@ struct CdCdiView: View {
             model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)) { (readValue: Int) in
                 self.intValue = readValue
             }
-        }
-    }
-    
-    /// Show the minimum and/or maximum values for an Int variable
-    private struct MinMaxView: View {
-        let text: String
-        init(item: CdiXmlMemo) {
-            var viewText = ""
-            if item.minSet {
-                viewText += "Min = \(item.minValue) "
-            }
-            if item.maxSet {
-                viewText += "Max = \(item.maxValue) "
-            }
-            text = viewText
-        }
-        var body: some View {
-            Text(text).font(.footnote)
         }
     }
     
@@ -370,6 +341,110 @@ struct CdCdiView: View {
                 self.entryText = readValue
             }
         }
+    }
+}
+
+/// View for an Int CDI value entry with slider hint
+private struct CdiIntSliderView: View {
+    @State var intValue: Int = -1 // -1 so we can see what it does here
+    var formatter = NumberFormatter()
+    var item: CdiXmlMemo
+    let model: CdiModel
+    init(item: CdiXmlMemo, model: CdiModel) {
+        self.item = item
+        self.model = model
+        formatter.minimum = item.minValue as NSNumber
+        formatter.maximum = item.maxValue as NSNumber
+        formatter.maximumFractionDigits = 0
+        // print ("Init CdiIntView \(item.name) with min=\(String(describing: formatter.minimum) ) max=\(String(describing: formatter.maximum))")
+        // print ("                 minSet=\(String(describing: item.minSet) ) maxSet=\(String(describing: item.maxSet))")
+    }
+    
+    var body: some View {
+        // need a custom binding for the value in the slider in CdiIntSliderView
+        let sliderValue = Binding(
+            get: { return Double(self.intValue) },
+            set: { intValue = Int($0) } // Or other custom logic
+        )
+        VStack(alignment: .leading) {
+            HStack {
+                Text("\(item.name) ") // display name next to value
+                    .fixedSize(horizontal: false, vertical: true)
+                
+                Slider(
+                    value: sliderValue,
+                    in: Double(item.minValue)...Double(item.maxValue),
+                    onEditingChanged: { _ in
+                        model.writeInt(value: self.intValue, at: self.item.startAddress,
+                                       space: UInt8(self.item.space), length: UInt8(self.item.length))
+                    }
+                ) // Slider
+                
+                TextField("Enter \(item.name)", value: $intValue, formatter: formatter)
+                    .onAppear {
+                        intValue = item.currentIntValue
+                    }
+                    .onSubmit {
+                        item.currentIntValue = intValue
+                    }
+                    .textFieldStyle(.roundedBorder)
+                IosSpacer()
+                RButtonView(address: self.item.startAddress, model: model) {
+                    read()
+                }
+                WButtonView(address: self.item.startAddress, model: model) {
+                    model.writeInt(value: self.intValue, at: self.item.startAddress,
+                                   space: UInt8(self.item.space), length: UInt8(self.item.length))
+                }
+                BeyondTheButtons()
+            }.buttonStyle(BorderlessButtonStyle())
+            
+            DescriptionView(item: item)
+            
+            if item.maxSet || item.minSet {
+                MinMaxView(item: item)
+            }
+        }
+        .onAppear { read() }
+    }
+    
+    func read() {
+        model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)) { (readValue: Int) in
+            self.intValue = readValue
+        }
+    }
+}
+
+private struct DescriptionView: View {
+    var item: CdiXmlMemo
+    
+    var body: some View {
+        if !item.description.isEmpty {
+            HStack {
+                Text(item.description)
+                    .font(.footnote)
+                    .fixedSize(horizontal: false, vertical: true)
+                BeyondTheButtons()
+            }
+        }
+    }
+}
+
+/// Show the minimum and/or maximum values for an Int variable
+private struct MinMaxView: View {
+    let text: String
+    init(item: CdiXmlMemo) {
+        var viewText = ""
+        if item.minSet {
+            viewText += "Min = \(item.minValue) "
+        }
+        if item.maxSet {
+            viewText += "Max = \(item.maxValue) "
+        }
+        text = viewText
+    }
+    var body: some View {
+        Text(text).font(.footnote)
     }
 }
 
