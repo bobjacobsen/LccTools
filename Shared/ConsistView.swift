@@ -53,7 +53,7 @@ struct ConsistView: View {
                             Text("Delete")
                         }
                     }
-                    
+                    StandardHDivider()
                 }
             }
             
@@ -139,7 +139,7 @@ struct ConsistView: View {
                             .onChange(of: echoFn) { _ in
                                 changingToggle(reverse: reverse, echoF0: echoF0, echoFn: echoFn)
                             }
-                    }.frame(width: 80)
+                    }.frame(width: 80, height: 120)
                         .labelStyle(.iconOnly)
                 }
             }
