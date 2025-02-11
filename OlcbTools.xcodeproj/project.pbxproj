@@ -115,6 +115,7 @@
 		23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexadecimalKeyboard.swift; sourceTree = "<group>"; };
 		23D66405286F5269001CDBDD /* TelnetListenerLib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TelnetListenerLib; path = ../TelnetListenerLib; sourceTree = "<group>"; };
 		23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "OlcbTools--iOS--Info.plist"; sourceTree = "<group>"; };
+		23EE38E72D5A7BFF003D72D6 /* OlcbTools--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "OlcbTools--macOS--Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,9 +157,10 @@
 		230088FB285C949E000FB614 = {
 			isa = PBXGroup;
 			children = (
+				23EE38E72D5A7BFF003D72D6 /* OlcbTools--macOS--Info.plist */,
 				236B121D292020AE00F26707 /* README.md */,
-				23B2EDA628E8CE450098666D /* OlcbTools (macOS)Debug.entitlements */,
 				23E3EE4028D8D0FA003AD06B /* OlcbTools--iOS--Info.plist */,
+				23B2EDA628E8CE450098666D /* OlcbTools (macOS)Debug.entitlements */,
 				239ADD1E28C4F78000E13A32 /* OlcbTools (iOS).entitlements */,
 				23D66405286F5269001CDBDD /* TelnetListenerLib */,
 				23008944285C94FD000FB614 /* OpenlcbLibrary */,
@@ -747,6 +749,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "OlcbTools--macOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LccTools;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "@2022 Bob Jacobsen";
@@ -781,6 +784,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "OlcbTools--macOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LccTools;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "@2022 Bob Jacobsen";
