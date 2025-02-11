@@ -71,9 +71,9 @@ struct NodeListNavigationView: View {
                     network.refreshAllNodes()
                 }
             
-            Text("No Selection Yet")  // second nav section
+            Text("No Selection Yet, Click in Upper Left")  // second nav section
             
-            EmptyView()  // third nav section
+            Text("No Selection Yet, Click in Upper Left")  // third nav section
         }
     }
 }
