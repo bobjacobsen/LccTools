@@ -45,7 +45,9 @@ struct StandardToggleButton: View {
                 }
             } // label
         ) // Button
-        .buttonStyle(.borderless)  // for macOS
+#if os(macOS)
+        .buttonStyle(.plain)  // for macOS
+#endif
     }
 }
 
@@ -75,7 +77,9 @@ struct StandardClickButton: View {
                 }
             } // label
         ) // Button
-        .buttonStyle(.borderless)  // for macOS
+#if os(macOS)
+            .buttonStyle(.plain)  // for macOS
+#endif
     }
 }
 
@@ -112,7 +116,9 @@ struct StandardMomentaryButton: View {
         .frame(maxWidth: .infinity)
         .background(isEnabled ? (!isPressed ? .green : .blue) : .gray)
         .cornerRadius(STANDARD_BUTTON_CORNER_RADIUS)
-        .buttonStyle(.borderless)  // for macOS
+#if os(macOS)
+        .buttonStyle(.plain)  // for macOS
+#endif
 
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
