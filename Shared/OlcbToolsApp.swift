@@ -112,7 +112,7 @@ struct OlcbToolsApp: App {
     @State private var selectedTab: String = "Throttle"
     
     var body: some Scene {
-        // iOS on iPhone has four spots available in the navigation bar at the bottom
+        // iOS on early/small iPhone has four spots available in the navigation bar at the bottom
         // macOS puts all the tabs in a tab bar at the top of the window
         WindowGroup {
             TabView(selection: $selectedTab) {
@@ -191,6 +191,11 @@ struct OlcbToolsApp: App {
                 logger.debug("Scene Active")
                 self.startup()  // this will only run once, sometimes onAppear occurs first
                 tcpConnectionModel.start()
+#if os(iOS)
+                // Disable idle timer to keep app from going to sleep and missing requests
+                // In iOS 13+, idle timer needs to be set in scene to override default
+                UIApplication.shared.isIdleTimerDisabled = true
+#endif
             case .inactive:
                 logger.debug("Scene Inactive")
                 openlcblib.appInactive()
