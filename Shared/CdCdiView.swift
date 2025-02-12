@@ -153,14 +153,19 @@ struct CdCdiView: View {
                             item.currentStringValue = eventValue
                         }
                         .textFieldStyle(.roundedBorder)
+                        .disabled(item.readOnly)
+                    
                     IosSpacer()
+                    
                     RButtonView(address: self.item.startAddress, model: model) {
                         read()
                     }
-                    WButtonView(address: self.item.startAddress, model: model) {
+                    
+                    WButtonView(address: self.item.startAddress, readOnly: item.readOnly, model: model) {
                         model.writeEvent(value: EventID(eventValue).eventID, at: self.item.startAddress,
                                          space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
+                    
                     BeyondTheButtons()
                 }.buttonStyle(BorderlessButtonStyle())
 
@@ -207,11 +212,12 @@ struct CdCdiView: View {
                             item.currentIntValue = intValue
                         }
                         .textFieldStyle(.roundedBorder)
+                        .disabled(item.readOnly)
                     IosSpacer()
                     RButtonView(address: self.item.startAddress, model: model) {
                         read()
                     }
-                    WButtonView(address: self.item.startAddress, model: model) {
+                    WButtonView(address: self.item.startAddress, readOnly: item.readOnly, model: model) {
                         model.writeInt(value: self.intValue, at: self.item.startAddress,
                                        space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
@@ -282,13 +288,14 @@ struct CdCdiView: View {
                             intValue = valueToProperty(value: stringValue)
                             item.currentIntValue = intValue
                         }
+                        .disabled(item.readOnly)
                     }
                     IosSpacer()
                     HStack {
                         RButtonView(address: self.item.startAddress, model: model) {
                             read()
                         }
-                        WButtonView(address: self.item.startAddress, model: model) {
+                        WButtonView(address: self.item.startAddress, readOnly: item.readOnly, model: model) {
                             model.writeInt(value: self.intValue, at: self.item.startAddress,
                                            space: UInt8(self.item.space), length: UInt8(self.item.length))
                         }
@@ -329,11 +336,14 @@ struct CdCdiView: View {
                         .fixedSize(horizontal: false, vertical: true)
                     TextField("Enter \(item.name)", text: $entryText)
                         .textFieldStyle(.roundedBorder)
+                        .disabled(item.readOnly)
+                    
                     IosSpacer()
+                    
                     RButtonView(address: self.item.startAddress, model: model) {
                         read()
                     }
-                    WButtonView(address: self.item.startAddress, model: model) {
+                    WButtonView(address: self.item.startAddress, readOnly: item.readOnly, model: model) {
                         model.writeString(value: self.entryText, at: self.item.startAddress,
                                           space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
@@ -388,7 +398,7 @@ private struct CdiIntSliderView: View {
                         model.writeInt(value: self.intValue, at: self.item.startAddress,
                                        space: UInt8(self.item.space), length: UInt8(self.item.length))
                     }
-                ) // Slider
+                ).disabled(item.readOnly) // Slider
                 
                 TextField("Enter \(item.name)", value: $intValue, formatter: formatter)
                     .onAppear {
@@ -398,11 +408,13 @@ private struct CdiIntSliderView: View {
                         item.currentIntValue = intValue
                     }
                     .textFieldStyle(.roundedBorder)
+                
                 IosSpacer()
+                
                 RButtonView(address: self.item.startAddress, model: model) {
                     read()
                 }
-                WButtonView(address: self.item.startAddress, model: model) {
+                WButtonView(address: self.item.startAddress, readOnly: item.readOnly, model: model) {
                     model.writeInt(value: self.intValue, at: self.item.startAddress,
                                    space: UInt8(self.item.space), length: UInt8(self.item.length))
                 }
@@ -484,22 +496,24 @@ private struct IosSpacer: View {
 /// View for a CD/CDI read/refresh button
 private struct RButtonView: View {
     let address: Int
+    // readOnly is false by default
     let model: CdiModel
     let action: () -> Void
     
     var body: some View {
-        CommonButtonView(text: "R", address: address, model: model, action: action)
+        CommonButtonView(text: "R", address: address, readOnly: false, model: model, action: action)
     }
 }
 
 /// View for a CD/CDI write button
 private struct WButtonView: View {
     let address: Int
+    let readOnly: Bool
     let model: CdiModel
     let action: () -> Void
     
     var body: some View {
-        CommonButtonView(text: "W", address: address, model: model, action: action)
+        CommonButtonView(text: "W", address: address, readOnly: readOnly, model: model, action: action)
     }
 }
 
@@ -508,6 +522,7 @@ private struct WButtonView: View {
 private struct CommonButtonView: View {
     let text: String
     let address: Int
+    let readOnly: Bool
     let model: CdiModel
     let action: () -> Void
     
@@ -518,14 +533,19 @@ private struct CommonButtonView: View {
                 ZStack { // formatted button for recognition
                     RoundedRectangle(cornerRadius: 10.0)
                         .frame(width: 30, height: 30, alignment: .center)
-                        .foregroundColor(.green)
+                        .foregroundColor(
+                            readOnly ? .gray : .green)
                     Text(text)
                         .frame(width: 30, height: 30, alignment: .center)
                         .font(.body)
                         .foregroundColor(.white)
                 }
             }
-        ).buttonStyle(.borderless)  // for macOS
+        )
+        .disabled(readOnly)
+#if os(macOS)
+        .buttonStyle(.plain)  // for macOS
+#endif
     }
 }
 
