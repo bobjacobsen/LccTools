@@ -71,9 +71,15 @@ struct NodeListNavigationView: View {
                     network.refreshAllNodes()
                 }
             
-            Text("No Selection Yet, Click in Upper Left")  // second nav section
+            VStack { // second nav section
+                Text("No Selection Yet.")
+                Text("Click in Upper Left.")
+            }
             
-            Text("No Selection Yet, Click in Upper Left")  // third nav section
+            VStack { // third nav section
+                Text("No Selection Yet.")
+                Text("Click in Upper Left.")
+            }
         }
     }
 }
