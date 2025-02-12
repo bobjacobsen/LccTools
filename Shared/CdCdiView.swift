@@ -31,7 +31,17 @@ struct CdCdiView: View {
         if displayNode.cdi == nil {
             // No, create it and load it - we're doing this as early as possible
             displayNode.cdi = CdiModel(mservice: lib.mservice, nodeID: displayNode.id)
-            displayNode.cdi!.readLengthAndModel(nodeID: displayNode.id)
+            
+            // Start the read process.  Usually we read the length first to
+            // display an accurate progress bar, but that crashes TCS nodes
+            // as of Jan 2025, and maybe for a long time after if people
+            // don't update their firmware.  Hence, if this is a TCS
+            // node, we go directly to reading the XML CDI itself.
+            if displayNode.snip.manufacturerName.starts(with: "Train Control Systems") {
+                displayNode.cdi!.readModel(nodeID: displayNode.id)
+            } else {
+                displayNode.cdi!.readLengthAndModel(nodeID: displayNode.id)
+            }
         }
         model = displayNode.cdi!
     }
