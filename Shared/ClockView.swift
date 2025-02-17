@@ -20,18 +20,18 @@ struct ClockView: View {
     static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
     
     @EnvironmentObject var openlcblib: OpenlcbNetwork
-        
+    
     @State private var hours: Int = 0
     
     @State private var minutes: Int = 0
     
     @State private var seconds: Int = 0
-    
-    /// Reload time values periodically
-    @State private var timer: Timer?
-    
+
     /// Show controls sheet
-    @State private var showSheet: Bool = false
+    @State var showSheet: Bool = false
+
+    /// Reload time values periodically
+    @State var timer: Timer?
         
     var body: some View {
         VStack {
@@ -75,7 +75,7 @@ struct ClockView: View {
                     Spacer()
                     if height > 30 {
                         StandardClickButton(label: "Clock Controls",
-                                        height: SMALL_BUTTON_HEIGHT,
+                                            height: SMALL_BUTTON_HEIGHT,
                                             font: SMALL_BUTTON_FONT) {
                             showSheet.toggle()
                         }
@@ -83,74 +83,65 @@ struct ClockView: View {
                 }.frame(alignment: .center)
             } // end GeometryReader
             .sheet(isPresented: $showSheet) {
-                    // controls cover sheet
-                    ClockControlsSheet(model: openlcblib.clockModel0) // shows full sheet
-                    // .presentationDetents([.fraction(0.25)]) // iOS16 feature
-                }
+                // controls cover sheet
+                ClockControlsSheet(model: openlcblib.clockModel0) // shows full sheet
+                // .presentationDetents([.fraction(0.25)]) // iOS16 feature
+            }
         }
     } // end body
-    
-    /// Display one time unit field, i.e. hours. minutes or seconds
-    private struct StopwatchUnit: View {
-        
-        var timeUnit: Int
-        var timeUnitText: String
-        var color: Color
-        var size: CGFloat
+}
 
-        /// Time unit expressed as String.
-        /// - Includes "0" as prefix if this is less than 10.
-        var timeUnitStr: String {
-            let timeUnitStr = String(timeUnit)
-            return timeUnit < 10 ? "0" + timeUnitStr : timeUnitStr
-        }
-        
-        var body: some View {
-            VStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: size / 5.0)
-                        .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                        .fill(color)
-                        .frame(width: size, height: size, alignment: .center)
-                    
-                    HStack(spacing: 2) {
-                        Text(timeUnitStr.characterAt(index: 0))
-                            .font(.system(size: 0.64*size))
-                            .frame(width: 0.38*size)
-                        Text(timeUnitStr.characterAt(index: 1))
-                            .font(.system(size: 0.64*size))
-                            .frame(width: 0.38*size)
-                    }
+/// Display one time unit field, i.e. hours. minutes or seconds
+private struct StopwatchUnit: View {
+    
+    var timeUnit: Int
+    var timeUnitText: String
+    var color: Color
+    var size: CGFloat
+    
+    /// Time unit expressed as String.
+    /// - Includes "0" as prefix if this is less than 10.
+    var timeUnitStr: String {
+        let timeUnitStr = String(timeUnit)
+        return timeUnit < 10 ? "0" + timeUnitStr : timeUnitStr
+    }
+    
+    var body: some View {
+        VStack {
+            ZStack {
+                RoundedRectangle(cornerRadius: size / 5.0)
+                    .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                    .fill(color)
+                    .frame(width: size, height: size, alignment: .center)
+                
+                HStack(spacing: 2) {
+                    Text(timeUnitStr.characterAt(index: 0))
+                        .font(.system(size: 0.64*size))
+                        .frame(width: 0.38*size)
+                    Text(timeUnitStr.characterAt(index: 1))
+                        .font(.system(size: 0.64*size))
+                        .frame(width: 0.38*size)
                 }
-                if size > 40.0 {  // has to match offset computation above
-                    Text(timeUnitText)
-                        .font(.system(size: 16))
-                }
+            }
+            if size > 40.0 {  // has to match offset computation above
+                Text(timeUnitText)
+                    .font(.system(size: 16))
             }
         }
     }
 }
 
-/// Provide a convenient, local single-character operation
-private extension String {  // private to avoid confusing parse errors on other files uses of String
-    /// Provide the character at a particular position
-    /// - Parameter index: 0-based index of the desired character
-    /// - Returns: String consisting of character at that index
-    func characterAt(index: Int) -> String {
-        let arrayString = Array(self)
-        return String(arrayString[index])
-    }
-}
-
 private struct ClockControlsSheet: View {
+    /// Show controls sheet
+    @Environment(\.dismiss) private var dismiss
     
     var model: ClockModel
-
+    
     @State var tempRunState: Bool = false
-
-    let rateArray = Array(stride(from: 0, through: 30, by: 0.25))
+    
+    let rateArray = Array(stride(from: 0.25, through: 30, by: 0.25))
     @State var tempSelectedRate = 1.0
-
+    
     @State var tempHours = "00"
     @State var tempMinutes = "00"
     // no seconds in fast clock itself
@@ -170,23 +161,25 @@ private struct ClockControlsSheet: View {
                         }
                         .onChange(of: tempRunState) { value in
                             model.setRunStateInMaster(to: value)
+                            model.run = value
                         }
                     Spacer(minLength: 50)
                 }
                 HStack {
-                    #if os(iOS)
+#if os(iOS)
                     // macOS titles its Picker
                     Text("Rate:")
                         .font(Font.title)
-                    #endif
+#endif
+                    Spacer()
                     Picker("Rate", selection: $tempSelectedRate) {
                         ForEach(rateArray, id: \.self) {
                             Text(String(format: "%.2f", $0))
                         }
                     } // TODO: need to call model.setRateInMaster
-                    #if os(iOS)
+#if os(iOS)
                     .pickerStyle(WheelPickerStyle())
-                    #endif
+#endif
                     .onAppear {
                         tempSelectedRate = model.rate
                     }
@@ -195,7 +188,7 @@ private struct ClockControlsSheet: View {
                         model.rate = value
                     }
                 }.padding()
-
+                
                 HStack {
                     Text("Time:")
                         .font(Font.title)
@@ -240,11 +233,22 @@ private struct ClockControlsSheet: View {
         Spacer()
 #if targetEnvironment(macCatalyst) || os(macOS)
         StandardClickButton(label: "Dismiss", font: SMALL_BUTTON_FONT) {
-            model.showingControlSheet = false
+            dismiss()
         }
 #else
         Text("Swipe down to close")
 #endif
+    }
+}
+
+/// Provide a convenient, local single-character operation
+private extension String {  // private to avoid confusing parse errors on other files uses of String
+    /// Provide the character at a particular position
+    /// - Parameter index: 0-based index of the desired character
+    /// - Returns: String consisting of character at that index
+    func characterAt(index: Int) -> String {
+        let arrayString = Array(self)
+        return String(arrayString[index])
     }
 }
 
