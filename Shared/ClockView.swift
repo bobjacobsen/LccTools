@@ -17,12 +17,10 @@ import os
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
     
-    private static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
+    static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
     
     @EnvironmentObject var openlcblib: OpenlcbNetwork
-    
-    @State private var isRunning = false // will be updated when we first hear from clock
-    
+        
     @State private var hours: Int = 0
     
     @State private var minutes: Int = 0
@@ -31,6 +29,9 @@ struct ClockView: View {
     
     /// Reload time values periodically
     @State private var timer: Timer?
+    
+    /// Show controls sheet
+    @State private var showSheet: Bool = false
         
     var body: some View {
         VStack {
@@ -59,29 +60,33 @@ struct ClockView: View {
                     }.frame(alignment: .center)
                         .onAppear {
                             let delay = 1.0/12.0  // 12fps for energy use compromise
-                            timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
-                                let date = openlcblib.clockModel0.getTime()
-                                hours = openlcblib.clockModel0.getHour(date)
-                                minutes = openlcblib.clockModel0.getMinute(date)
-                                seconds = openlcblib.clockModel0.getSecond(date)
-                            })
+                            if timer == nil {
+                                timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
+                                    let date = openlcblib.clockModel0.getTime()
+                                    hours = openlcblib.clockModel0.getHour(date)
+                                    minutes = openlcblib.clockModel0.getMinute(date)
+                                    seconds = openlcblib.clockModel0.getSecond(date)
+                                })
+                            }
                         }.onDisappear {
                             timer?.invalidate()  // stop the timer when not displayed
+                            timer = nil
                         }
                     Spacer()
                     if height > 30 {
                         StandardClickButton(label: "Clock Controls",
                                         height: SMALL_BUTTON_HEIGHT,
                                             font: SMALL_BUTTON_FONT) {
-                            openlcblib.clockModel0.showingControlSheet.toggle()
+                            showSheet.toggle()
                         }
                     }
                 }.frame(alignment: .center)
             } // end GeometryReader
-            .sheet(isPresented: $openlcblib.clockModel0.showingControlSheet) {  // show controls in a cover sheet
-                ClockControlsSheet(model: openlcblib.clockModel0) // shows full sheet
-                // .presentationDetents([.fraction(0.25)]) // iOS16 feature
-            }
+            .sheet(isPresented: $showSheet) {
+                    // controls cover sheet
+                    ClockControlsSheet(model: openlcblib.clockModel0) // shows full sheet
+                    // .presentationDetents([.fraction(0.25)]) // iOS16 feature
+                }
         }
     } // end body
     
@@ -92,7 +97,7 @@ struct ClockView: View {
         var timeUnitText: String
         var color: Color
         var size: CGFloat
-        
+
         /// Time unit expressed as String.
         /// - Includes "0" as prefix if this is less than 10.
         var timeUnitStr: String {
@@ -101,7 +106,6 @@ struct ClockView: View {
         }
         
         var body: some View {
-            
             VStack {
                 ZStack {
                     RoundedRectangle(cornerRadius: size / 5.0)
@@ -159,6 +163,7 @@ private struct ClockControlsSheet: View {
             VStack {
                 HStack {
                     Text("Running:")
+                        .font(Font.title)
                     Toggle("", isOn: $tempRunState)
                         .onAppear {
                             tempRunState = model.run
@@ -170,7 +175,9 @@ private struct ClockControlsSheet: View {
                 }
                 HStack {
                     #if os(iOS)
+                    // macOS titles its Picker
                     Text("Rate:")
+                        .font(Font.title)
                     #endif
                     Picker("Rate", selection: $tempSelectedRate) {
                         ForEach(rateArray, id: \.self) {
@@ -185,16 +192,21 @@ private struct ClockControlsSheet: View {
                     }
                     .onChange(of: tempSelectedRate) { value in
                         model.setRunRateInMaster(to: value)
+                        model.rate = value
                     }
                 }.padding()
 
                 HStack {
                     Text("Time:")
+                        .font(Font.title)
                     TextField("", text: $tempHours)
                         .fixedSize()
+                        .font(Font.title)
                     Text(":")
+                        .font(Font.title)
                     TextField("", text: $tempMinutes)
                         .fixedSize()
+                        .font(Font.title)
                     Spacer()
                     StandardClickButton(label: "Set",
                                         height: SMALL_BUTTON_HEIGHT,
@@ -213,7 +225,9 @@ private struct ClockControlsSheet: View {
                         let userCalendar = Calendar(identifier: .gregorian) // since the components above (like year 1980) are for Gregorian
                         let newDate = userCalendar.date(from: dateComponents)
                         model.setTimeInMaster(to: newDate!)
-
+                        if let tempDate = newDate {
+                            model.setTime(tempDate)
+                        }
                     }.onAppear {
                         tempHours = String(format: "%02d", model.getHour() )
                         tempMinutes = String(format: "%02d", model.getMinute() )
