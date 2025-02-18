@@ -206,23 +206,9 @@ private struct ClockControlsSheet: View {
                     StandardClickButton(label: "Set",
                                         height: STANDARD_BUTTON_HEIGHT,
                                         font: STANDARD_BUTTON_FONT) {
-                        // Send changed time via model, using same date as now
-                        let currentDate = model.getTime()
-                        // create a new Date from components
-                        var dateComponents = DateComponents()
-                        dateComponents.year = model.getYear(currentDate)
-                        dateComponents.month = model.getMonth(currentDate)
-                        dateComponents.day = model.getDay(currentDate)
-                        // dateComponents.timeZone = currentDate.timeZone
-                        dateComponents.hour = Int(tempHours)
-                        dateComponents.minute = Int(tempMinutes)
-                        dateComponents.second = Int(0)
-                        let userCalendar = Calendar(identifier: .gregorian) // since the components above (like year 1980) are for Gregorian
-                        let newDate = userCalendar.date(from: dateComponents)
-                        model.setTimeInMaster(to: newDate!)
-                        if let tempDate = newDate {
-                            model.setTime(tempDate)
-                        }
+                        // update time
+                        // update widgets here in case the entered time was out of range
+                        (tempHours, tempMinutes) = model.updateTime(hour: Int(tempHours) ?? 0, minute: Int(tempMinutes) ?? 0)
                     }.onAppear {
                         tempHours = String(format: "%02d", model.getHour() )
                         tempMinutes = String(format: "%02d", model.getMinute() )
