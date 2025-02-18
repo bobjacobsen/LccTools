@@ -146,6 +146,8 @@ private struct ClockControlsSheet: View {
     @State var tempMinutes = "00"
     // no seconds in fast clock itself
     
+    let timeSetFont = Font.largeTitle
+    
     var body: some View {
         Text("Clock Controls")
         Spacer()
@@ -154,7 +156,7 @@ private struct ClockControlsSheet: View {
             VStack {
                 HStack {
                     Text("Running:")
-                        .font(Font.title)
+                        .font(timeSetFont)
                     Toggle("", isOn: $tempRunState)
                         .onAppear {
                             tempRunState = model.run
@@ -169,13 +171,13 @@ private struct ClockControlsSheet: View {
 #if os(iOS)
                     // macOS titles its Picker
                     Text("Rate:")
-                        .font(Font.title)
+                        .font(timeSetFont)
 #endif
                     Spacer()
                     Picker("Rate", selection: $tempSelectedRate) {
                         ForEach(rateArray, id: \.self) {
                             Text(String(format: "%.2f", $0))
-                        }
+                        }.font(timeSetFont)
                     } // TODO: need to call model.setRateInMaster
 #if os(iOS)
                     .pickerStyle(WheelPickerStyle())
@@ -191,19 +193,19 @@ private struct ClockControlsSheet: View {
                 
                 HStack {
                     Text("Time:")
-                        .font(Font.title)
+                        .font(timeSetFont)
                     TextField("", text: $tempHours)
                         .fixedSize()
-                        .font(Font.title)
+                        .font(timeSetFont)
                     Text(":")
-                        .font(Font.title)
+                        .font(timeSetFont)
                     TextField("", text: $tempMinutes)
                         .fixedSize()
-                        .font(Font.title)
+                        .font(timeSetFont)
                     Spacer()
                     StandardClickButton(label: "Set",
-                                        height: SMALL_BUTTON_HEIGHT,
-                                        font: SMALL_BUTTON_FONT) {
+                                        height: STANDARD_BUTTON_HEIGHT,
+                                        font: STANDARD_BUTTON_FONT) {
                         // Send changed time via model, using same date as now
                         let currentDate = model.getTime()
                         // create a new Date from components
