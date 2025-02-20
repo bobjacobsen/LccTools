@@ -5,9 +5,35 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import WatchConnectivity
+#endif
+import os
+
 import OpenlcbLibrary
 import TelnetListenerLib
-import os
+
+#if os(iOS)
+// Need to keep this in variable because the WCSession.default.delegate member is marked weak
+private var sessionDelegator: WCSessionDelegate = OurWCSessionDelegate()
+
+private class OurWCSessionDelegate: NSObject, WCSessionDelegate {
+    private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OurWCSessionDelegate")
+
+    func session(_ session: WCSession,
+                 activationDidCompleteWith activationState: WCSessionActivationState,
+                 error: Error?) {
+        logger.info("received data \(session.receivedApplicationContext)")
+    }
+    public func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+        // Receiving messages sent without a reply handler
+        logger.debug("didReceiveMessage with \(message)")
+    }
+    // These two are needed on iOS
+    func sessionDidBecomeInactive(_ session: WCSession) {}
+    func sessionDidDeactivate(_ session: WCSession) {}
+}
+#endif
 
 /// Main entry point for OlcbToolsApp
 ///
@@ -19,7 +45,7 @@ struct OlcbToolsApp: App {
     @AppStorage("HUB_SERVICE")    private var selectedHubAddress = ModelPeerBrowserDelegate.PeerBrowserDelegateNoHubSelected
     @AppStorage("HUB_IP_ADDRESS") private var ip_address: String = ""
     @AppStorage("HUB_IP_PORT") private var ip_port: String = "12021"
-    @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = ""  // static for static openlcnlib
+    @AppStorage("THIS_NODE_ID") static private var this_node_ID: String = ""  // static for static openlcblib
 
     @StateObject var openlcblib = OpenlcbNetwork(localNodeID: NodeID(this_node_ID))
     
@@ -60,6 +86,17 @@ struct OlcbToolsApp: App {
             OlcbToolsApp.this_node_ID = OlcbToolsApp.selectThisNodeID()
             logger.info("  updated default node id to \(OlcbToolsApp.this_node_ID)")
         }
+        
+#if os(iOS)
+        // Start Watch Communications
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = sessionDelegator
+            session.activate()
+        } else {
+            logger.error("This requires WCSession support, e.g. an iPhone")
+        }
+#endif
     }
     
     var canphysical = CanPhysicalLayerGridConnect()

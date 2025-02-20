@@ -5,8 +5,8 @@
 //
 
 import SwiftUI
-import OpenlcbLibrary
 import os
+import OpenlcbLibrary
 
 // This works by timer-based periodic refresh of hours/minutes/seconds @State variables from the underlying Clock instance
 // TODO: Do people really want seconds on their fast clock?
@@ -41,7 +41,7 @@ struct ClockView: View {
                 let scale = max(0.33, min( width / 330.0, height / 90.0))  // max prevents 0 value on Mac
                 let fontsize = scale * 48.0
                 let unitsize = scale * 75.0
-                let offset = fontsize > 40.0 ? -18.0 : 0.0
+                let offset = fontsize > 40.0 ? -18.0 : 0.0  // match timeUnitText below
                 let spacing = scale * 5.0
                 VStack {
                     Spacer()
@@ -133,6 +133,8 @@ private struct StopwatchUnit: View {
 
 private struct ClockControlsSheet: View {
     /// Show controls sheet
+    static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockControlsSheet")
+
     @Environment(\.dismiss) private var dismiss
     
     var model: ClockModel
@@ -164,6 +166,8 @@ private struct ClockControlsSheet: View {
                         .onChange(of: tempRunState) { value in
                             model.setRunStateInMaster(to: value)
                             model.run = value
+                            // Send to watch companion app
+                            model.updateCompanionApp()
                         }
                     Spacer(minLength: 50)
                 }
@@ -188,6 +192,8 @@ private struct ClockControlsSheet: View {
                     .onChange(of: tempSelectedRate) { value in
                         model.setRunRateInMaster(to: value)
                         model.rate = value
+                        // Send to watch companion app
+                        model.updateCompanionApp()
                     }
                 }.padding()
                 
@@ -206,9 +212,12 @@ private struct ClockControlsSheet: View {
                     StandardClickButton(label: "Set",
                                         height: STANDARD_BUTTON_HEIGHT,
                                         font: STANDARD_BUTTON_FONT) {
-                        // update time
-                        // update widgets here in case the entered time was out of range
+                        // Update time in clock model
+                        // We reload TextFields here in case the entered time was out of range
                         (tempHours, tempMinutes) = model.updateTime(hour: Int(tempHours) ?? 0, minute: Int(tempMinutes) ?? 0)
+                        // Send to watch companion app
+                        model.updateCompanionApp()
+                        
                     }.onAppear {
                         tempHours = String(format: "%02d", model.getHour() )
                         tempMinutes = String(format: "%02d", model.getMinute() )
