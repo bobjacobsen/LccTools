@@ -14,24 +14,49 @@ import OpenlcbLibrary
 import TelnetListenerLib
 
 #if os(iOS)
-// Need to keep this in variable because the WCSession.default.delegate member is marked weak
-private var sessionDelegator: WCSessionDelegate = OurWCSessionDelegate()
+// watch communications support
 
-private class OurWCSessionDelegate: NSObject, WCSessionDelegate {
-    private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OurWCSessionDelegate")
+// Need to keep this in variable because the WCSession.default.delegate member is marked weak - but delegate not being invoked, so does this work?
+private var sessionDelegator: WCSessionDelegate = ExtendedWCSessionDelegate()
 
+private class ExtendedWCSessionDelegate: NSObject, WCSessionDelegate {
+    private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ExtendedWCSessionDelegate")
+    
     func session(_ session: WCSession,
                  activationDidCompleteWith activationState: WCSessionActivationState,
                  error: Error?) {
-        logger.info("received data \(session.receivedApplicationContext)")
-    }
-    public func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
-        // Receiving messages sent without a reply handler
-        logger.debug("didReceiveMessage with \(message)")
+        logger.info("At activation, context data \(session.receivedApplicationContext)")
     }
     // These two are needed on iOS
     func sessionDidBecomeInactive(_ session: WCSession) {}
     func sessionDidDeactivate(_ session: WCSession) {}
+    
+    public func initializeWatchCommunications() {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            // TODO: we set the delegate, but it never seems to be invoked on sendMessage from watch
+            session.delegate = ExtendedWCSessionDelegate.default
+            session.activate()
+        } else {
+            logger.error("This requires WCSession support, e.g. an running on an iPhone")
+        }
+    }
+    
+    // create the default instance
+    static public let `default`: ExtendedWCSessionDelegate = ExtendedWCSessionDelegate()
+}
+extension ExtendedWCSessionDelegate {  // optional method requires presence in extension
+    // We don't use this right now, as we only transfer context
+    public func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+        // Receiving messages sent without a reply handler
+        logger.debug("didReceiveMessage with \(message)")
+    }
+    
+    // We don't use this right now, as we only transfer context
+    public func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHander: @escaping ([String: Any]) -> Void) {
+        // Receiving messages sent with a reply handler
+        logger.debug("didReceiveMessage (handler) with \(message)")
+    }
 }
 #endif
 
@@ -88,14 +113,8 @@ struct OlcbToolsApp: App {
         }
         
 #if os(iOS)
-        // Start Watch Communications
-        if WCSession.isSupported() {
-            let session = WCSession.default
-            session.delegate = sessionDelegator
-            session.activate()
-        } else {
-            logger.error("This requires WCSession support, e.g. an iPhone")
-        }
+        // Trigger WCSession activation for watch communications at the early phase of app launching.
+        ExtendedWCSessionDelegate.default.initializeWatchCommunications()
 #endif
     }
     
