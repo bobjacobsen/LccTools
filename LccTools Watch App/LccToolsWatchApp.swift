@@ -11,8 +11,10 @@ import os
 
 private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "LccToolsWatchAppApp")
 
-public class OurWCSessionDelegate: NSObject, WCSessionDelegate {
-    var context: OurContext = OurContext()
+public class ExtendedWCSessionDelegate: NSObject, WCSessionDelegate {
+    private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ExtendedWCSessionDelegate")
+
+    var context: WatchContext = WatchContext()
 
     // Working method - gets initial context data
     public func session(_ session: WCSession,
@@ -22,6 +24,8 @@ public class OurWCSessionDelegate: NSObject, WCSessionDelegate {
         logger.debug("activationDidCompleteWith with \(self.context.value)")
     }
 
+    // We don't use this right now, as we only transfer context
+    // Should this be in the extension?
     public func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         // Receiving messages sent without a reply handler
         logger.debug("didReceiveMessage with \(message)")
@@ -30,24 +34,24 @@ public class OurWCSessionDelegate: NSObject, WCSessionDelegate {
     public func initializeWatchCommunications() {
         if WCSession.isSupported() {
             let session = WCSession.default
-            session.delegate = OurWCSessionDelegate.default
+            session.delegate = ExtendedWCSessionDelegate.default
             session.activate()
         } else {
-            logger.error("This requires WCSession support, e.g. an associated iPhone")
+            logger.error("This requires WCSession support, e.g. an running with an iPhone")
         }
     }
 
     // create the default instance
-    static public let `default`: OurWCSessionDelegate = OurWCSessionDelegate()
+    static public let `default`: ExtendedWCSessionDelegate = ExtendedWCSessionDelegate()
 }
-extension OurWCSessionDelegate {  // optional method requires presence in extension
+extension ExtendedWCSessionDelegate {  // optional method requires presence in extension
     public func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         context.value = session.receivedApplicationContext
         logger.debug("received context \(self.context.value)")
     }
 }
 
-class OurContext: ObservableObject {
+class WatchContext: ObservableObject { // need to make an Observable out of a dictionary
     var value: [String: Any] = [:]
 }
 
@@ -56,7 +60,7 @@ struct LccToolsWatchApp: App {
 
     init() {
         // Trigger WCSession activation at the early phase of app launching.
-        OurWCSessionDelegate.default.initializeWatchCommunications()
+        ExtendedWCSessionDelegate.default.initializeWatchCommunications()
     }
 
     @Environment(\.scenePhase) var scenePhase  // for .background, etc
@@ -74,8 +78,6 @@ struct LccToolsWatchApp: App {
             case .active:
                 logger.debug("Scene Active")
                 globalClockModel.startUpdates()
-                // request first update from iOS app
-                WCSession.default.sendMessage(["Please": "Update"], replyHandler: nil)
             case .inactive:
                 logger.debug("Scene Inactive")
                 globalClockModel.cancelUpdates()
