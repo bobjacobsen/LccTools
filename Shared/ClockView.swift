@@ -68,6 +68,8 @@ struct ClockView: View {
                                     seconds = openlcblib.clockModel0.getSecond(date)
                                 })
                             }
+                            // make sure that a watch gets an initial status
+                            openlcblib.clockModel0.updateCompanionApp()
                         }.onDisappear {
                             timer?.invalidate()  // stop the timer when not displayed
                             timer = nil
