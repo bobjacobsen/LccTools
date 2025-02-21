@@ -18,7 +18,7 @@ class WatchClockModel: ObservableObject {
     @Published var minute: String = "--"
 
     var timer: Timer?
-    let context = OurWCSessionDelegate.default.context
+    let context = ExtendedWCSessionDelegate.default.context
 
     let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "WatchClockModel")
 
@@ -30,6 +30,7 @@ class WatchClockModel: ObservableObject {
 
     public func startUpdates() {
         logger.debug("startTimer")
+        // start the sequence of future updates
         let delay = 2.0  // 2 second per frame for energy use compromise
         if timer == nil {
             timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
@@ -37,6 +38,9 @@ class WatchClockModel: ObservableObject {
                 self.minute = self.getMinute()
             })
         }
+        // and do an update right away without waiting for 1st timeout
+        self.hour = self.getHour()
+        self.minute = self.getMinute()
     }
 
     func getTime() -> Date {
