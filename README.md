@@ -10,7 +10,7 @@ Provides:
  - A consisting tool
  - An LCC traffic monitor
 
-Released under the GPL2 license. We're serious about its terms.
+Released under the LGPL2 license. We're serious about its terms.
 
 Full documentation is [available on the web](https://bobjacobsen.github.io/LccTools/documentation/lcctools/) and is built in XCode once you've installed this package.
 
