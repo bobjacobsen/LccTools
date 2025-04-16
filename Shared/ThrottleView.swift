@@ -20,9 +20,6 @@ struct ThrottleView: View {
     let maxindex = 50       // number of bars - set with maxSpeed, throttle curve to have low bars ~ 1mph
     let maxSpeed = 126.0    // MPH, but mapped to speed step in DCC world; see Traction TN 4.1
 
-    static let maxLength: CGFloat = 150.0  // length of horizontal bar area
-    // TODO: make this scale to available space so it looks better on iPad and landscape iPhone
-
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ThrottleView")
     
     init(throttleModel: ThrottleModel) {
@@ -30,9 +27,9 @@ struct ThrottleView: View {
         
         for index in 0...maxindex {
             // compute bar length from 0 to maxlength
-            let length = CGFloat(ThrottleView.maxLength * pow(Double(maxindex - index) / Double(maxindex), 1.5))  // pow curves the progression
-            let setSpeed = Float( length/ThrottleView.maxLength*maxSpeed)
-            bars.append(ThrottleBar(length: length, setSpeed: setSpeed))
+            let fraction = CGFloat(pow(Double(maxindex - index) / Double(maxindex), 1.5))  // pow curves the progression
+            let setSpeed = Float(fraction*maxSpeed)
+            bars.append(ThrottleBar(fraction: fraction, setSpeed: setSpeed))
         }
         
         self.model.reloadRoster()
@@ -59,7 +56,12 @@ struct ThrottleView: View {
             
             HStack {
                 ThrottleSliderView(speed: $model.speed, bars: bars)
-                FunctionsView(fnModels: model.fnModels)
+                VStack {
+                    Text(String(format: "Speed: %.1f", model.speed))
+                    ClockView()
+                        .frame(height: STANDARD_BUTTON_HEIGHT*1.33)
+                    FunctionsView(fnModels: model.fnModels)
+                }
             } // HStack
             
             Spacer()
@@ -99,9 +101,13 @@ private struct ThrottleSliderView: View {
     var bars: [ThrottleBar]
     
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(bars, id: \.id) { bar in
-                ThrottleBarView(bar: bar, speed: $speed)
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            
+            VStack(spacing: 0) {
+                ForEach(bars, id: \.id) { bar in
+                    ThrottleBarView(bar: bar, speed: $speed, maxWidth: width)
+                }
             }
         }
     } // body
@@ -110,7 +116,7 @@ private struct ThrottleSliderView: View {
     struct ThrottleBarView: View {
         fileprivate let bar: ThrottleBar
         @Binding var speed: Float
-        
+        let maxWidth: CGFloat
         var body: some View {
             HStack {
                 Button(action: {
@@ -118,7 +124,7 @@ private struct ThrottleSliderView: View {
                 }, // Action
                        label: {
                     RoundedRectangle(cornerRadius: 3.0)
-                        .frame(width: bar.length) // height is computed automatically
+                        .frame(width: bar.fraction*maxWidth) // height is computed automatically
                         .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
                 } // label
                 ) // Button
@@ -137,7 +143,7 @@ private struct ThrottleSliderView: View {
                 }, // Action
                        label: {
                     RoundedRectangle(cornerRadius: 2.0)
-                        .frame(width: ThrottleView.maxLength - bar.length)
+                        .frame(width: maxWidth*(1.0 - bar.fraction))
                         .foregroundColor(speed >= bar.setSpeed ? .blue : .green)
                         .opacity(0.2)
                 } // label
@@ -161,7 +167,7 @@ private struct ThrottleSliderView: View {
 ///
 /// Local, not part of model, because these together represent the `speed` value
 private struct ThrottleBar {
-    let length: CGFloat
+    let fraction: CGFloat
     let setSpeed: Float
     let id = UUID()
 }
@@ -172,9 +178,6 @@ private struct FunctionsView: View {
     
     var body: some View {
         List {
-            ClockView() // add a clock view as the top bar
-                .frame(height: STANDARD_BUTTON_HEIGHT)
-            
             ForEach(fnModels, id: \.id) { fnModel in
                 FnButtonView(model: fnModel)
 #if os(iOS)
@@ -182,7 +185,7 @@ private struct FunctionsView: View {
                     .padding(.vertical, -4)
 #endif
             }
-        }
+        }.listStyle(PlainListStyle())
     }
     
     /// One function button itself
