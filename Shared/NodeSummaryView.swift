@@ -82,8 +82,10 @@ struct NodeSummaryView: View {
                 IdentView(network: network, displayNode: displayNode)
                 StandardHDivider()
                 PipView(displayNode: displayNode)
-                StandardHDivider()
-                EventView(displayNode: displayNode)
+                if displayNode.pipSet.contains(.EVENT_EXCHANGE_PROTOCOL) {
+                    StandardHDivider()
+                    EventView(displayNode: displayNode)
+                }
             }
         }
     }
