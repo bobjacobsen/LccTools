@@ -57,7 +57,7 @@
 		23BC4B2129C7E1F300382B78 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 23BC4B1F29C7E1F300382B78 /* .swiftlint.yml */; };
 		23C40BBB28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */; };
 		23C40BBC28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C40BBA28CAC06B00A22AD9 /* HexadecimalKeyboard.swift */; };
-		23C887192D65150C0088D42D /* LccTools Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 23C886F62D65150A0088D42D /* LccTools Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		23C887192D65150C0088D42D /* LccTools Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 23C886F62D65150A0088D42D /* LccTools Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -742,6 +742,7 @@
 		};
 		23C887182D65150C0088D42D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 23C886F52D65150A0088D42D /* LccTools Watch App */;
 			targetProxy = 23C887172D65150C0088D42D /* PBXContainerItemProxy */;
 		};
@@ -874,7 +875,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "OlcbTools (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1024;
+				CURRENT_PROJECT_VERSION = 1035;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -893,7 +894,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = us.ardenwood.OlcbTools;
 				PRODUCT_NAME = LccTools;
 				SDKROOT = iphoneos;
@@ -914,7 +915,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "OlcbTools (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1024;
+				CURRENT_PROJECT_VERSION = 1035;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -933,7 +934,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = us.ardenwood.OlcbTools;
 				PRODUCT_NAME = LccTools;
 				SDKROOT = iphoneos;
@@ -958,7 +959,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1024;
+				CURRENT_PROJECT_VERSION = 1035;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -973,7 +974,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = us.ardenwood.OlcbTools;
 				PRODUCT_NAME = LccTools;
 				SDKROOT = macosx;
@@ -993,7 +994,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1024;
+				CURRENT_PROJECT_VERSION = 1035;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1008,7 +1009,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = us.ardenwood.OlcbTools;
 				PRODUCT_NAME = LccTools;
 				SDKROOT = macosx;
