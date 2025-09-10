@@ -59,28 +59,28 @@ struct EventView: View {
             }.padding(.horizontal, overallHorizontalPadding)
         }.navigationTitle("\(displayNode.name) Events")
     }
+}
+
+/// Present one event as an active button
+public struct EventViewOneEvent: View {
+    @EnvironmentObject var openlcblib: OpenlcbNetwork
     
-    /// Present one event as an active button
-    fileprivate struct EventViewOneEvent: View {
-        @EnvironmentObject var openlcblib: OpenlcbNetwork
-        
-        let eventID: EventID
-        
+    let eventID: EventID
+    
 #if os(macOS)
-        let horizPadding: CGFloat = 0
+    let horizPadding: CGFloat = 0
 #else
-        let horizPadding: CGFloat = -5
+    let horizPadding: CGFloat = -5
 #endif
-        
-        var body: some View {
-            GeometryReader { geometry in
-                let width = geometry.size.width
-                let fontsize = Font.system(size: width / 12.5 ) // empirically derived
-                
-                StandardClickButton(label: "\(eventID.description)", font: fontsize) {
-                    openlcblib.produceEvent(eventID: eventID)
-                } .padding(.horizontal, horizPadding)
-            }
+    
+    public var body: some View {
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            let fontsize = Font.system(size: width / 12.5 ) // empirically derived
+            
+            StandardClickButton(label: "\(eventID.description)", font: fontsize) {
+                openlcblib.produceEvent(eventID: eventID)
+            } .padding(.horizontal, horizPadding)
         }
     }
 }
