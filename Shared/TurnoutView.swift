@@ -10,12 +10,13 @@ import SwiftUI
 
 /// Show and allow control of  DCC turnouts.
 struct TurnoutView: View {
-    @State var dccAddress: Int = 1
+    @State var dccAddressInt: Int = 1
     @State var macroAddress: Int = 1
     @ObservedObject var model: TurnoutModel
     var turnoutformatter = NumberFormatter()
     var macroformatter = NumberFormatter()
-
+    @State private var showingDefineSheet: Bool = false
+    
     init(network: OpenlcbNetwork) {
         turnoutformatter.minimum = 1
         turnoutformatter.maximum = 2040
@@ -31,27 +32,28 @@ struct TurnoutView: View {
             HStack {
                 Spacer()
                 Text("Enter Turnout Number (1-2040):")
-                TextField("Number", value: $dccAddress, formatter: turnoutformatter)
+                TextField("Number", value: $dccAddressInt, formatter: turnoutformatter)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 80)
                 Spacer()
             }
             HStack {
                 StandardClickButton(label: "Throw", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
-                    model.setThrown(dccAddress)
+                    model.setThrown(TurnoutDefinition(dccAddressInt))
                 }
                 StandardClickButton(label: "Close", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
-                    model.setClosed(dccAddress)
+                    model.setClosed(TurnoutDefinition(dccAddressInt))
                 }
             }
+
             StandardHDivider()
             
             // list of previous items
             List {
-                ForEach(model.addressArray, id: \.self) { item in
+                ForEach(model.turnoutDefinitionArray, id: \.self) { item in
                     HStack {
                         Spacer()
-                        Text("\(String(item))")
+                        Text("\(String(item.visibleAddress))")
                         StandardClickButton(label: "T", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                             model.setThrown(item)
                         }.frame(width: 60)
@@ -61,6 +63,17 @@ struct TurnoutView: View {
                    }
                }
             }
+
+            StandardClickButton(label: "Define Custom Turnout", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
+                showingDefineSheet = true
+            }
+            .sheet(isPresented: $showingDefineSheet) {  // show selection in a cover sheet
+                TurnoutDefinitionView(parentModel: model) // shows definition sheet
+                // .presentationDetents([.fraction(0.25)]) // iOS16 feature
+            }
+
+            StandardHDivider()
+
             HStack {
                 Spacer()
                 Text("Enter Macro Number (1-65535):")
@@ -75,6 +88,7 @@ struct TurnoutView: View {
                     model.setMacro(macroAddress)
                 }
             }
+
             StandardHDivider()
             
             // list of previous items
@@ -89,9 +103,67 @@ struct TurnoutView: View {
                     }
                 }
             }
+
         }
     }
     
+}
+
+/// Cover sheet for defining a "turnout" with non-standard events
+struct TurnoutDefinitionView: View {
+    @Environment(\.dismiss) var dismiss
+    let model: TurnoutModel
+    
+    @State var name  = ""
+    @State var closedEvent  = ""
+    @State var thrownEvent  = ""
+
+    init(parentModel: TurnoutModel) {
+        model = parentModel
+    }
+    
+    var body: some View {
+        VStack {
+            Text("Define Custom Turnout")
+                .font(.largeTitle)
+            
+            TextField("Enter name", text: $name)
+                .font(.title)
+                .fixedSize()  // limit size to something reasonable
+#if os(iOS)
+                .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
+#endif
+            
+            TextField("Enter EventID for Closed", text: $closedEvent)
+                .font(.title)
+                .fixedSize()  // limit size to something reasonable
+#if os(iOS)
+                .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
+#endif
+            
+            TextField("Enter EventID for Thrown", text: $thrownEvent)
+                .font(.title)
+                .fixedSize()  // limit size to something reasonable
+#if os(iOS)
+                .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
+#endif
+            
+            StandardClickButton(label: "Define", font: SMALL_BUTTON_FONT) {
+                // use entered data to create a TurnoutDefinition and store it
+                let newDefinition = TurnoutDefinition(name, EventID(closedEvent), EventID(thrownEvent))
+                model.replaceTurnoutDefinition(newDefinition)
+            }
+
+#if targetEnvironment(macCatalyst) || os(macOS)
+            StandardHDivider()
+            StandardClickButton(label: "Dismiss", font: SMALL_BUTTON_FONT) {
+                dismiss()
+            }
+#else
+            Text("Swipe down to close")
+#endif
+        }
+    }
 }
 
 /// XCode preview for the TurnoutView
