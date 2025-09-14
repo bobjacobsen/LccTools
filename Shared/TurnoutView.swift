@@ -44,11 +44,11 @@ struct TurnoutView: View {
             HStack {
                 StandardClickButton(label: "Throw", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                     model.setThrown(TurnoutDefinition(dccAddressInt))
-                    encodeAndStoreTurnoutDefinitions(newContents: model.turnoutDefinitionArray)
+                     encodeAndStoreTurnoutDefinitions(newContents: model.turnoutDefinitionArray)
                 }
                 StandardClickButton(label: "Close", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                     model.setClosed(TurnoutDefinition(dccAddressInt))
-                    encodeAndStoreTurnoutDefinitions(newContents: model.turnoutDefinitionArray)
+                     encodeAndStoreTurnoutDefinitions(newContents: model.turnoutDefinitionArray)
                 }
             }
             
@@ -63,9 +63,11 @@ struct TurnoutView: View {
                         StandardClickButton(label: "T", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                             model.setThrown(item)
                         }.frame(width: 60)
+                            .buttonStyle(BorderlessButtonStyle()) // prevent multiple press in HStack
                         StandardClickButton(label: "C", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
                             model.setClosed(item)
                         }.frame(width: 80)
+                            .buttonStyle(BorderlessButtonStyle()) // prevent multiple press in HStack
                     }
                 }.onDelete(perform: deleteTurnoutDefinition)
             }
@@ -80,6 +82,7 @@ struct TurnoutView: View {
             
             StandardHDivider()
             
+            // start Macro section
             HStack {
                 Spacer()
                 Text("Enter Macro Number (1-65535):")
@@ -104,7 +107,7 @@ struct TurnoutView: View {
                         Spacer()
                         Text("\(String(item))")
                         StandardClickButton(label: "S", height: SMALL_BUTTON_HEIGHT, font: SMALL_BUTTON_FONT) {
-                            model.setThrown(item)
+                            model.setMacro(item)
                         }.frame(width: 60)
                     }
                 }
