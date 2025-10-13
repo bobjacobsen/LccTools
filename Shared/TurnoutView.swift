@@ -190,9 +190,6 @@ struct TurnoutView: View {
                 TextField("Enter name", text: $name)
                     .font(.title)
                     .fixedSize()  // limit size to something reasonable
-#if os(iOS)
-                    .keyboardType(.numbersAndPunctuation) // keyboards not used on macOS
-#endif
                 
                 TextField("Enter EventID for Closed", text: $closedEvent)
                     .font(.title)
