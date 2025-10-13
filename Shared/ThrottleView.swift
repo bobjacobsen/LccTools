@@ -47,7 +47,7 @@ struct ThrottleView: View {
             }
             
             Slider(
-                value: $model.speed,
+                value: $model.speedSettings.speed,
                 in: 0...Float(maxSpeed),
                 onEditingChanged: { editing in
                     isEditing = editing
@@ -55,9 +55,9 @@ struct ThrottleView: View {
             ) // Slider
             
             HStack {
-                ThrottleSliderView(speed: $model.speed, bars: bars)
+                ThrottleSliderView(speed: $model.speedSettings.speed, bars: bars)
                 VStack {
-                    Text(String(format: "Speed: %.1f", model.speed))
+                    Text(String(format: "Speed: %.1f", model.speedSettings.speed))
                     ClockView()
                         .frame(height: STANDARD_BUTTON_HEIGHT*1.33)
                     FunctionsView(fnModels: model.fnModels)
@@ -68,25 +68,27 @@ struct ThrottleView: View {
             
             HStack {
                 StandardClickButton(label: "Stop") {
-                    model.speed = 0.0
+                    model.speedSettings = SpeedAndDirection(0.0, model.speedSettings.forward, model.speedSettings.reverse)
                 }
 
                 HStack {
-                    StandardToggleButton(label: "Rev", select: $model.reverse) {
-                        let oldReverse = model.reverse
-                        model.forward = false
-                        model.reverse = true
-                        if !oldReverse {
-                            model.speed = 0.0
+                    StandardToggleButton(label: "Rev", select: $model.speedSettings.reverse) {
+                        let forward = false
+                        let reverse = true
+                        var speed = model.speedSettings.speed
+                        if !model.speedSettings.reverse { // TODO: Business logic should move to ThrottleModel
+                            speed = 0.0
                         }
+                        model.speedSettings = SpeedAndDirection(speed, forward, reverse)
                     } // end Reverse Standard Button
-                    StandardToggleButton(label: "Fwd", select: $model.forward) {
-                        let oldForward = model.forward
-                        model.forward = true
-                        model.reverse = false
-                        if !oldForward {
-                            model.speed = 0.0
+                    StandardToggleButton(label: "Fwd", select: $model.speedSettings.forward) {
+                        let forward = true
+                        let reverse = false
+                        var speed = model.speedSettings.speed
+                        if !model.speedSettings.forward { // TODO: Business logic should move to ThrottleModel
+                            speed = 0.0
                         }
+                        model.speedSettings = SpeedAndDirection(speed, forward, reverse)
                     } // end Forward Standard Button
                 } // HStack of R/F
             } // HStack of S / (R/F)
