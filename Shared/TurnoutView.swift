@@ -206,8 +206,25 @@ struct TurnoutView: View {
 #endif
                 
                 StandardClickButton(label: "Define", font: SMALL_BUTTON_FONT) {
+                    // TODO: This code should move to TurnoutModel
+                    
                     // use entered data to create a TurnoutDefinition and store it
-                    let newDefinition = TurnoutDefinition(name, EventID(closedEvent), EventID(thrownEvent))
+                    
+                    // first, see if small number entered => turnout number
+                    var closedEventID = EventID(closedEvent)
+                    if Int(closedEvent) != nil {
+                        let closedNum = Int(closedEvent)!
+                        closedEventID  = TurnoutDefinition(closedNum).closedEventID
+                    }
+                    
+                    var thrownEventID = EventID(thrownEvent)
+                    if Int(thrownEvent) != nil {
+                        let thrownNum = Int(thrownEvent)!
+                        thrownEventID  = TurnoutDefinition(thrownNum).thrownEventID
+                    }
+                    
+                    let newDefinition = TurnoutDefinition(name, closedEventID, thrownEventID)
+                    
                     model.processTurnoutDefinition(newDefinition)
                     encodeAndStoreTurnoutDefinitions()
                 }
