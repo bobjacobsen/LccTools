@@ -181,7 +181,7 @@ struct OlcbToolsApp: App {
                ClockView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .tabItem {
-                        Label("Clock", systemImage: "timer")
+                        Label("Clock", systemImage: "clock")
                     }.tag("Clock")
               
                 TurnoutView(network: openlcblib)
