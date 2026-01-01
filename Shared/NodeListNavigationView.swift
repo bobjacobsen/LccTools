@@ -12,7 +12,7 @@ import os
 /// 
 /// Needs access to the OLCB network to retrieve the node list.
 struct NodeListNavigationView: View {
-    private static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "NodeListNavigationView")
+    private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "NodeListNavigationView")
     
     @ObservedObject var network: OpenlcbNetwork
     
