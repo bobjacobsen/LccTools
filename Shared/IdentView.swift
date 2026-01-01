@@ -18,7 +18,7 @@ struct IdentView: View {
     }
     
     var body: some View {
-        StandardClickButton(label: "Identify", height: STANDARD_BUTTON_HEIGHT*4, font: STANDARD_BUTTON_FONT) {
+        StandardClickButton(label: "Identify", height: STANDARD_BUTTON_HEIGHT*2, font: STANDARD_BUTTON_FONT) {
             ident()
         }
     }
