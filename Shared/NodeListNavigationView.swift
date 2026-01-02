@@ -71,12 +71,12 @@ struct NodeListNavigationView: View {
                     network.refreshAllNodes()
                 }
             
-            VStack { // second nav section
+            VStack { // second nav section center
                 Text("No Selection Yet.")
                 Text("Click in Upper Left.")
             }
             
-            VStack { // third nav section
+            VStack { // third nav section - right most
                 Text("No Selection Yet.")
                 Text("Click in Upper Left.")
             }

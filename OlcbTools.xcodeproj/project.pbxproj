@@ -51,6 +51,8 @@
 		2395165B28AFDB8E00F3A872 /* StandardButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2395165928AFDB8D00F3A872 /* StandardButtons.swift */; };
 		23A0D5482892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
 		23A0D5492892F3D0009663EA /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5472892F3D0009663EA /* ClockView.swift */; };
+		23A52AF32F0167B500BC0B2C /* UpdateFirmwareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A52AF22F0167AA00BC0B2C /* UpdateFirmwareView.swift */; };
+		23A52AF42F0167B500BC0B2C /* UpdateFirmwareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A52AF22F0167AA00BC0B2C /* UpdateFirmwareView.swift */; };
 		23B2EDA828EB17510098666D /* TurnoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2EDA728EB17510098666D /* TurnoutView.swift */; };
 		23B2EDA928EB17510098666D /* TurnoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2EDA728EB17510098666D /* TurnoutView.swift */; };
 		23BC4B2029C7E1F300382B78 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 23BC4B1F29C7E1F300382B78 /* .swiftlint.yml */; };
@@ -143,6 +145,7 @@
 		2395165928AFDB8D00F3A872 /* StandardButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardButtons.swift; sourceTree = "<group>"; };
 		239ADD1E28C4F78000E13A32 /* OlcbTools (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OlcbTools (iOS).entitlements"; sourceTree = "<group>"; };
 		23A0D5472892F3D0009663EA /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
+		23A52AF22F0167AA00BC0B2C /* UpdateFirmwareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFirmwareView.swift; sourceTree = "<group>"; };
 		23B2EDA628E8CE450098666D /* OlcbTools (macOS)Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OlcbTools (macOS)Debug.entitlements"; sourceTree = "<group>"; };
 		23B2EDA728EB17510098666D /* TurnoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnoutView.swift; sourceTree = "<group>"; };
 		23BC4B1F29C7E1F300382B78 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = Shared/.swiftlint.yml; sourceTree = SOURCE_ROOT; };
@@ -260,6 +263,7 @@
 				2395165928AFDB8D00F3A872 /* StandardButtons.swift */,
 				2392DE652861B2D200BD9391 /* ThrottleView.swift */,
 				23B2EDA728EB17510098666D /* TurnoutView.swift */,
+				23A52AF22F0167AA00BC0B2C /* UpdateFirmwareView.swift */,
 				2336064728CF6E9800FCACAA /* Examples */,
 				2336064628CF6E6B00FCACAA /* Imports */,
 				23008906285C94A4000FB614 /* Assets.xcassets */,
@@ -636,6 +640,7 @@
 				23C40BBB28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */,
 				23008932285C94A4000FB614 /* Persistence.swift in Sources */,
 				2300894C285C9630000FB614 /* ContentView.swift in Sources */,
+				23A52AF32F0167B500BC0B2C /* UpdateFirmwareView.swift in Sources */,
 				23008955285CC75C000FB614 /* EventView.swift in Sources */,
 				2300892E285C94A4000FB614 /* OlcbToolsApp.swift in Sources */,
 				2395165A28AFDB8E00F3A872 /* StandardButtons.swift in Sources */,
@@ -662,6 +667,7 @@
 				23C40BBC28CAC06B00A22AD9 /* HexadecimalKeyboard.swift in Sources */,
 				23008933285C94A4000FB614 /* Persistence.swift in Sources */,
 				2300894D285C9630000FB614 /* ContentView.swift in Sources */,
+				23A52AF42F0167B500BC0B2C /* UpdateFirmwareView.swift in Sources */,
 				23008956285CC75C000FB614 /* EventView.swift in Sources */,
 				2300892F285C94A4000FB614 /* OlcbToolsApp.swift in Sources */,
 				2395165B28AFDB8E00F3A872 /* StandardButtons.swift in Sources */,
@@ -877,7 +883,20 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1045;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readonly;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "OlcbTools--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LccTools;
@@ -917,7 +936,20 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1045;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readonly;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "OlcbTools--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LccTools;
@@ -962,11 +994,25 @@
 				CURRENT_PROJECT_VERSION = 1045;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readonly;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "OlcbTools--macOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LccTools;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "@2022 Bob Jacobsen";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -997,11 +1043,25 @@
 				CURRENT_PROJECT_VERSION = 1045;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = V2UXGA8SJW;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readonly;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "OlcbTools--macOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LccTools;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "@2022 Bob Jacobsen";
 				LD_RUNPATH_SEARCH_PATHS = (
