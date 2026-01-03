@@ -262,6 +262,10 @@ struct OlcbToolsApp: App {
                 logger.warning("Unexpected Scene phase enum")
             }
         }
+        .commands {
+            // Replaces the macOS "File" menu item group (File > New, etc.) with nothing
+            CommandGroup(replacing: .newItem) { }
+        }
 
 #if os(macOS)
         // macOS has a separate "settings" window as Preferences
