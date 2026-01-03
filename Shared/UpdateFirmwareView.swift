@@ -13,22 +13,12 @@ struct UpdateFirmwareView: View {
     @State var selectingFile = false
     @State var fileURL: URL?
     
-    let displayNode: Node
-    let network: OpenlcbNetwork
-    
-    @ObservedObject var model : UpdateFirmwareModel
-    
-    init(displayNode : Node, network: OpenlcbNetwork) {
-        self.displayNode = displayNode
-        self.network = network
+    @ObservedObject var model: UpdateFirmwareModel  // observed for transfer states and quantity transferred
         
-        model = UpdateFirmwareModel(firmwareContent: NSData(), mservice : network.mservice, dservice: network.dservice, nodeID : displayNode.id)
-    }
-    
     var body: some View {
         VStack {
             
-            // if !model.transferring {
+            if !model.transferring {
                 StandardClickButton(label: "Start Firmware Update", height: STANDARD_BUTTON_HEIGHT*2, font: STANDARD_BUTTON_FONT) {
                     selectingFile = true
                 }
@@ -48,21 +38,23 @@ struct UpdateFirmwareView: View {
                         print(error.localizedDescription)
                     }
                 }
-            // }
+            }
             
-            // if model.transferring {
+            if model.transferring {
                 StandardClickButton(label: "Cancel Firmware Update", height: STANDARD_BUTTON_HEIGHT*2, font: STANDARD_BUTTON_FONT) {
                     model.cancel()
                 }
-            // }
+            }
             
             Text(model.status)
-            // if model.transferring {
+                .font(.title)
+            
+            if model.transferring {
                 let progress = Double(model.nextWriteAddress)/(Double(model.writeLength)+1.0)
-                let percent : Int = Int(progress * 100)
+                let percent: Int = Int(progress * 100)
                 Text("\(model.nextWriteAddress) bytes (\(percent)%) transferred") // dynamically updates
                 ProgressView(value: min(1.0, progress)) // sometimes overruns by a few in last read block, min(..) to avoid error message
-            // }
+            }
         }
     }
     
@@ -91,6 +83,7 @@ struct UpdateFirmwareView: View {
 struct UpdateFirmwareView_Previews: PreviewProvider {
     static var previews: some View {
         let network = OpenlcbNetwork(localNodeID: NodeID(123))
-        UpdateFirmwareView(displayNode: Node(NodeID(0)), network: network)
+        let model = UpdateFirmwareModel(mservice: network.mservice, dservice: network.dservice, nodeID: NodeID(123))
+        UpdateFirmwareView(model: model)
    }
 }

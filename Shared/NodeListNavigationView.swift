@@ -15,6 +15,7 @@ struct NodeListNavigationView: View {
     private static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "NodeListNavigationView")
     
     @ObservedObject var network: OpenlcbNetwork
+    @State private var node: Node? = nil // Nothing selected by default.
     
     var nodes: [Node] = []
     
@@ -27,33 +28,14 @@ struct NodeListNavigationView: View {
     }
 
     var body: some View {
-        return NavigationView {
-            List { // of all the nodes
-                ForEach(nodes, id: \.id) { (node) in
-                    // how to display each one when selected
+        NavigationSplitView {
+            // left most column
+            List {
+                ForEach(nodes, id: \.self) { node in
                     NavigationLink(destination:
                                     NodeSummaryView(displayNode: node, network: network)
-                    ) { // how to display each one in the list
-                        VStack {
-                            if !node.name.isEmpty {
-                                Text(node.name)
-                                if !node.snip.userProvidedDescription.isEmpty {
-                                    Text(node.snip.userProvidedDescription).font(.footnote)
-                                }
-                                Text(node.id.description).font(.footnote)
-                            } else if !node.snip.userProvidedDescription.isEmpty {
-                                Text(node.snip.userProvidedDescription)
-                                Text(node.id.description).font(.footnote)
-                            } else if !node.snip.modelName.isEmpty {
-                                Text(node.snip.modelName)
-                                Text(node.id.description).font(.footnote)
-                            } else {
-                                Text(node.id.description)
-                            }
-#if os(macOS)
-                            Divider()  // divider not needed on iOS
-#endif
-                        }
+                    ) {
+                        NodeRowView(node: node)
                     }
                 }
 #if os(macOS)
@@ -65,23 +47,56 @@ struct NodeListNavigationView: View {
                     Spacer()
                 }
 #endif
+
+                
             }.navigationTitle("Remote Nodes")
                 .listStyle(SidebarListStyle())
                 .refreshable {
                     network.refreshAllNodes()
                 }
-            
-            VStack { // second nav section center
-                Text("No Selection Yet.")
-                Text("Click in Upper Left.")
+        } content: {
+            // second nav section center
+            if let node = node {
+                NodeSummaryView(displayNode: node, network: network)
+            } else {
+                VStack {
+                    Text("No Selection Yet.")
+                    Text("Click in Upper Left.")
+                }
             }
-            
+        } detail: {
             VStack { // third nav section - right most
                 Text("No Selection Yet.")
-                Text("Click in Upper Left.")
+                Text("Click A Button To Left.")
             }
         }
     }
+}
+
+// display a single row in the left-most selection
+@ViewBuilder
+func NodeRowView(node: Node) -> some View {
+    VStack {
+        if !node.name.isEmpty {
+            Text(node.name)
+            if !node.snip.userProvidedDescription.isEmpty {
+                Text(node.snip.userProvidedDescription).font(.footnote)
+            }
+            Text(node.id.description).font(.footnote)
+        } else if !node.snip.userProvidedDescription.isEmpty {
+            Text(node.snip.userProvidedDescription)
+            Text(node.id.description).font(.footnote)
+        } else if !node.snip.modelName.isEmpty {
+            Text(node.snip.modelName)
+            Text(node.id.description).font(.footnote)
+        } else {
+            Text(node.id.description)
+        }
+#if os(macOS)
+        Divider()  // divider not needed on iOS
+#endif
+    }
+    
 }
 
 /// XCode preview for the NodeListNavigationView

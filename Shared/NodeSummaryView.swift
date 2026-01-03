@@ -13,6 +13,14 @@ import OpenlcbLibrary
 struct NodeSummaryView: View {
     @ObservedObject var displayNode: Node
     let network: OpenlcbNetwork
+ 
+    @State var firmwareUpdateModel: UpdateFirmwareModel
+
+    init(displayNode : Node, network: OpenlcbNetwork) {
+        self.displayNode = displayNode
+        self.network = network
+        firmwareUpdateModel = UpdateFirmwareModel(mservice: network.mservice, dservice: network.dservice, nodeID: displayNode.id)
+    }
     
     var body: some View {
         VStack {
@@ -27,14 +35,16 @@ struct NodeSummaryView: View {
                 refresh()
             }
             HStack {
-                    
-#if os(iOS) // on iOS display more icons for Events, Ident and PIP
-                
+                                    
                 if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION)
                     && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL) {
                     NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
                         MoreButtonView(label: "Configure", symbol: "square.and.pencil")
                     }
+                }
+                
+                NavigationLink(destination: IdentView(network: network, displayNode: displayNode)) {
+                    MoreButtonView(label: "Ident", symbol: "rays")
                 }
                 
                 if displayNode.pipSet.contains(.EVENT_EXCHANGE_PROTOCOL) {
@@ -43,41 +53,15 @@ struct NodeSummaryView: View {
                     }
                 }
                 
-                NavigationLink(destination: IdentView(network: network, displayNode: displayNode)) {
-                    MoreButtonView(label: "Ident", symbol: "rays")
-                }
-                
                 // we don't condition this on FirmwareUpdate in PIP because OpenMRN apps dont set it
-                NavigationLink(destination: UpdateFirmwareView(displayNode: displayNode, network: network)) {
+                NavigationLink(destination: UpdateFirmwareView(model: firmwareUpdateModel)) {
                     MoreButtonView(label: "Update Firmware", symbol: "arrow.down.doc")
                 }
 
                 NavigationLink(destination: PipView(displayNode: displayNode)) {
                     MoreButtonView(label: "More Info", symbol: "gear.badge.questionmark")
                 }
-                
-#else
-                // macOS requires there be only two buttons/NavigationLinks so use a combined View; having three means you can't go back to another one
-                // Solution is to change architecture to NavigationSplitView and NavigationStack, which requires moving to iOS 16 (from 15.2) and macOS 13 (Ventura, from 12)
-                
-                if displayNode.pipSet.contains(.CONFIGURATION_DESCRIPTION_INFORMATION)
-                    && displayNode.pipSet.contains(.MEMORY_CONFIGURATION_PROTOCOL) {
-                    NavigationLink(destination: CdCdiView(displayNode: displayNode, lib: network)) {
-                        MoreButtonView(label: "Configure", symbol: "square.and.pencil")
-                    }
-                }
-                
-                // we don't condition this on FirmwareUpdate in PIP because OpenMRN apps dont set it
-                NavigationLink(destination: UpdateFirmwareView(displayNode: displayNode, network: network)) {
-                    MoreButtonView(label: "Update Firmware", symbol: "arrow.down.doc")
-                }
-
-                NavigationLink(destination: MacOSCombinedView(displayNode: displayNode, network: network) ) {
-                    MoreButtonView(label: "More Info", symbol: "gear.badge.questionmark")
-                }
-                
-#endif
-                    
+                                    
             }.frame(minHeight: 75)
                 
 #if os(macOS)
@@ -90,27 +74,6 @@ struct NodeSummaryView: View {
         } .navigationTitle("\(displayNode.name) Summary")
     }
 
-    
-#if os(macOS)
-    /// macOS-specific view to show PIP and Events in a single View
-    struct MacOSCombinedView: View {
-        @ObservedObject var displayNode: Node
-        let network: OpenlcbNetwork
-        
-        var body: some View {
-            VStack {
-                IdentView(network: network, displayNode: displayNode)
-                StandardHDivider()
-                PipView(displayNode: displayNode)
-                if displayNode.pipSet.contains(.EVENT_EXCHANGE_PROTOCOL) {
-                    StandardHDivider()
-                    EventView(displayNode: displayNode)
-                }
-            }
-        }
-    }
-#endif
-    
     /// iOS and macOS specific handling of the sub-view navigation buttons
     struct MoreButtonView: View {
         let label: String
