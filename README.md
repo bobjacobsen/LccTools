@@ -8,6 +8,7 @@ Provides:
  - A turnout control tool
  - A node configuration tool
  - A consisting tool
+ - a firmware update tool
  - An LCC traffic monitor
 
 Released under the LGPL2 license. We're serious about its terms.
