@@ -24,7 +24,7 @@ struct UpdateFirmwareView: View {
                 }
                 .fileImporter(
                     isPresented: $selectingFile,
-                    allowedContentTypes: [.plainText], // Specify allowed file types
+                    allowedContentTypes: [.data], // .data is all file types
                     allowsMultipleSelection: false
                 ) { result in
                     switch result {
