@@ -9,10 +9,10 @@ import SwiftUI
 import WatchConnectivity
 import os
 
-private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "LccToolsWatchAppApp")
+private let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "LccToolsWatchAppApp")
 
 public class ExtendedWCSessionDelegate: NSObject, WCSessionDelegate {
-    private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ExtendedWCSessionDelegate")
+    private let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ExtendedWCSessionDelegate")
 
     var context: WatchContext = WatchContext()
 

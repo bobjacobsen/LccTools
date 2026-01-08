@@ -20,7 +20,7 @@ class WatchClockModel: ObservableObject {
     var timer: Timer?
     let context = ExtendedWCSessionDelegate.default.context
 
-    let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "WatchClockModel")
+    let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "WatchClockModel")
 
     public func cancelUpdates() {
         logger.debug("cancelTimer")

@@ -17,7 +17,7 @@ import OpenlcbLibrary
 struct ClockView: View {
     // see https://medium.com/geekculture/build-a-stopwatch-in-just-3-steps-using-swiftui-778c327d214b
     
-    static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockView")
+    static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ClockView")
     
     @EnvironmentObject var openlcblib: OpenlcbNetwork
     
@@ -135,7 +135,7 @@ private struct StopwatchUnit: View {
 
 private struct ClockControlsSheet: View {
     /// Show controls sheet
-    static let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ClockControlsSheet")
+    static let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ClockControlsSheet")
 
     @Environment(\.dismiss) private var dismiss
     

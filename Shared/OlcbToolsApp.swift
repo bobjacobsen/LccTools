@@ -20,7 +20,7 @@ import TelnetListenerLib
 private var sessionDelegator: WCSessionDelegate = ExtendedWCSessionDelegate()
 
 private class ExtendedWCSessionDelegate: NSObject, WCSessionDelegate {
-    private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "ExtendedWCSessionDelegate")
+    private let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "ExtendedWCSessionDelegate")
     
     func session(_ session: WCSession,
                  activationDidCompleteWith activationState: WCSessionActivationState,
@@ -78,7 +78,7 @@ struct OlcbToolsApp: App {
         
     @StateObject var tcpConnectionModel = TcpConnectionModel()
     
-    private let logger = Logger(subsystem: "us.ardenwood.OlcbLibDemo", category: "OlcbToolsApp")
+    private let logger = Logger(subsystem: "us.ardenwood.OlcbTools", category: "OlcbToolsApp")
     
     static var doneStartup = false  // static to avoid "self is immutable" issue
 
