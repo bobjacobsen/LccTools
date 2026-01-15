@@ -11,15 +11,12 @@ import OpenlcbLibrary
 /// 
 /// Invoked from e.g. NodeListNavigationView
 struct NodeSummaryView: View {
-    @ObservedObject var displayNode: Node
+    var displayNode: Node
     let network: OpenlcbNetwork
  
-    @State var firmwareUpdateModel: UpdateFirmwareModel
-
     init(displayNode : Node, network: OpenlcbNetwork) {
         self.displayNode = displayNode
         self.network = network
-        firmwareUpdateModel = UpdateFirmwareModel(mservice: network.mservice, dservice: network.dservice, nodeID: displayNode.id)
     }
     
     var body: some View {
@@ -53,8 +50,8 @@ struct NodeSummaryView: View {
                     }
                 }
                 
-                // we don't condition this on FirmwareUpdate in PIP because OpenMRN apps dont set it
-                NavigationLink(destination: UpdateFirmwareView(model: firmwareUpdateModel)) {
+                // we don't condition this on FirmwareUpdate in PIP because OpenMRN apps dont set that bit
+                NavigationLink(destination: UpdateFirmwareView(node: displayNode, model: UpdateFirmwareModel(mservice: network.mservice, dservice: network.dservice, node: displayNode))) {
                     MoreButtonView(label: "Update Firmware", symbol: "arrow.down.doc")
                 }
 

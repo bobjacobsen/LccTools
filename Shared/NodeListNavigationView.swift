@@ -24,7 +24,7 @@ struct NodeListNavigationView: View {
         nodes = lib.remoteNodeStore.nodes
         nodes.sort { $0.snip.userProvidedNodeName < $1.snip.userProvidedNodeName } // display in name order
         // TODO: consider using the same smart sort as RosterEntry
-        NodeListNavigationView.logger.info("init NodeListNavigationView")
+        NodeListNavigationView.logger.debug("init NodeListNavigationView")
     }
 
     var body: some View {
