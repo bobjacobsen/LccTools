@@ -5,10 +5,15 @@
 //
 
 import SwiftUI
+import os
+
 #if os(iOS)
 import WatchConnectivity
 #endif
-import os
+
+#if os(macOS)
+import AppKit
+#endif
 
 import OpenlcbLibrary
 import TelnetListenerLib
@@ -56,6 +61,15 @@ extension ExtendedWCSessionDelegate {  // optional method requires presence in e
     public func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHander: @escaping ([String: Any]) -> Void) {
         // Receiving messages sent with a reply handler
         logger.debug("didReceiveMessage (handler) with \(message)")
+    }
+}
+#endif
+
+#if os(macOS)
+// to quit app when main window closes, define an application delegate
+class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
     }
 }
 #endif
@@ -112,11 +126,16 @@ struct OlcbToolsApp: App {
             logger.info("  updated default node id to \(OlcbToolsApp.this_node_ID)")
         }
         
-#if os(iOS)
+        #if os(iOS)
         // Trigger WCSession activation for watch communications at the early phase of app launching.
         ExtendedWCSessionDelegate.default.initializeWatchCommunications()
-#endif
+        #endif
     }
+    
+    #if os(macOS)
+    // attach quit-on-window-close delegate to the SwiftUI life cycle
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    #endif
     
     var canphysical = CanPhysicalLayerGridConnect()
     
