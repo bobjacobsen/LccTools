@@ -70,6 +70,9 @@ struct NodeListNavigationView: View {
                 Text("Click A Button To Left.")
             }
         }
+#if os(iOS)
+        .navigationSplitViewStyle(.prominentDetail)
+#endif
     }
 }
 
