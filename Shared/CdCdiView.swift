@@ -400,16 +400,18 @@ private struct CdiIntSliderView: View {
                     }
                 ).disabled(item.readOnly) // Slider
                 
-                TextField("Enter \(item.name)", value: $intValue, formatter: formatter)
-                    .onAppear {
-                        intValue = item.currentIntValue
-                    }
-                    .onSubmit {
-                        item.currentIntValue = intValue
-                    }
-                    .textFieldStyle(.roundedBorder)
-                
-                IosSpacer()
+                if item.isSliderShowValue {
+                    TextField("Enter \(item.name)", value: $intValue, formatter: formatter)
+                        .onAppear {
+                            intValue = item.currentIntValue
+                        }
+                        .onSubmit {
+                            item.currentIntValue = intValue
+                        }
+                        .textFieldStyle(.roundedBorder)
+                    
+                    IosSpacer()
+                }
                 
                 RButtonView(address: self.item.startAddress, model: model) {
                     read()
