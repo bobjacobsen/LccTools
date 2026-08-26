@@ -276,7 +276,7 @@ struct CdCdiView: View {
                                 Text(valueName)
                             }
                         } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
-                        .pickerStyle(MenuPickerStyle())
+                        .pickerStyle(.menu) // .radioGroup on macOS only
                         .onAppear { // initialize from model value
                             intValue = item.currentIntValue
                             stringValue = propertyToValue(property: intValue)
