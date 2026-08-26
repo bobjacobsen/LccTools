@@ -31,7 +31,7 @@ struct CdCdiView: View {
         if displayNode.cdi == nil {
             // No, create it and load it - we're doing this as early as possible
             displayNode.cdi = CdiModel(mservice: lib.mservice, nodeID: displayNode.id)
-            
+          
             // Start the read process.  Usually we read the length first to
             // display an accurate progress bar, but that crashes TCS nodes
             // as of Jan 2025, and maybe for a long time after if people
@@ -105,7 +105,18 @@ struct CdCdiView: View {
                     return AnyView(CdiIntView(item: item, model: model))
                 }
             } else {
-                return AnyView(CdiIntMapView(item: item, model: model))
+                // radiobutton is handled like the map view on ios
+#if os(macOS)
+                if item.isRadioButton {
+                    return AnyView(CdiIntRadiobuttonView(item: item, model: model))
+                }
+#endif
+                if item.isCheckbox {
+                    return AnyView(CdiIntCheckboxView(item: item, model: model))
+                } else {
+                    // standard map view
+                    return AnyView(CdiIntMapView(item: item, model: model))
+                }
             }
         case .INPUT_STRING:
             return AnyView(CdiStringView(item: item, model: model))
@@ -239,6 +250,161 @@ struct CdCdiView: View {
             }
         }
     }
+    
+    /// View for a CDI int checkbox
+    struct CdiIntCheckboxView: View {
+        @State var intValue: Int = -1 // -1 so we can see what it does here
+        @State private var isOn = false
+        
+        var item: CdiXmlMemo
+        let model: CdiModel
+        var startUpIgnoreReceive = true // true while onReceive should be ignored until first onAppear
+        
+        init(item: CdiXmlMemo, model: CdiModel) {
+            self.item = item
+            self.model = model
+            intValue = item.currentIntValue
+            isOn = propertyToValue(property: intValue)
+        }
+        
+        func valueToProperty(value: Bool ) -> Int {
+            if value {
+                return Int(self.item.values[1]) ?? 0
+            } else {
+                return Int(self.item.values[0]) ?? 0
+            }
+        }
+        func propertyToValue(property: Int ) -> Bool {
+            if self.item.properties[1] == String(property) {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        var body: some View {
+            VStack(alignment: .leading) {
+                Text("\(item.name)")
+                HStack {
+                    HStack {
+                        Toggle(isOn: $isOn) {
+                            Text("\(self.item.values[1])")
+                        }
+                        .onAppear { // initialize from model value
+                            intValue = item.currentIntValue
+                            isOn = propertyToValue(property: intValue)
+                        }
+                        .onReceive([self.isOn].publisher.first()) { (_) in  // store back to model
+                            intValue = valueToProperty(value: isOn)
+                            item.currentIntValue = intValue
+                        }
+                        .disabled(item.readOnly)
+                    }
+                    IosSpacer()
+                    HStack {
+                        RButtonView(address: self.item.startAddress, model: model) {
+                            read()
+                        }
+                        WButtonView(address: self.item.startAddress, readOnly: item.readOnly, model: model) {
+                            model.writeInt(value: self.intValue, at: self.item.startAddress,
+                                           space: UInt8(self.item.space), length: UInt8(self.item.length))
+                        }
+                        BeyondTheButtons()
+                    }.buttonStyle(BorderlessButtonStyle())
+                }
+                
+                DescriptionView(item: item)
+                
+            }
+            .onAppear { read() }
+        }
+        
+        func read() {
+            model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)) { (readValue: Int) in
+                self.intValue = readValue
+                self.isOn = propertyToValue(property: self.intValue)
+            }
+        }
+    }
+
+#if os(macOS)
+    /// View for a CDI int radio buttons map - macOS only
+    struct CdiIntRadiobuttonView: View {
+        @State var intValue: Int = -1 // -1 so we can see what it does here
+        @State var stringValue: String = "<initial internal content>" // so we can see what it does here
+        
+        var item: CdiXmlMemo
+        let model: CdiModel
+        var startUpIgnoreReceive = true // true while onReceive should be ignored until first onAppear
+        
+        init(item: CdiXmlMemo, model: CdiModel) {
+            self.item = item
+            self.model = model
+            intValue = item.currentIntValue
+            stringValue = propertyToValue(property: intValue)
+        }
+        
+        func valueToProperty(value: String ) -> Int {
+            // find index of matching value
+            let index = self.item.values.firstIndex(of: value) ?? 0  // really supposed to match
+            return Int(self.item.properties[index]) ?? 0 // 0 if process fails
+        }
+        func propertyToValue(property: Int ) -> String {
+            // find index of matching property
+            let index = self.item.properties.firstIndex(of: String(property)) ?? 0  // really supposed to match
+            return self.item.values[index]
+        }
+        
+        var body: some View {
+            VStack(alignment: .leading) {
+                HStack {
+                    HStack {
+                        Picker("\(item.name)", selection: $stringValue) {
+                            ForEach(item.values, id: \.self) { valueName in
+                                Text(valueName)
+                            }
+                        } // default is no picker style, see https://developer.apple.com/documentation/swiftui/pickerstyle
+                        .pickerStyle(.radioGroup) // .radioGroup on macOS only
+                        .onAppear { // initialize from model value
+                            intValue = item.currentIntValue
+                            stringValue = propertyToValue(property: intValue)
+                        }
+                        .onReceive([self.stringValue].publisher.first()) { (_) in  // store back to model
+                            if stringValue == "<initial internal content>" {
+                                return
+                            }
+                            intValue = valueToProperty(value: stringValue)
+                            item.currentIntValue = intValue
+                        }
+                        .disabled(item.readOnly)
+                    }
+                    IosSpacer()
+                    HStack {
+                        RButtonView(address: self.item.startAddress, model: model) {
+                            read()
+                        }
+                        WButtonView(address: self.item.startAddress, readOnly: item.readOnly, model: model) {
+                            model.writeInt(value: self.intValue, at: self.item.startAddress,
+                                           space: UInt8(self.item.space), length: UInt8(self.item.length))
+                        }
+                        BeyondTheButtons()
+                    }.buttonStyle(BorderlessButtonStyle())
+                }
+                
+                DescriptionView(item: item)
+                
+            }
+            .onAppear { read() }
+        }
+        
+        func read() {
+            model.readInt(from: self.item.startAddress, space: UInt8(self.item.space), length: UInt8(self.item.length)) { (readValue: Int) in
+                self.intValue = readValue
+                self.stringValue = propertyToValue(property: self.intValue)
+            }
+        }
+    }
+#endif
     
     /// View for a CDI int value map
     struct CdiIntMapView: View {
